@@ -1,0 +1,35 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+@font-face {
+	font-family: Inter;
+	font-weight: 600;
+	src: url(../fonts/Inter-SemiBold.ttf);
+}
+@font-face {
+	font-family: Inter;
+	font-weight: 700;
+	src: url(../fonts/Inter-Bold.ttf);
+}
+@font-face {
+	font-family: Inter;
+	font-weight: 400;
+	src: url(../fonts/Inter-Regular.ttf);
+}
+@font-face {
+	font-family: Inter;
+	font-weight: 300;
+	src: url(../fonts/Inter-Lightr.ttf);
+}
+
+/*dashboard*/
+ 
+
+
+.sidebar-nabvar  a > svg {
+
+  @apply h-6 w-6 ;
+
+}
