@@ -18,7 +18,6 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();           
-            //$table->decimal('base_salary', 10, 2)->nullable();            
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
