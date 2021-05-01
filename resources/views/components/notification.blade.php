@@ -7,19 +7,19 @@
         clearTimeout(timeout);         
         timeout = setTimeout(() => {
             show = false 
-        }, 8000);
+        }, 1000);
         title=$event.detail.title
         subtitle=$event.detail.subtitle"
-        style="display: none;"  
+        style="display: none" 
         x-show.transition.opacity.out.duration.1000ms="show"        
-        class="bg-white rounded-xl p-4 inline-block shadow-md fixed top-20 right-5 top border border-opacity-75  border-gray-200"> 
+        class="bg-white rounded-xl p-4 inline-block shadow-md fixed top-20 right-5 top border border-opacity-75  border-gray-200 z-50"> 
                 <div class="flex justify-between">
                     <div>
-                        <p class="font-bold text-sm text-green-500" x-html="title"></p>                    
+                        <p class="font-bold text-sm text-green-500" x-html="title">imagen</p>                    
                         <p class="text-sm text-gray-400" x-html="subtitle"></p>
                     </div>
                     
-                    <div>
+                    <div class="pl-3">
                         <button @click="show=false" class="cursor-pointer focus:outline-none">
                             <span class="sr-only">Cerra</span>
                             <svg class="h-4 w-4 text-gray-400 focus:outline-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

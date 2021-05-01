@@ -4,7 +4,7 @@
         {{ __('Usuarios') }}
     </x-slot>
 
-    <x-list-data :data="$data">        
+    <x-list-data :data="$data">
         <x-slot name="component_create">
             @livewire('users.create-users')
         </x-slot>
@@ -59,8 +59,7 @@
                         </div>
                     </td>
                     <td class="text-sm font-medium ">
-                        <a x-data="{id:{{ $item->id }} }" x-on:click="$dispatch('open-modal',id)"
-                            wire:click="$emit('editUser', {{ $item->id }} )"
+                        <a x-data="{id:{{ $item->id }} }" x-on:click="$dispatch('open-modal-edit',id)"
                             class="text-indigo-600 hover:text-indigo-900 cursor-pointer">Edit</a>
 
                         <a x-data="{id:{{ $item->id }} }" x-on:click="$dispatch('open-modal-confirmation',id)"
@@ -69,5 +68,5 @@
                 </tr>
             @endforeach
         </x-slot>
-    </x-list-table>        
+        </x-list-table>
 </div>

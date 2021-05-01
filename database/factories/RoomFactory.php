@@ -24,11 +24,12 @@ class RoomFactory extends Factory
         return [
             "name" => $this->faker->words(3, true),
             "slug" => str::slug($this->faker->words(3, true)) ,
-            "description-min" => $this->faker->text(100),
-            "description-max" => $this->faker->text(200),
-            "image" => $this->faker->imageUrl(360, 360, 'animals', true, 'cats'),
+            "description_min" => $this->faker->text(100),
+            "description_max" => $this->faker->text(400),
+            "active" => rand(0,1),
             "quantity" => $this->faker->numberBetween(3, 9),
-            "price" => $this->faker->numberBetween(40, 50)*100 
+            "price" => $this->faker->numberBetween(40, 50)*100 ,
+            "thumbnail" => null ,
         ];
     }
 }

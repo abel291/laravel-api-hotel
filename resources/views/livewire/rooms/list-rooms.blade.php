@@ -22,9 +22,9 @@
                 class=" cursor-pointer px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Nombre
             </th>
-            <th scope="col" wire:click="sortBy('email')"
+            <th scope="col" wire:click="sortBy('price')"
                 class=" cursor-pointer px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
+                Precio
             </th>
             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Opciones
@@ -55,12 +55,11 @@
                     </td>
                     <td>
                         <div class=" text-sm text-gray-500">
-                            {{ $item->email }}
+                            ${{ number_format($item->price) }}
                         </div>
                     </td>
                     <td class="text-sm font-medium ">
-                        <a x-data="{id:{{ $item->id }} }" x-on:click="$dispatch('open-modal',id)"
-                            wire:click="$emit('edititem', {{ $item->id }} )"
+                        <a x-data x-on:click="$dispatch('open-modal-edit',{{ $item->id }})"
                             class="text-indigo-600 hover:text-indigo-900 cursor-pointer">Edit</a>
 
                         <a x-data="{id:{{ $item->id }} }" x-on:click="$dispatch('open-modal-confirmation',id)"

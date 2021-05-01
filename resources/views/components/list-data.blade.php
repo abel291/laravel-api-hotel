@@ -19,7 +19,7 @@
                     </div>
 
                     </button>
-                    {{$component_create}}
+                    {{ $component_create }}
                 </div>
                 <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -28,33 +28,34 @@
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            {{$table_th}}             
+                                            {{ $table_th }}
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                         @if ($data->isNotEmpty())
-                                            {{$table_td}}                            
+                                            {{ $table_td }}
                                         @else
                                             <tr>
                                                 <td colspan="3" class="px-6 py-3 ">no hay registros</td>
                                             </tr>
                                         @endif
-                
+
                                         <!-- More items... -->
                                     </tbody>
                                 </table>
-                
+
                                 {{ $data->links() }}
-                
-                
+
+
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
+    
 
-    <!-- Al hacer click, hará console.log de "Hello World!". -->
+    
 </div>

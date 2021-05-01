@@ -17,13 +17,15 @@ class Rooms extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->text('description-min');
-            $table->text('description-max');
-            $table->string('image');
+            $table->text('description_min');
+            $table->text('description_max');           
             $table->tinyInteger('quantity')->default(0);
             $table->integer('price')->default(0);
+            $table->boolean('active')->default(0);
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**
