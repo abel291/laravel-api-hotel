@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Room;
+use App\Models\Complement;
 use Hash;
 
 class DatabaseSeeder extends Seeder
@@ -21,8 +23,11 @@ class DatabaseSeeder extends Seeder
             'phone'=>'123123123',
             'password'=> Hash::make('123123')            
         ]);
-         \App\Models\User::factory(100)->create();
-         \App\Models\Room::factory(10)->create();
+        User::factory(100)->create();
+        
+        Room::factory(10)->has(Complement::factory()->count(3))->create();
+
+        
          
     }
 }

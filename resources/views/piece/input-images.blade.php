@@ -33,7 +33,7 @@
                     @foreach ($images_saved as $item)
                         <div wire:key="{{$item->id}}"
                             class="w-3/12 inline-block bg-white relative overflow-hidden rounded-lg ml-5 border border-gray-300">
-                            <img src="/storage/rooms/{{ $item->image }}?{{rand(1,300)}}">
+                            <img src="{{ $path }}{{ $item->image }}?{{rand(1,300)}}" >
                             
                             <div x-data="{show:false}" class="text-center bg-red-700 text-white ">        
                                 <div 
@@ -75,7 +75,7 @@
                 </div>
             @elseif($images_saved)
                 <img class="w-3/12 inline-block bg-white  overflow-hidden sm:rounded-lg ml-5 border border-gray-300"
-                    src="/storage/rooms/thumbnail/{{ $images_saved }}?{{rand(1,300)}}" alt="img_saved">
+                    src="{{ $path }}{{ $images_saved }}?{{rand(1,300)}}" alt="img_saved">
             @endif
         @endif
 

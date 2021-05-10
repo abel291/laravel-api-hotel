@@ -19,9 +19,11 @@ class Rooms extends Migration
             $table->string('slug');
             $table->text('description_min');
             $table->text('description_max');           
-            $table->tinyInteger('quantity')->default(0);
+            $table->tinyInteger('quantity')->default(0);            
             $table->integer('price')->default(0);
             $table->boolean('active')->default(0);
+            $table->tinyInteger('beds')->default(0);
+            $table->tinyInteger('people')->default(0);
             $table->string('thumbnail')->nullable();
             $table->timestamps();
         });

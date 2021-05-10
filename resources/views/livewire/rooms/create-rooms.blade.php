@@ -13,26 +13,27 @@
             </x-slot>
 
             <x-slot name="content">
-                <div x-data="{tab:'tab_data'}" @open-modal-edit.window="tab='tab_data'">
+
+                <div x-data="{tab:'tab_data'}" @open-modal-edit.window="tab='tab_complements'">
                     <nav class="flex mb-4">
-                        <a  @click.prevent="tab = 'tab_data'" 
+                        <a @click.prevent="tab = 'tab_data'"
                             :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_data' }"
-                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "   
+                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Datos</b></a>
 
-                        <a  @click.prevent="tab = 'tab_image'" 
+                        <a @click.prevent="tab = 'tab_image'"
                             :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_image' }"
-                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "  
+                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Imagenes</b></a>
 
-                        <a  @click.prevent="tab = 'tab_experiencie'" 
-                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_experiencie' }"
-                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "    
+                        <a @click.prevent="tab = 'tab_complements'"
+                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_complements' }"
+                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Complementos</b></a>
 
-                        <a  @click.prevent="tab = 'tab_accessories'" 
-                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_accessories' }"
-                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "    
+                        <a @click.prevent="tab = 'tab_experiences'"
+                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_experiences' }"
+                            class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Experiencias</b></a>
 
 
@@ -108,6 +109,26 @@
                                 <x-jet-input class="mb-3" type="number" wire:model.defer="room.quantity"></x-jet-input>
                             </div>
                         </div>
+                        <div class="flex">
+                            <div class="mr-4">
+                                <x-jet-label>
+                                    Camas
+                                    @error('room.beds')
+                                        <span class="error text-sm text-red-600 block">{{ $message }}</span>
+                                    @enderror
+                                </x-jet-label>
+                                <x-jet-input class="mb-3" type="number" wire:model.defer="room.beds"></x-jet-input>
+                            </div>
+                            <div>
+                                <x-jet-label>
+                                    Cantidad de Perosnas
+                                    @error('room.people')
+                                        <span class="error text-sm text-red-600  block">{{ $message }}</span>
+                                    @enderror
+                                </x-jet-label>
+                                <x-jet-input class="mb-3" type="number" wire:model.defer="room.people"></x-jet-input>
+                            </div>
+                        </div>
                         <div class="mb-5">
 
                             <x-jet-label>
@@ -136,7 +157,6 @@
                                         No
                                     </label>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -161,7 +181,8 @@
                             'images_temp'=>$thumbnail,
                             'images_saved'=>$room->thumbnail,
                             'title'=>"Subir Imagen Miniatura",
-                            'multiple'=>false
+                            'multiple'=>false,
+                            'path'=>'/storage/rooms/thumbnail/'
                             ])
 
                         </div>
@@ -183,17 +204,30 @@
                             'images_temp'=>$images,
                             'images_saved'=>$room->images,
                             'title'=>"Subir Galeria de Imagenes",
-                            'multiple'=>true
+                            'multiple'=>true,
+                            'path' => '/storage/rooms/'
+
                             ])
 
                         </div>
 
                     </div>
 
-                    <div x-show="tab === 'tab_experiencie'">
+                    <div x-show="tab === 'tab_complements'">
+                        <div class="flex flex-wrap">
+                            @foreach (App\Models\Complement::get() as $item)
+
+                                <label class="inline-flex items-center mt-3 w-3/6"  >
+                                    <input wire:model.defer="complements" value="{{$item->id}}" 
+                                    type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"  >
+                                    <span class="ml-2 text-gray-700 text-sm">{{$item->name}}</span>
+                                </label>
+
+                            @endforeach
+                        </div>
                     </div>
 
-                    <div x-show="tab === 'tab_accessories'">
+                    <div x-show="tab === 'tab_experiences'">
                     </div>
 
 

@@ -3,11 +3,13 @@
 namespace App\Http\Livewire\Rooms;
 
 use App\Models\Room;
+use App\Models\Complement;
 use App\Models\Image;
+
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
-//use Intervention\Image\ImageManagerStatic as ImageManager;
+use Intervention\Image\ImageManagerStatic as ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +23,8 @@ class CreateRooms extends Component
     public $edit_var = false;
     public $open_modal_confirmation = false;
     public $images = [];
-    public $thumbnail='';
+    public $thumbnail;
+    public $complements = [];
     public Room $room;
 
      
@@ -33,10 +36,13 @@ class CreateRooms extends Component
         'room.description_max' => 'required|string',
         'room.price' => 'required|numeric',
         'room.quantity' => 'required|numeric|max:255',
-        'room.active' => 'required|boolean',
+        'room.active' => 'required|boolean',        
+        'room.beds' => 'required|numeric',   
+        'room.people' => 'required|numeric|max:255',
         'thumbnail' => 'image|max:2048|mimes:jpeg,jpg,png',
         'images.*' => 'image|max:2048|mimes:jpeg,jpg,png',
-    ];
+        'complements.*' => 'numeric',
+    ];//no sincronisa people
 
     public function mount(){
 
@@ -47,8 +53,8 @@ class CreateRooms extends Component
     public function create(){
         $this->open=true;
         $this->edit_var=false;
-        $this->room = new Room;
-        $this->reset('images','thumbnail');
+        $this->room = new Room;        
+        $this->reset('images','thumbnail','complements');
         $this->resetErrorBag();
     }
     public function save()
@@ -59,7 +65,8 @@ class CreateRooms extends Component
         $room=$this->room;
         $room->slug = Str::of($room->slug)->slug('-');
         $room->thumbnail=$room->slug.'.'.$this->thumbnail->extension();        
-        $room->save();    
+        $room->save();
+        $room->complements()->sync($this->complements); //complementos  
 
         $this->thumbnail->storeAs('rooms/thumbnail', $room->thumbnail);
 
@@ -90,16 +97,22 @@ class CreateRooms extends Component
         
     }
     public function edit(Room $room){
+
+        $room->load('images','complements');   
+        foreach ($room->complements as $key => $value) {
+            $this->complements[$key]="$value->id";
+        }     
         
-        $room->load('images');    
         $this->reset('thumbnail','images');
+        $this->resetErrorBag();
         $this->edit_var=true;
         $this->open=true;
-        $this->room=$room;       
-
+        $this->room=$room;
     }
     
     public function update(){
+        //dd($this->complements);
+        $this->rules['thumbnail']="nullable|image|max:2048|mimes:jpeg,jpg,png";
         $this->validate();
         $room=$this->room;
         $room->slug = Str::of($room->slug)->slug('_');
@@ -109,7 +122,9 @@ class CreateRooms extends Component
             $this->thumbnail->storeAs('rooms/thumbnail', $room->thumbnail);  
         }
                
-        $room->save(); 
+        $room->save();
+        
+        $room->complements()->sync($this->complements); //complementos
 
         $array_images=[]; 
         if ($this->images) {

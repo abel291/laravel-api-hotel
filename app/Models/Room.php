@@ -18,6 +18,8 @@ class Room extends Model
         'quantity',
         'price',
         'active',
+        'beds',
+        'people',
     ];
 
 
@@ -27,13 +29,17 @@ class Room extends Model
         'description-min' => 'string',
         'description-max' => 'string',        
         'quantity' => 'integer',
-        'price' => 'integer',
+        'price' => 'integer',        
         'active' => 'boolean',
+        'beds' => 'integer',
+        'people' => 'integer',
     ];
     protected $attributes = [
         'active' => 0,
         'quantity' => 0,
-        'price' => 0
+        'price' => 0,
+        'beds' => 0,
+        'people' => 0,
     ];
 
 
@@ -50,6 +56,11 @@ class Room extends Model
     public function getThumbnailPathAttribute($value='')
     {
         return 'rooms/thumbnail/'.$this->thumbnail;
+    }
+
+    public function complements()
+    {
+        return $this->belongsToMany(Complement::class);
     }
 
 }

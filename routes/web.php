@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Users\ListUsers;
 use App\Http\Livewire\Rooms\ListRooms;
+use App\Http\Livewire\Complements\ListComplements;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/users', ListUsers::class)->name('users');
     Route::get('/rooms', ListRooms::class)->name('rooms');
+    Route::get('/complements', ListComplements::class)->name('complements');
 });

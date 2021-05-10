@@ -25,11 +25,13 @@
 }
 
 /*dashboard*/
- 
-
-
 .sidebar-nabvar  a > svg {
 
   @apply h-6 w-6 ;
 
+}
+
+.blur{
+	backdrop-filter: blur(12px);
+	background: #7575759c;
 }
