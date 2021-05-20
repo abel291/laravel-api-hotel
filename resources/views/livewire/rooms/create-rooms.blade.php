@@ -14,7 +14,7 @@
 
             <x-slot name="content">
 
-                <div x-data="{tab:'tab_data'}" @open-modal-edit.window="tab='tab_complements'">
+                <div x-data="{tab:'tab_data'}" @open-modal-edit.window="tab='tab_experiencies'">
                     <nav class="flex mb-4">
                         <a @click.prevent="tab = 'tab_data'"
                             :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_data' }"
@@ -31,8 +31,8 @@
                             class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Complementos</b></a>
 
-                        <a @click.prevent="tab = 'tab_experiences'"
-                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_experiences' }"
+                        <a @click.prevent="tab = 'tab_experiencies'"
+                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_experiencies' }"
                             class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Experiencias</b></a>
 
@@ -214,6 +214,7 @@
                     </div>
 
                     <div x-show="tab === 'tab_complements'">
+                        <h1 class=" font-bold">COMPLEMETOS</h2>
                         <div class="flex flex-wrap">
                             @foreach (App\Models\Complement::get() as $item)
 
@@ -227,7 +228,22 @@
                         </div>
                     </div>
 
-                    <div x-show="tab === 'tab_experiences'">
+                    <div x-show="tab === 'tab_experiencies'">
+
+                            <h1 class=" font-bold">EXPERIENCIAS</h1>
+                            <div class="flex flex-wrap">
+                                @foreach (App\Models\Experiencie::get() as $item)
+    
+                                    <label class="inline-flex items-center mt-3 w-full"  >
+                                        <input wire:model.defer="experiencies" value="{{$item->id}}" 
+                                        type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"  >
+                                        <span class="ml-2 text-gray-700">{{$item->name}}</span>
+                                    </label>
+    
+                                @endforeach
+                            </div>
+                        
+
                     </div>
 
 

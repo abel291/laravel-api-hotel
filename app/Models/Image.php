@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
-    protected $fillable = ['image'];
+    protected $fillable = ['image','order'];
     /**
      * Get the parent imageable model (user or post).
      */
@@ -19,8 +19,8 @@ class Image extends Model
     
 
     // Accessors & Mutators
-    public function getImagePathAttribute($value='')
+    public function getImagePathAttribute($path='')
     {
-    	return 'rooms/'.$this->image;
+    	return $path.'/'.$this->image;
     }
 }

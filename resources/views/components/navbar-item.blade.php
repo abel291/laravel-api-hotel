@@ -31,16 +31,16 @@
         </svg>
         <span>Habitaciones</span>
     </a>
-    <a href="{{ route('users') }}"
-        class="flex items-center {{ request()->is('experience*') ? 'bg-gray-900 text-white' : 'hover:bg-gray-900 hover:text-white' }} rounded-md p-2.5 space-x-3">
+    <a href="{{ route('experiencies') }}"
+        class="flex items-center {{ request()->is('experiencies*') ? 'bg-gray-900 text-white' : 'hover:bg-gray-900 hover:text-white' }} rounded-md p-2.5 space-x-3">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
         </svg>
         <span>Experiencias</span>
     </a>
-    <a href="{{ route('users') }}"
-        class="flex items-center {{ request()->is('gallery*') ? 'bg-gray-900 text-white' : 'hover:bg-gray-900 hover:text-white' }} rounded-md p-2.5 space-x-3">
+    <a href="{{ route('galleries') }}"
+        class="flex items-center {{ request()->is('galleries*') ? 'bg-gray-900 text-white' : 'hover:bg-gray-900 hover:text-white' }} rounded-md p-2.5 space-x-3">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />

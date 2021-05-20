@@ -25,6 +25,6 @@ class Complement extends Model
     }
     public function getIconPathAttribute($value='')
     {
-        return 'complements/'.$this->icon;
+        return '/storage/complements/'.$this->icon;
     }
 }

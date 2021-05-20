@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Complements;
 use Livewire\Component;
 
 use App\Models\Complement;
-use App\Models\Image;
+
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
@@ -46,7 +46,7 @@ class CreateComplements extends Component
         $this->rules['icon'] = "required|image|max:2048|mimes:jpeg,jpg,png";
         $this->validate();
         $complement = $this->complement;
-        $complement->icon = Str::of($complement->name) . uniqid() . '.png';
+        $complement->icon = Str::of($complement->name)->slug('-') . uniqid() . '.jpg';
 
         $img = ImageManager::make($this->icon)
             ->resize(100, null, function ($constraint) {
@@ -81,11 +81,12 @@ class CreateComplements extends Component
 
     public function update(Complement $complement)
     {
+        $this->rules['icon'] = 'nullable|image|max:2048|mimes:jpeg,jpg,png';
         $this->validate();
         $complement = $this->complement;
         if ($this->icon) {
             Storage::delete('complement/' . $complement->icon);
-            $complement->icon = Str::of($complement->name) . uniqid() . '.png';
+            $complement->icon = Str::of($complement->name)->slug('-') . uniqid() . '.png';
             $img = ImageManager::make($this->icon)
             ->resize(100, null, function ($constraint) {
                 $constraint->aspectRatio();
@@ -108,10 +109,12 @@ class CreateComplements extends Component
         $this->emit('resetListComplements');
         $this->complement = new Complement;
     }
-    /////reviasr si se booran las imagnes y agregar los bath a los rooms
+    
     public function delete(Complement $complement)
     {
         Storage::delete('complements/' . $complement->icon);
+        
+        $complement->rooms()->detach();
         $complement->delete();
 
         $this->reset('icon');

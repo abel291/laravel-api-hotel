@@ -16,6 +16,8 @@ class Images extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('image');            
+            $table->string('thumbnail')->nullable();            
+            $table->tinyInteger('order')->default(0)->nullable();            
             $table->integer('imageable_id');
             $table->string('imageable_type');            
             $table->timestamps();

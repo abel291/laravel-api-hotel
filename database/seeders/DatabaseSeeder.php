@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Complement;
+use App\Models\Experiencie;
+use App\Models\Gallery;
 use Hash;
 
 class DatabaseSeeder extends Seeder
@@ -25,7 +27,15 @@ class DatabaseSeeder extends Seeder
         ]);
         User::factory(100)->create();
         
-        Room::factory(10)->has(Complement::factory()->count(3))->create();
+        Room::factory(10)
+        ->has(Complement::factory()->count(3))
+        ->has(Experiencie::factory()->count(2))
+        ->create();
+        
+        Gallery::factory(5)->hasImages(12)->create();       
+
+        
+
 
         
          

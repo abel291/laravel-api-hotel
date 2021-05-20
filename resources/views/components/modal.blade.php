@@ -30,9 +30,9 @@
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             
             <!--laoding -->
-            <div wire:loading.flex wire:target="edit,save,create,delete,update"> 
-                <div class="absolute inset-0 blur"></div>          
-                <div class='flex items-center justify-center absolute inset-0 '>
+            <div  wire:loading.flex wire:target="edit,save,create,delete,update"> 
+                <div class="absolute inset-0 blur z-10"></div>          
+                <div class='flex items-center justify-center absolute inset-0   z-20'>
                     <div class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-600 ">                    
                         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -45,7 +45,7 @@
             </div>
 
             <!--modal-->
-            <div class="px-6 py-4">
+            <div class="px-6 py-4 ">
                 <div class="text-lg">
                     {{ $title }}
                 </div>

@@ -25,6 +25,7 @@ class CreateRooms extends Component
     public $images = [];
     public $thumbnail;
     public $complements = [];
+    public $experiencies = [];
     public Room $room;
 
      
@@ -42,6 +43,7 @@ class CreateRooms extends Component
         'thumbnail' => 'image|max:2048|mimes:jpeg,jpg,png',
         'images.*' => 'image|max:2048|mimes:jpeg,jpg,png',
         'complements.*' => 'numeric',
+        'experiencies.*' => 'numeric',
     ];//no sincronisa people
 
     public function mount(){
@@ -54,7 +56,7 @@ class CreateRooms extends Component
         $this->open=true;
         $this->edit_var=false;
         $this->room = new Room;        
-        $this->reset('images','thumbnail','complements');
+        $this->reset('images','thumbnail','complements','experiencies');
         $this->resetErrorBag();
     }
     public function save()
@@ -66,7 +68,9 @@ class CreateRooms extends Component
         $room->slug = Str::of($room->slug)->slug('-');
         $room->thumbnail=$room->slug.'.'.$this->thumbnail->extension();        
         $room->save();
+
         $room->complements()->sync($this->complements); //complementos  
+        $room->experiencies()->sync($this->experiencies); //experiencias  
 
         $this->thumbnail->storeAs('rooms/thumbnail', $room->thumbnail);
 
@@ -91,16 +95,19 @@ class CreateRooms extends Component
             'title' => "Habitacion Agregada",
             'subtitle' => "La habitacion  <b>" . $this->room->name . "</b>  a sido  Agregado correctamente"
         ]);
-        $this->reset('thumbnail','images');
+        $this->reset('images','thumbnail','complements','experiencies');
         $this->emit('resetListRooms');
         $this->room=new Room;
         
     }
     public function edit(Room $room){
 
-        $room->load('images','complements');   
+        $room->load('images','complements','experiencies');   
         foreach ($room->complements as $key => $value) {
             $this->complements[$key]="$value->id";
+        }  
+        foreach ($room->experiencies as $key => $value) {
+            $this->experiencies[$key]="$value->id";
         }     
         
         $this->reset('thumbnail','images');
@@ -125,6 +132,7 @@ class CreateRooms extends Component
         $room->save();
         
         $room->complements()->sync($this->complements); //complementos
+        $room->experiencies()->sync($this->experiencies); //experiencias
 
         $array_images=[]; 
         if ($this->images) {
@@ -147,7 +155,7 @@ class CreateRooms extends Component
             'title' => "Habitacion Editada",
             'subtitle' => "La habitacion  <b>" . $this->room->name . "</b>  a sido  Editada correctamente"
         ]);
-        $this->reset('thumbnail','images');
+        $this->reset('thumbnail','images','complements','experiencies');
         $this->emit('resetListRooms');
         $this->room=new Room;
     }
@@ -169,9 +177,11 @@ class CreateRooms extends Component
 
             $room->images()->delete();
         }
+        $room->complements()->detach();
+        $room->experiencies()->detach();
         $room->delete();
         
-        $this->reset('thumbnail','images');
+        $this->reset('thumbnail','images','complements','experiencies');
         $this->emit('resetListRooms');
         $this->room=new Room;
         $this->open_modal_confirmation=false;
@@ -182,7 +192,7 @@ class CreateRooms extends Component
         ]);       
         
     }
-    function removeImg(Image $image){
+    public function removeImg(Image $image){
         
         Storage::delete('rooms/'.$image->image);
 
@@ -197,7 +207,6 @@ class CreateRooms extends Component
 
     }
 
-
     public function updatedThumbnail()
     {
         $this->validate([
@@ -211,7 +220,6 @@ class CreateRooms extends Component
             'images.*' => 'image|max:2048|mimes:jpeg,jpg,png',
         ]);
     }
-
     protected $listeners = [
         'renderListUsers' => 'render',
         'resetListusers' => 'resetList'

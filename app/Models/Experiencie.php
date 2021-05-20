@@ -5,41 +5,38 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class Experiencie extends Model
 {
     use HasFactory;
-
 
     protected $fillable = [
         'name',
         'slug',
         'description_min',
-        'description_max',        
-        'quantity',
-        'price',
+        'description_max',
+        'price',        
+        'type_price',        
         'active',
-        'beds',
-        'people',
-    ];
-
+        'thumbnail',      
+        
+    ];    
 
     protected $casts = [
         'name' => 'string',
         'slug' => 'string',
         'description_min' => 'string',
-        'description_max' => 'string',        
-        'quantity' => 'integer',
+        'description_max' => 'string',  
         'price' => 'integer',        
+        'type_price' => 'string',        
         'active' => 'boolean',
-        'beds' => 'integer',
-        'people' => 'integer',
+        'thumbnail' => 'string',
+
     ];
     protected $attributes = [
-        'active' => 0,
-        'quantity' => 0,
+        'active' => 0,        
         'price' => 0,
-        'beds' => 0,
-        'people' => 0,
+        'type_price' => 'reservation',
+        
     ];
 
 
@@ -55,17 +52,11 @@ class Room extends Model
     // Accessors & Mutators
     public function getThumbnailPathAttribute($value='')
     {
-        return '/storage/rooms/thumbnail/'.$this->thumbnail;
+        return '/storage/experiencie/thumbnail/'.$this->thumbnail;
     }
 
-    public function complements()
+    public function rooms()
     {
-        return $this->belongsToMany(Complement::class);
+        return $this->belongsToMany(Room::class);
     }
-
-    public function experiencies()
-    {
-        return $this->belongsToMany(Experiencie::class);
-    }
-
 }
