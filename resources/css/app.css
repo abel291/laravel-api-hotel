@@ -1,7 +1,6 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import 'flatpickr/dist/themes/material_blue.css';  /*flatpickr fechas*/
 
 
 @font-face {
@@ -22,7 +21,7 @@
 @font-face {
 	font-family: Inter;
 	font-weight: 300;
-	src: url(../fonts/Inter-Light.ttf);
+	src: url(../fonts/Inter-Lightr.ttf);
 }
 
 /*dashboard*/
@@ -35,10 +34,4 @@
 .blur{
 	backdrop-filter: blur(12px);
 	background: #7575759c;
-}
-.form-input:focus {
-	outline: none;
-	box-shadow: 0 0 0 2px #cbd5e085;
-	border-color:  #e2e8f0;
-
 }

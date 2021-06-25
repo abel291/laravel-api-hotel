@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ExperienceRoom extends Migration
+class ExperiencieRoom extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class ExperienceRoom extends Migration
      */
     public function up()
     {
-        Schema::create('experience_room', function (Blueprint $table) {
+        Schema::create('experiencie_room', function (Blueprint $table) {
             $table->id();
-            $table->integer('experience_id');
+            $table->integer('experiencie_id');
             $table->integer('room_id');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class ExperienceRoom extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('experience_room');
+        Schema::dropIfExists('experiencie_room');
     }
 }

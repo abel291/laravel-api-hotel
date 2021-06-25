@@ -6,7 +6,7 @@
 
     <x-list-data :data="$data">
         <x-slot name="component_create">
-            @livewire('experiences.create-experiences')
+            @livewire('experiencies.create-experiencies')
         </x-slot>
         <x-slot name="table_th">
             <th scope="col" wire:click="sortBy('id')"

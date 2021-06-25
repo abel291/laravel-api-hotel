@@ -25,7 +25,7 @@ class CreateRooms extends Component
     public $images = [];
     public $thumbnail;
     public $complements = [];
-    public $experiences = [];
+    public $experiencies = [];
     public Room $room;
 
      
@@ -39,13 +39,11 @@ class CreateRooms extends Component
         'room.quantity' => 'required|numeric|max:255',
         'room.active' => 'required|boolean',        
         'room.beds' => 'required|numeric',   
-        'room.adults' => 'required|numeric|max:255',
-        'room.breakfast' => 'boolean',
-        'room.breakfast_price' => 'numeric',
+        'room.people' => 'required|numeric|max:255',
         'thumbnail' => 'image|max:2048|mimes:jpeg,jpg,png',
         'images.*' => 'image|max:2048|mimes:jpeg,jpg,png',
         'complements.*' => 'numeric',
-        'experiences.*' => 'numeric',
+        'experiencies.*' => 'numeric',
     ];//no sincronisa people
 
     public function mount(){
@@ -58,7 +56,7 @@ class CreateRooms extends Component
         $this->open=true;
         $this->edit_var=false;
         $this->room = new Room;        
-        $this->reset('images','thumbnail','complements','experiences');
+        $this->reset('images','thumbnail','complements','experiencies');
         $this->resetErrorBag();
     }
     public function save()
@@ -68,11 +66,11 @@ class CreateRooms extends Component
         
         $room=$this->room;
         $room->slug = Str::of($room->slug)->slug('-');
-        $room->thumbnail=$room->slug.'.'.$this->thumbnail->extension();         
+        $room->thumbnail=$room->slug.'.'.$this->thumbnail->extension();        
         $room->save();
 
         $room->complements()->sync($this->complements); //complementos  
-        $room->experiences()->sync($this->experiences); //experiencias  
+        $room->experiencies()->sync($this->experiencies); //experiencias  
 
         $this->thumbnail->storeAs('rooms/thumbnail', $room->thumbnail);
 
@@ -97,19 +95,19 @@ class CreateRooms extends Component
             'title' => "Habitacion Agregada",
             'subtitle' => "La habitacion  <b>" . $this->room->name . "</b>  a sido  Agregado correctamente"
         ]);
-        $this->reset('images','thumbnail','complements','experiences');
+        $this->reset('images','thumbnail','complements','experiencies');
         $this->emit('resetListRooms');
         $this->room=new Room;
         
     }
     public function edit(Room $room){
 
-        $room->load('images','complements','experiences');   
+        $room->load('images','complements','experiencies');   
         foreach ($room->complements as $key => $value) {
             $this->complements[$key]="$value->id";
         }  
-        foreach ($room->experiences as $key => $value) {
-            $this->experiences[$key]="$value->id";
+        foreach ($room->experiencies as $key => $value) {
+            $this->experiencies[$key]="$value->id";
         }     
         
         $this->reset('thumbnail','images');
@@ -134,7 +132,7 @@ class CreateRooms extends Component
         $room->save();
         
         $room->complements()->sync($this->complements); //complementos
-        $room->experiences()->sync($this->experiences); //experiencias
+        $room->experiencies()->sync($this->experiencies); //experiencias
 
         $array_images=[]; 
         if ($this->images) {
@@ -157,7 +155,7 @@ class CreateRooms extends Component
             'title' => "Habitacion Editada",
             'subtitle' => "La habitacion  <b>" . $this->room->name . "</b>  a sido  Editada correctamente"
         ]);
-        $this->reset('thumbnail','images','complements','experiences');
+        $this->reset('thumbnail','images','complements','experiencies');
         $this->emit('resetListRooms');
         $this->room=new Room;
     }
@@ -179,19 +177,11 @@ class CreateRooms extends Component
 
             $room->images()->delete();
         }
-
-        if ($room->reservations->isNotEmpty()) {   //isNotEmpty  -> no esta vacio 
-            
-            $room->delete();
-            
-        }else{
-            $room->complements()->detach();
-            $room->experiences()->detach();
-            $room->forceDelete();
+        $room->complements()->detach();
+        $room->experiencies()->detach();
+        $room->delete();
         
-        }
-        
-        $this->reset('thumbnail','images','complements','experiences');
+        $this->reset('thumbnail','images','complements','experiencies');
         $this->emit('resetListRooms');
         $this->room=new Room;
         $this->open_modal_confirmation=false;

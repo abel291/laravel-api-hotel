@@ -17,57 +17,57 @@
                 <div>
                     <x-jet-label>
                         Nombre de la Experiencia
-                        @error('experience.name')
+                        @error('experiencie.name')
                             <span class="error text-sm text-red-600 block">{{ $message }}</span>
                         @enderror
                     </x-jet-label>
-                    <x-jet-input class="mb-3 w-full " type="text" wire:model.defer="experience.name">
+                    <x-jet-input class="mb-3 w-full " type="text" wire:model.defer="experiencie.name">
                     </x-jet-input>
 
                     <x-jet-label>
                         Url de la habitacion
-                        @error('experience.slug')
+                        @error('experiencie.slug')
                             <span class="error text-sm text-red-600 block">{{ $message }}</span>
                         @enderror
                     </x-jet-label>
-                    <x-jet-input class="mb-3 w-full sm:w-3/4" type="text" wire:model.defer="experience.slug">
+                    <x-jet-input class="mb-3 w-full sm:w-3/4" type="text" wire:model.defer="experiencie.slug">
                     </x-jet-input>
 
                     <x-jet-label>
                         Descripcion corta
-                        @error('experience.description_min')
+                        @error('experiencie.description_min')
                             <span class="error text-sm text-red-600 block">{{ $message }}</span>
                         @enderror
                     </x-jet-label>
 
                     <textarea rows="8" class="mb-3 w-full form-input rounded-md shadow-sm"
-                        wire:model.defer="experience.description_min"></textarea>
+                        wire:model.defer="experiencie.description_min"></textarea>
 
                     <x-jet-label>
                         Descripcion Larga
-                        @error('experience.description_max')
+                        @error('experiencie.description_max')
                             <span class="error text-sm text-red-600 block">{{ $message }}</span>
                         @enderror
                     </x-jet-label>
 
                     <textarea rows="8" class="mb-3 w-full form-input rounded-md shadow-sm"
-                        wire:model.defer="experience.description_max"></textarea>
+                        wire:model.defer="experiencie.description_max"></textarea>
 
 
                     <div class="flex">
                         <div class="mr-4">
                             <x-jet-label>
                                 Precio
-                                @error('experience.price')
+                                @error('experiencie.price')
                                     <span class="error text-sm text-red-600 block">{{ $message }}</span>
                                 @enderror
                             </x-jet-label>
-                            <x-jet-input class="mb-3" type="number" wire:model.defer="experience.price"></x-jet-input>
+                            <x-jet-input class="mb-3" type="number" wire:model.defer="experiencie.price"></x-jet-input>
                         </div>
                         <div>
                             <x-jet-label>
                                 Tipo de precio
-                                @error('experience.type_price')
+                                @error('experiencie.type_price')
                                     <span class="error text-sm text-red-600 block">{{ $message }}</span>
                                 @enderror
                             </x-jet-label>
@@ -75,7 +75,7 @@
                             <div class="">
                                 <div class="flex items-center mr-4">
                                     <input id="reservation_price" name="type_price"
-                                        wire:model.defer="experience.type_price" value="reservation" type="radio"
+                                        wire:model.defer="experiencie.type_price" value="reservation" type="radio"
                                         class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                       checked>
                                     <label for="reservation_price" class="ml-3 block text-sm font-medium text-gray-700">
@@ -83,7 +83,7 @@
                                     </label>
                                 </div>
                                 <div class="flex items-center">
-                                    <input id="nigth_price" name="type_price" wire:model.defer="experience.type_price"
+                                    <input id="nigth_price" name="type_price" wire:model.defer="experiencie.type_price"
                                         value="nigth" type="radio"
                                         class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                         >
@@ -96,24 +96,24 @@
                     </div>
                     <x-jet-label>
                         Activo
-                        @error('experience.type_price')
+                        @error('experiencie.type_price')
                             <span class="error text-sm text-red-600 block">{{ $message }}</span>
                         @enderror
                     </x-jet-label>
 
                     <div class="flex">
                         <div class="flex items-center mr-4">
-                            <input id="active_yes" name="active" wire:model.defer="experience.active" value="1"
+                            <input id="active_yes" name="active" wire:model.defer="experiencie.active" value="1"
                                 type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                {{ $this->experience->active ? '' : 'checked' }}>
+                                {{ $this->experiencie->active ? '' : 'checked' }}>
                             <label for="active_yes" class="ml-3 block text-sm font-medium text-gray-700">
                                 Si
                             </label>
                         </div>
                         <div class="flex items-center">
-                            <input id="active_no" name="active" wire:model.defer="experience.active" value="0"
+                            <input id="active_no" name="active" wire:model.defer="experiencie.active" value="0"
                                 type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                {{ $this->experience->active ? '' : 'checked' }}>
+                                {{ $this->experiencie->active ? '' : 'checked' }}>
                             <label for="active_no" class="ml-3 block text-sm font-medium text-gray-700">
                                 No
                             </label>
@@ -136,10 +136,10 @@
                         @include('piece.input-images',[
                         'name' => "thumbnail",
                         'images_temp'=>$this->thumbnail,
-                        'images_saved'=>$this->experience->thumbnail,
+                        'images_saved'=>$this->experiencie->thumbnail,
                         'title'=>"Subir imagen",
                         'multiple'=>false,
-                        'path'=>'/storage/experiences/thumbnail/'
+                        'path'=>'/storage/experiencies/thumbnail/'
                         ])
 
                     </div>
@@ -159,10 +159,10 @@
                         @include('piece.input-images',[
                         'name' => "images",
                         'images_temp'=>$this->images,
-                        'images_saved'=>$this->experience->images,
+                        'images_saved'=>$this->experiencie->images,
                         'title'=>"Subir imagen",
                         'multiple'=>true,
-                        'path'=>'/storage/experiences/'
+                        'path'=>'/storage/experiencies/'
                         ])
 
                     </div>

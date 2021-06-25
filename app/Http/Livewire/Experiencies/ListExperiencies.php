@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Livewire\Reservations;
+namespace App\Http\Livewire\Experiencies;
 
-use App\Models\Experience;
-use App\Models\Reservation;
-use App\Models\Room;
+use App\Models\Experiencie;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Carbon\Carbon;
-class ListReservations extends Component
+class ListExperiencies extends Component
 {
     use WithPagination;
     
@@ -44,20 +41,15 @@ class ListReservations extends Component
     }
 
     protected $listeners = [
-        'renderListReservations' => 'render',
-        'resetListReservations' => 'resetList'
+        'renderListExperiencies' => 'render',
+        'resetListExperiencies' => 'resetList'
     ];
     
     public function render()
     {
-       
-        $data = Reservation::where('start_date','like','%'.$this->search.'%')
+        $data = Experiencie::where('name','like','%'.$this->search.'%')
             ->orderBy($this->sortBy,$this->sortDirection)
-            ->with('client','experience','room')
-            ->paginate(20);
-
-            //dd($data->getCollection());
-
-        return view('livewire.reservations.list-reservations',compact('data'));
+            ->paginate(10);
+        return view('livewire.experiencies.list-experiencies',compact('data'));
     }
 }

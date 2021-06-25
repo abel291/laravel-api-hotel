@@ -128,10 +128,11 @@ class CreateGalleries extends Component
         if ($gallery->images->isNotEmpty() ) {  //isNotEmpty  -> no esta vacio             
             
             $array_images_delete=[];
-            foreach ($gallery->images as $key => $value) {                
+            foreach ($gallery->images as $key => $value) {
+                
                 array_push($array_images_delete,'galleries/'.$value->image);
                 array_push($array_images_delete,'galleries/thumbnail/'.$value->image);
-                                                          
+                           
             }           
 
             Storage::delete($array_images_delete);
@@ -155,7 +156,7 @@ class CreateGalleries extends Component
     public function removeImg(Image $image)
     {
 
-        Storage::delete('experiences/' . $image->image);
+        Storage::delete('experiencies/' . $image->image);
 
         $image->delete();
 
