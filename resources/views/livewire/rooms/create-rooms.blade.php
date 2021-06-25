@@ -14,7 +14,7 @@
 
             <x-slot name="content">
 
-                <div x-data="{tab:'tab_data'}" @open-modal-edit.window="tab='tab_data'">
+                <div x-data="{tab:'tab_data'}" @open-modal-edit.window="tab='tab_experiencies'">
                     <nav class="flex mb-4">
                         <a @click.prevent="tab = 'tab_data'"
                             :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_data' }"
@@ -31,8 +31,8 @@
                             class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Complementos</b></a>
 
-                        <a @click.prevent="tab = 'tab_experiences'"
-                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_experiences' }"
+                        <a @click.prevent="tab = 'tab_experiencies'"
+                            :class="{'border-b-2 border-gray-700 text-gray-700 ': tab==='tab_experiencies' }"
                             class="p-3 flex justify-center flex-grow border-gray-500 text-gray-500 "
                             href="#"><b>Experiencias</b></a>
 
@@ -89,20 +89,16 @@
                             wire:model.defer="room.description_max"></textarea>
 
 
-                        <div class="grid grid-cols-3 gap-4" x-data="{
-                            breakfast : @entangle('room.breakfast').defer ,   
-                        }">
-                            
-                            <div >
+                        <div class="flex">
+                            <div class="mr-4">
                                 <x-jet-label>
                                     Precio por noche
                                     @error('room.price')
                                         <span class="error text-sm text-red-600 block">{{ $message }}</span>
                                     @enderror
                                 </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.price"></x-jet-input>
+                                <x-jet-input class="mb-3" type="number" wire:model.defer="room.price"></x-jet-input>
                             </div>
-                            
                             <div>
                                 <x-jet-label>
                                     Cantidad de Habitaciones
@@ -110,50 +106,28 @@
                                         <span class="error text-sm text-red-600  block">{{ $message }}</span>
                                     @enderror
                                 </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.quantity"></x-jet-input>
+                                <x-jet-input class="mb-3" type="number" wire:model.defer="room.quantity"></x-jet-input>
                             </div>
-                            
-                            <div >
+                        </div>
+                        <div class="flex">
+                            <div class="mr-4">
                                 <x-jet-label>
                                     Camas
                                     @error('room.beds')
                                         <span class="error text-sm text-red-600 block">{{ $message }}</span>
                                     @enderror
                                 </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.beds"></x-jet-input>
-                            </div>                   
-                            
+                                <x-jet-input class="mb-3" type="number" wire:model.defer="room.beds"></x-jet-input>
+                            </div>
                             <div>
                                 <x-jet-label>
                                     Cantidad de Perosnas
-                                    @error('room.adults')
+                                    @error('room.people')
                                         <span class="error text-sm text-red-600  block">{{ $message }}</span>
                                     @enderror
                                 </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.adults"></x-jet-input>
-                            </div>               
-                            
-                            <div>
-                                <x-jet-label id="id_breakfast">
-                                    Ofrecer desayuno
-                                    @error('room.breakfast')
-                                        <span class="error text-sm text-red-600  block">{{ $message }}</span>
-                                    @enderror
-                                </x-jet-label>
-                                <input for="id_breakfast" @click="breakfast = !breakfast" x-model="breakfast" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-gray-600 border-gray-300 rounded">
-                               
+                                <x-jet-input class="mb-3" type="number" wire:model.defer="room.people"></x-jet-input>
                             </div>
-
-                            <div x-show="breakfast">
-                                <x-jet-label>
-                                    Precio por noche
-                                    @error('room.breakfast_price')
-                                        <span class="error text-sm text-red-600  block">{{ $message }}</span>
-                                    @enderror
-                                </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.breakfast_price"></x-jet-input>
-                            </div>
-
                         </div>
                         <div class="mb-5">
 
@@ -185,7 +159,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div x-show="tab === 'tab_image'">
@@ -241,11 +214,11 @@
                     </div>
 
                     <div x-show="tab === 'tab_complements'">
-                        <h1 class=" font-bold mt-8">COMPLEMETOS</h2>
-                        <div class="grid grid-cols-2 gap-3 mt-5">
+                        <h1 class=" font-bold">COMPLEMETOS</h2>
+                        <div class="flex flex-wrap">
                             @foreach (App\Models\Complement::get() as $item)
 
-                                <label >
+                                <label class="inline-flex items-center mt-3 w-3/6"  >
                                     <input wire:model.defer="complements" value="{{$item->id}}" 
                                     type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"  >
                                     <span class="ml-2 text-gray-700 text-sm">{{$item->name}}</span>
@@ -255,14 +228,14 @@
                         </div>
                     </div>
 
-                    <div x-show="tab === 'tab_experiences'">
+                    <div x-show="tab === 'tab_experiencies'">
 
-                            <h1 class=" font-bold mt-8">EXPERIENCIAS</h1>
-                            <div class="grid grid-cols-2 gap-3 mt-5">
-                                @foreach (App\Models\Experience::get() as $item)
+                            <h1 class=" font-bold">EXPERIENCIAS</h1>
+                            <div class="flex flex-wrap">
+                                @foreach (App\Models\Experiencie::get() as $item)
     
-                                    <label>
-                                        <input wire:model.defer="experiences" value="{{$item->id}}" 
+                                    <label class="inline-flex items-center mt-3 w-full"  >
+                                        <input wire:model.defer="experiencies" value="{{$item->id}}" 
                                         type="checkbox" class="form-checkbox h-5 w-5 text-gray-600"  >
                                         <span class="ml-2 text-gray-700">{{$item->name}}</span>
                                     </label>

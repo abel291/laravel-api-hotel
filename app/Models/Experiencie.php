@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-class Experience extends Model
+
+class Experiencie extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -39,8 +39,6 @@ class Experience extends Model
         
     ];
 
-    
-
 
     /**
      * Get the post's image.
@@ -54,18 +52,11 @@ class Experience extends Model
     // Accessors & Mutators
     public function getThumbnailPathAttribute($value='')
     {
-        return '/storage/experience/thumbnail/'.$this->thumbnail;
+        return '/storage/experiencie/thumbnail/'.$this->thumbnail;
     }
 
     public function rooms()
     {
         return $this->belongsToMany(Room::class);
     }
-    
-    public function getPriceCurrAttribute($value='')
-    {
-        return '$'.number_format($this->price);
-    }
-    
-    
 }

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Room extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
 
     protected $fillable = [
@@ -19,9 +19,7 @@ class Room extends Model
         'price',
         'active',
         'beds',
-        'adults',        
-        'breakfast',
-        'breakfast_price'
+        'people',
     ];
 
 
@@ -34,17 +32,14 @@ class Room extends Model
         'price' => 'integer',        
         'active' => 'boolean',
         'beds' => 'integer',
-        'adults' => 'integer',        
+        'people' => 'integer',
     ];
     protected $attributes = [
         'active' => 0,
         'quantity' => 0,
         'price' => 0,
         'beds' => 0,
-        'adults' => 0,
-        'breakfast' => false,
-        'breakfast_price' => 0,
-        
+        'people' => 0,
     ];
 
 
@@ -57,26 +52,20 @@ class Room extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    
+    // Accessors & Mutators
+    public function getThumbnailPathAttribute($value='')
+    {
+        return '/storage/rooms/thumbnail/'.$this->thumbnail;
+    }
 
     public function complements()
     {
         return $this->belongsToMany(Complement::class);
     }
 
-    public function experiences()
+    public function experiencies()
     {
-        return $this->belongsToMany(Experience::class);
+        return $this->belongsToMany(Experiencie::class);
     }
 
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
-    }
-
-    // Accessors & Mutators
-    public function getThumbnailPathAttribute($value='')
-    {
-        return '/storage/rooms/thumbnail/'.$this->thumbnail;
-    }
 }
