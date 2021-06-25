@@ -22,12 +22,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet">
     <!-- https://material.io/resources/icons/?style=twotone -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone" rel="stylesheet">
-
-    @livewireStyles
-    @stack('scripts')
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}" defer></script>    
-      
+    
+    @livewireStyles   
+    
+    
     
 </head>
 
@@ -35,7 +33,7 @@
     <div class="md:flex flex-col md:flex-row md:min-h-screen w-full">
 
         <div x-data="{ open: false }"
-            class="sidebar-nabvar md:w-64 bg-gray-800 flex-shrink-0 flex-col space-y-1 text-white text-sm text-gray-300  ">
+            class="sidebar-nabvar md:w-64 bg-gray-800 flex-shrink-0 flex-col space-y-1  text-sm text-gray-300  ">
 
             <div class="max-w-7xl mx-auto px-4 bg-gray-900 h-16">
 
@@ -64,7 +62,7 @@
                 </div>
 
             </div>
-            <div :class="{'block': open, 'hidden': ! open}" class="px-2 py-3 hidden hidden md:block">                
+            <div :class="{'block': open, 'hidden': ! open}" class="px-2 py-3 hidden md:block">                
                 <x-navbar-item></x-navbar-item>                
             </div>
 
@@ -97,8 +95,12 @@
 
     @stack('modals')
 
-    @livewireScripts
-
+    @livewireScripts  
+    
+    
+    <script src="{{ mix('js/app.js') }}" ></script>
+    <script src="https://js.stripe.com/v3/"></script>  
+    @stack('scripts')
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-<div>  
+<div>
 
     <div class="flex  w-full sm:w-3/4" x-data="{
         calendar_end_date:'',

@@ -6,8 +6,11 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Complement;
-use App\Models\Experiencie;
+use App\Models\Experience;
 use App\Models\Gallery;
+use App\Models\Reservation;
+use App\Models\Client;
+
 use Hash;
 
 class DatabaseSeeder extends Seeder
@@ -25,17 +28,25 @@ class DatabaseSeeder extends Seeder
             'phone'=>'123123123',
             'password'=> Hash::make('123123')            
         ]);
-        User::factory(100)->create();
+       // User::factory(1)->create();
+       
+        $complements = Complement::factory()->count(3);
         
-        Room::factory(10)
-        ->has(Complement::factory()->count(3))
-        ->has(Experiencie::factory()->count(2))
-        ->create();
+        $experiences = Experience::factory()->count(3);
+        
+        Room::factory()->count(10)
+        ->hasAttached($complements)
+        ->hasAttached($experiences)        
+        ->create();      
+        
+        Client::factory()->count(30)         
+        ->has(Reservation::factory()->count(1))        
+        ->create();        
         
         Gallery::factory(5)->hasImages(12)->create();       
 
         
-
+            
 
         
          

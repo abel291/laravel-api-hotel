@@ -7,7 +7,7 @@
         clearTimeout(timeout);         
         timeout = setTimeout(() => {
             show = false 
-        }, 1000);
+        }, 4000);
         title=$event.detail.title
         subtitle=$event.detail.subtitle"
         style="display: none" 
