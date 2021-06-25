@@ -17,6 +17,7 @@ mix
     require('postcss-import'),
     require('tailwindcss'),
   ])
+  
   .js('resources/js/sortable.js', 'js')
   .options({
     processCssUrls: false
