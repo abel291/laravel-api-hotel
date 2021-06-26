@@ -63,5 +63,21 @@
         </svg>
         <span>Paginas</span>
     </a>
+    <a href="{{ route('blog') }}"
+        class="flex items-center {{ request()->is('blog*') ? 'bg-gray-900 text-white' : 'hover:bg-gray-900 hover:text-white' }} rounded-md p-2.5 space-x-3">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+          </svg>
+        <span>Blog</span>
+    </a>
+    <a href="{{ route('tags') }}"
+        class="flex items-center {{ request()->is('tags*') ? 'bg-gray-900 text-white' : 'hover:bg-gray-900 hover:text-white' }} rounded-md p-2.5 space-x-3">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
+          </svg>
+        <span>Tags</span>
+    </a>
 
 </div>

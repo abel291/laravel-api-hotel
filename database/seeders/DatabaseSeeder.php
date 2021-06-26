@@ -10,7 +10,8 @@ use App\Models\Experience;
 use App\Models\Gallery;
 use App\Models\Reservation;
 use App\Models\Client;
-
+use App\Models\Blog;
+use App\Models\Tag;
 use Hash;
 
 class DatabaseSeeder extends Seeder
@@ -35,7 +36,7 @@ class DatabaseSeeder extends Seeder
         $experiences = Experience::factory()->count(3);
         
         Room::factory()->count(10)
-        ->hasAttached($complements)
+        
         ->hasAttached($experiences)        
         ->create();      
         
@@ -44,6 +45,12 @@ class DatabaseSeeder extends Seeder
         ->create();        
         
         Gallery::factory(5)->hasImages(12)->create();       
+
+        $tags = Tag::factory()->count(4);
+        
+        Blog::factory(13)
+        ->hasAttached($tags)
+        ->create();       
 
         
             

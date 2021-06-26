@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ExperiencieRoom extends Migration
+class BlogTag extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class ExperiencieRoom extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('experiencie_room', function (Blueprint $table) {
+    {   
+        Schema::create('blog_tag', function (Blueprint $table) {
+            
             $table->id();
-            $table->integer('experiencie_id');
-            $table->integer('room_id');
-            $table->timestamps();
+            $table->integer('tag_id');
+            $table->integer('blog_id');
+        
         });
     }
 
@@ -28,6 +29,6 @@ class ExperiencieRoom extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('experiencie_room');
+        Schema::dropIfExists('blog_tag');
     }
 }

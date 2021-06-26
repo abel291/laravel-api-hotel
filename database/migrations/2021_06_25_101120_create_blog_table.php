@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExperienciesTable extends Migration
+class CreateBlogTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class CreateExperienciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('experiencies', function (Blueprint $table) {
+        Schema::create('blog', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->string('thumbnail');
-            $table->text('description_min');
+            $table->string('title');
+            $table->string('description_min');
             $table->text('description_max');
-            $table->integer('price');
-            $table->string('type_price');
+            $table->string('slug');
+            $table->string('img');
             $table->boolean('active');
+            $table->string('seo_title');
+            $table->string('seo_desc');
+            $table->string('seo_keys');
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ class CreateExperienciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('experiencies');
+        Schema::dropIfExists('blog');
     }
 }

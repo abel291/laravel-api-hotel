@@ -7,6 +7,8 @@ use App\Http\Livewire\Complements\ListComplements;
 use App\Http\Livewire\Experiences\ListExperiences;
 use App\Http\Livewire\Galleries\ListGalleries;
 use App\Http\Livewire\Reservations\ListReservations;
+use App\Http\Livewire\Blog\ListPosts;
+use App\Http\Livewire\Blog\ListTags;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +41,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/experiences', ListExperiences::class)->name('experiences');
     Route::get('/galleries', ListGalleries::class)->name('galleries');
     Route::get('/reservations', ListReservations::class)->name('reservations');
+    Route::get('/blog', ListPosts::class)->name('blog');
+    Route::get('/tags', ListTags::class)->name('tags');
 });
