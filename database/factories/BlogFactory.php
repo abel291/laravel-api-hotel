@@ -24,7 +24,7 @@ class BlogFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'description_min' => $this->faker->text(100),
-            'description_max' => $this->faker->text(300),
+            'description_max' => $this->faker->randomHtml(),
             'slug' => Str::slug($this->faker->sentence()),
             'img' => $this->faker->imageUrl(360, 360, 'animals', true),
             'active' => rand(0,1),

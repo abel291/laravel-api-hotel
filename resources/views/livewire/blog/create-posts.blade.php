@@ -88,13 +88,40 @@
                             @error('post.description_max')
                                 <span class="error text-sm text-red-600 block">{{ $message }}</span>
                             @enderror
-                        </x-jet-label>
+                        </x-jet-label>                   
+                        
+                        <textarea 
+                        wire:ignore
+                        wire:model.defer="post.description_max"
+                        id="description_ckeditor"                        
+                        wire:key="ckeditor-1"                        
+                        x-data="{
+                            description_ckeditor:document.querySelector('#description_ckeditor')
+                        }"
+                        x-init="
+                            $nextTick(() => { 
+                                ClassicEditor
+                                .create(description_ckeditor)
+                                .then(function(editor) {
+                                    editor.model.document.on('change:data', () => {
+                                        description_ckeditor.value =editor.getData();
+                                        description_ckeditor.dispatchEvent(new Event('input'));
+                                    })
+                                })
+                                .catch(error => {
+                                    console.error(error);
+                                });       
+                            })"  
+                        > 
+                        {!! $this->post->description_max !!}                
+                        </textarea>
+                        
+                        
+                
+                    
 
-                        <textarea rows="8" class="mb-4 w-full form-input rounded-md shadow-sm text-sm"
-                            wire:model.defer="post.description_max"></textarea>
 
-
-                        <div class="mb-5">
+                        <div class="mt-5">
 
                             <x-jet-label>
                                 Activo

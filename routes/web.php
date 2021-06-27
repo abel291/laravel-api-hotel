@@ -9,6 +9,7 @@ use App\Http\Livewire\Galleries\ListGalleries;
 use App\Http\Livewire\Reservations\ListReservations;
 use App\Http\Livewire\Blog\ListPosts;
 use App\Http\Livewire\Blog\ListTags;
+use App\Http\Livewire\Pages\ListPages;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +30,9 @@ Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');*/
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->prefix('dashboard')->group(function () {
 
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
 
@@ -43,4 +44,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reservations', ListReservations::class)->name('reservations');
     Route::get('/blog', ListPosts::class)->name('blog');
     Route::get('/tags', ListTags::class)->name('tags');
+    Route::get('/pages', ListPages::class)->name('pages');
 });

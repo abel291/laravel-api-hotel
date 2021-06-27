@@ -18,6 +18,7 @@ mix
     require('tailwindcss'),
   ])
   .js('resources/js/sortable.js', 'js')
+  .js('resources/js/ckeditor.js', 'js')
   .options({
     processCssUrls: false
   })

@@ -57,7 +57,7 @@ class CreatePosts extends Component
         $faker = Faker\Factory::create();        
         $this->post->title = $faker->sentence();
         $this->post->description_min = $faker->text(100);
-        $this->post->description_max = $faker->text(300);
+        $this->post->description_max = $faker->randomHtml(2);
         $this->post->slug = Str::slug($faker->sentence());       
         $this->post->active = rand(0,1);
         $this->post->seo_title = $faker->sentence();

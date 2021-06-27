@@ -70,6 +70,6 @@
                 </tr>
             @endforeach
         </x-slot>
-        </x-list-table>
+        </x-list-data>
         
 </div>

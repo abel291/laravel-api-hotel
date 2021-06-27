@@ -20,12 +20,12 @@
                     <span class=" material-icons-outlined">arrow_drop_up</span>
                 @endif
             </th>
-            
+
             <th scope="col" wire:click="sortBy('title')"
                 class=" cursor-pointer pr-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Titulo
-            </th>            
-            
+            </th>
+
             <th scope="col" wire:click="sortBy('active')"
                 class=" cursor-pointer pr-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Activo
@@ -51,15 +51,15 @@
                             </div>
                         </div>
                     </td>
-                    
+
                     <td>
                         <div class=" text-sm text-gray-500">
                             {{ $item->title }}
 
                         </div>
                     </td>
-                    
-                    
+
+
                     <td>
                         <div class=" text-sm text-gray-500 text-center">
                             <div class="px-2 py-1 inline-block text-sm font-semibold rounded-full
@@ -92,7 +92,10 @@
                 </tr>
             @endforeach
         </x-slot>
-        </x-list-table>
-
+    </x-list-data>
+    @push('scripts')
+        <script src="{{ mix('js/ckeditor.js') }}"></script>
+        
+    @endpush
 
 </div>
