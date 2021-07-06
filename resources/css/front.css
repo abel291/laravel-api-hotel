@@ -1,0 +1,15 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import 'flatpickr/dist/themes/material_blue.css';  /*flatpickr fechas*/
+
+.section-p-y {
+    @apply py-12 ;    
+}
+@media (min-width: 768px){
+    .section-p-y {
+        @apply py-16 ;
+    
+        
+    }
+}

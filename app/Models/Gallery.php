@@ -21,7 +21,7 @@ class Gallery extends Model
 
     ];
     protected $attributes = [
-        'active' => 0,       
+        'active' => 1,       
        
         
     ];

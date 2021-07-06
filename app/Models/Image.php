@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
-    protected $fillable = ['image','order'];
+    protected $fillable = ['image','thumbnail','order'];
     /**
      * Get the parent imageable model (user or post).
      */

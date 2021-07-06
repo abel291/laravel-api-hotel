@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Users\ListUsers;
-use App\Http\Livewire\Rooms\ListRooms;
-use App\Http\Livewire\Complements\ListComplements;
-use App\Http\Livewire\Experiences\ListExperiences;
-use App\Http\Livewire\Galleries\ListGalleries;
-use App\Http\Livewire\Reservations\ListReservations;
-use App\Http\Livewire\Blog\ListPosts;
-use App\Http\Livewire\Blog\ListTags;
-use App\Http\Livewire\Pages\ListPages;
+use App\Http\Livewire\Admin\Users\ListUsers;
+use App\Http\Livewire\Admin\Rooms\ListRooms;
+use App\Http\Livewire\Admin\Complements\ListComplements;
+use App\Http\Livewire\Admin\Experiences\ListExperiences;
+use App\Http\Livewire\Admin\Galleries\ListGalleries;
+use App\Http\Livewire\Admin\Reservations\ListReservations;
+use App\Http\Livewire\Admin\Blog\ListPosts;
+use App\Http\Livewire\Admin\Blog\ListTags;
+use App\Http\Livewire\Admin\Pages\ListPages;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,8 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('dashboard')->group(func
     Route::get('/tags', ListTags::class)->name('tags');
     Route::get('/pages', ListPages::class)->name('pages');
 });
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');

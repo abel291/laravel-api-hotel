@@ -13,6 +13,14 @@ module.exports = {
                 sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
         },
+        container: {
+            padding: {
+                default: '1rem',
+                               
+                
+            },
+        },
+
     },
 
     variants: {
@@ -20,4 +28,5 @@ module.exports = {
     },
 
     plugins: [require('@tailwindcss/ui')],
+
 };

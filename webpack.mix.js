@@ -17,8 +17,19 @@ mix
     require('postcss-import'),
     require('tailwindcss'),
   ])
+  .postCss('resources/css/front.css', 'public/css', [
+    require('postcss-import'),
+    require('tailwindcss'),
+  ])
   .js('resources/js/sortable.js', 'js')
   .js('resources/js/ckeditor.js', 'js')
+  .js('resources/js/flatpickr.js', 'js') 
+  .js('resources/js/swiper.js', 'js') 
+   
+  .js('resources/js/home.js', 'js')
+  .js('resources/js/about-us.js', 'js')
+  .js('resources/js/gallery.js', 'js')
+
   .options({
     processCssUrls: false
   })

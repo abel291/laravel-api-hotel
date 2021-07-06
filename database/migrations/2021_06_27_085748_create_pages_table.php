@@ -16,13 +16,14 @@ class CreatePagesTable extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('title');                    
-            $table->string('sub-title');                    
-            $table->text('content');
+            $table->string('sub_title');                    
+            $table->text('description');
             $table->string('slug')->index();
             $table->string('img');           
             $table->string('seo_title');
             $table->string('seo_desc');
             $table->string('seo_keys');
+            $table->string('type')->index();
             $table->enum('lang', ['es','en','bp'])->default('es');//bp -> Portuguese   
             $table->timestamps();
         });

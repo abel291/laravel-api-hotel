@@ -1,6 +1,12 @@
 {
+    "/js/about-us.js": "/js/about-us.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/css/front.css": "/css/front.css",
     "/js/ckeditor.js": "/js/ckeditor.js",
-    "/js/sortable.js": "/js/sortable.js"
+    "/js/flatpickr.js": "/js/flatpickr.js",
+    "/js/gallery.js": "/js/gallery.js",
+    "/js/home.js": "/js/home.js",
+    "/js/sortable.js": "/js/sortable.js",
+    "/js/swiper.js": "/js/swiper.js"
 }

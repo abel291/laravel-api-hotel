@@ -24,7 +24,7 @@ class PageFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'sub_title' => $this->faker->sentence(),
-            'content' => $this->faker->randomHtml(4),            
+            'description' => $this->faker->randomHtml(4),            
             'slug' => Str::slug($this->faker->sentence()),
             'img' => $this->faker->imageUrl(360, 360, 'animals', true),            
             'seo_title' => $this->faker->sentence(),

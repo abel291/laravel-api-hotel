@@ -14,6 +14,8 @@ use App\Models\Blog;
 use App\Models\Page;
 use App\Models\Tag;
 use Hash;
+use Faker as Faker;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -53,12 +55,34 @@ class DatabaseSeeder extends Seeder
         ->hasAttached($tags)
         ->create();  
         
-        Page::factory()->count(4);
+        //Page::factory()->count(4)->create();
 
-        
+        $pages=[
+            'home',
+            'about-us',
+            'gallery',
+            'contact',
+            'privacy-policy',
+            'cancellation-policies',
+            'terms-conditions',
             
+        ];
+        $faker = Faker\Factory::create();
+        foreach ($pages as $key => $value) {
+           Page::create([
+            'title' => $faker->sentence(3),
+            'sub_title' => $faker->sentence(3),
+            'description' => $faker->text(400),            
+            'slug' => Str::slug($faker->sentence()),
+            'img' => $faker->imageUrl(360, 360, 'animals', true),            
+            'seo_title' => $faker->sentence(),
+            'seo_desc' => $faker->sentence(),
+            'seo_keys' => $faker->sentence(),
+            'type' => $value,
+            'lang' => 'es',
+           ]);
+            
+        } 
+    } 
+} 
 
-        
-         
-    }
-}

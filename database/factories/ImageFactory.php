@@ -22,8 +22,7 @@ class ImageFactory extends Factory
     public function definition()
     {
         return [
-            "image" => $this->faker->words(3, true),
-            "thumbnail" => Str::slug($this->faker->words(3, true)) ,      
+            "image" => Str::slug($this->faker->words(3, true)),                
         ];
     }
 }
