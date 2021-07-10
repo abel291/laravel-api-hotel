@@ -6,12 +6,11 @@
 
 @section('seo_keys', $page->seo_keys)
 
-@section('text_color', 'text-gray-800')
 
 
 @section('content')
 
-    <div class="md:text-gray-800 border-b border-gray-200">    
+    <div class="md:text-gray-700 border-b border-gray-200">    
         @include('front.navbar')
     </div>
 
@@ -19,21 +18,21 @@
     'title' => $page->title,
     'sub_title' => '',
     ])
-
-    <div class="container mx-auto max-w-screen-lg section-p-y">
-        <div class="flex flex-col md:flex-row justify-between">
+<div>
+    <div class="container mx-auto max-w-screen-xl section-p-y ">
+        <div class="flex flex-col md:flex-row md:space-x-24">
             <div>
-                <h4 class="font-bold text-xl text-gray-800 pb-1">Direccion</h4>
+                <h4 class="font-bold text-xl text-gray-700 pb-1">Direccion</h4>
                 <p class="text-gray-600 text-sm">23400 S Western Ave, <br> Harbor City, CA 90710</p>
             </div>
 
             <div>
-                <h4 class="font-bold text-xl text-gray-800 pb-1 pt-2 md:pt-0">Contacto</h4>
+                <h4 class="font-bold text-xl text-gray-700 pb-1 pt-2 md:pt-0">Contacto</h4>
                 <p class="text-gray-600 text-sm">hello@example.com <br> +1 514.123.4567</p>
             </div>
 
             <div>
-                <h4 class="font-bold text-xl text-gray-800 pb-1 pt-2 md:pt-0">Síganos</h4>
+                <h4 class="font-bold text-xl text-gray-700 pb-1 pt-2 md:pt-0">Síganos</h4>
                 <p class="text-gray-600 text-sm">
                     Connect with me on <a href="">facebook</a>,<br>
                     <a href="">twitter</a> or <a href="">instagram</a>
@@ -50,7 +49,7 @@
 
     <div class="container mx-auto max-w-screen-md section-p-y  text-center">
 
-        <h4 class="text-2xl md:text-4xl pb-5 font-bold text-gray-800">Solo una forma. Es fácil.</h4>
+        <h4 class="text-2xl md:text-4xl pb-5 font-bold text-gray-700">Solo una forma. Es fácil.</h4>
         <input class="border border-gray-300 p-3 w-full rounded-md mb-3" type="" name="" placeholder="Nombre completo">
 
         <input class="border border-gray-300 p-3 w-full rounded-md mb-3" type="" name="" placeholder="Email">
@@ -68,6 +67,7 @@
 
 
     </div>
+</div>
     @push('scripts')
 
 

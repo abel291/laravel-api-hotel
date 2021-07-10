@@ -11,21 +11,21 @@ import 'swiper/swiper-bundle.css';
 const swiper = new SwiperCore("#carousel-list", {        
     spaceBetween:20,
     centeredSlides:true,       
-    
+    autoHeight:true,
     navigation: {
         nextEl: "#btn-back",
         prevEl: "#btn-next",
     },
     autoplay: {
         delay: 2500,
-        disableOnInteraction: false,
+        disableOnInteraction: true,
     },
-    breakpoints: {
-      640: {
-        slidesPerView: 1,           
-      },
-      768: {
-        slidesPerView: 2,          
-      }
-    }
+    // breakpoints: {
+    //   640: {
+    //     slidesPerView: 1,           
+    //   },
+    //   768: {
+    //     slidesPerView: 1,          
+    //   }
+    // }
 });

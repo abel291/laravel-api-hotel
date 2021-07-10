@@ -24,7 +24,7 @@ class ComplementFactory extends Factory
     {
         return [
             "name" => $this->faker->words(3, true),
-            "icon" => $this->faker->words(3, true),
+            "icon" => 'complements-'.rand(0,12).'.png',
             
         ];
     }

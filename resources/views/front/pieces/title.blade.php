@@ -1,7 +1,5 @@
 <div>
-    <span class="tracking-wide md:font-semibold uppercase  text-gray-500 ">{{$title}}</span>
-    <h1 class="text-5xl md:text-6xl font-bold text-gray-800 leading-tight mt-1">
-       {{$sub_title}}
-    </h1>
+    <span class="sub-title-section ">{{$title}}</span>
+    <h2 class="title-section">{{$sub_title}}</h2>
 
 </div>

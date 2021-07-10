@@ -34,13 +34,13 @@ class DatabaseSeeder extends Seeder
         ]);
        // User::factory(1)->create();
        
-        $complements = Complement::factory()->count(3);
-        
+        $complements = Complement::factory()->count(10);        
         $experiences = Experience::factory()->count(3);
         
-        Room::factory()->count(10)
-        
+        Room::factory()->count(10)        
+        ->hasAttached($complements)        
         ->hasAttached($experiences)        
+        ->hasImages(12)
         ->create();      
         
         Client::factory()->count(30)         
@@ -62,6 +62,8 @@ class DatabaseSeeder extends Seeder
             'about-us',
             'gallery',
             'contact',
+            'rooms',
+            'blog',
             'privacy-policy',
             'cancellation-policies',
             'terms-conditions',

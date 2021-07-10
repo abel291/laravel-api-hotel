@@ -9,7 +9,6 @@ class Room extends Model
 {
     use HasFactory, SoftDeletes;
 
-
     protected $fillable = [
         'name',
         'slug',
@@ -24,7 +23,6 @@ class Room extends Model
         'breakfast_price'
     ];
 
-
     protected $casts = [
         'name' => 'string',
         'slug' => 'string',
@@ -36,6 +34,7 @@ class Room extends Model
         'beds' => 'integer',
         'adults' => 'integer',        
     ];
+
     protected $attributes = [
         'active' => 0,
         'quantity' => 0,
@@ -43,8 +42,7 @@ class Room extends Model
         'beds' => 0,
         'adults' => 0,
         'breakfast' => false,
-        'breakfast_price' => 0,
-        
+        'breakfast_price' => 0,        
     ];
 
 
@@ -78,5 +76,9 @@ class Room extends Model
     public function getThumbnailPathAttribute($value='')
     {
         return '/storage/rooms/thumbnail/'.$this->thumbnail;
+    }
+    public function getImagePathAttribute($value='')
+    {
+        return '/storage/rooms/'.$this->thumbnail;
     }
 }

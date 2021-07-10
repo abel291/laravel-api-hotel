@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title> @yield('seo_title','hotel Cartagena') </title>
-    <meta name="description" content=" @yield('seo_desc','hotel Cartagena') ">
-    <meta name="keywords" content=" @yield('seo_keys','hotel Cartagena') " >
+    <title> @yield('seo_title','Hotel Cartagena') </title>
+    <meta name="description" content=" @yield('seo_desc','Hotel Cartagena') ">
+    <meta name="keywords" content=" @yield('seo_keys','Hotel Cartagena') " >
 
     
     <link href="{{ asset('css/front.css') }}" rel="stylesheet">
@@ -18,7 +18,7 @@
 
 <body>    
     
-    @yield('content')
+    @yield('content','ñlkk')
     
     @include('front.footer')
 

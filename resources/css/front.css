@@ -4,12 +4,47 @@
 @import 'flatpickr/dist/themes/material_blue.css';  /*flatpickr fechas*/
 
 .section-p-y {
-    @apply py-12 ;    
+    @apply py-8 ;    
 }
+.title-section {
+    @apply text-4xl font-bold text-gray-700 leading-tight;    
+}
+.sub-title-section {
+    @apply tracking-wide uppercase text-gray-400 ;    
+}
+            
+
+.post-content h1,
+.post-content h2
+{
+
+    @apply text-3xl font-bold mt-4;
+
+}
+.post-content h3,
+.post-content h4,
+.post-content h5{
+
+    @apply text-2xl font-bold mt-4;
+
+}
+
 @media (min-width: 768px){
     .section-p-y {
-        @apply py-16 ;
+        @apply py-12; 
+    }
+    .title-section {
+        @apply text-5xl;    
+    }
     
-        
+}
+@media (min-width: 1024px){
+    .section-p-y {
+        @apply py-16; 
+    }
+}
+@media (min-width: 1280px){
+    .section-p-y {
+        @apply py-16; 
     }
 }

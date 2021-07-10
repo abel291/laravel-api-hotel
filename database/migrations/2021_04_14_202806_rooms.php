@@ -24,6 +24,7 @@ class Rooms extends Migration
             $table->boolean('active')->default(0);
             $table->tinyInteger('beds')->default(0);
             $table->tinyInteger('adults')->default(0);
+            $table->tinyInteger('kids')->default(0)->nullable();
             $table->boolean('breakfast')->default(false);
             $table->integer('breakfast_price')->default(false);
             $table->string('thumbnail');

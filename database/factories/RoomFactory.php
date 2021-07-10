@@ -13,7 +13,7 @@ class RoomFactory extends Factory
      * @var string
      */
     protected $model = Room::class;
-
+    
     /**
      * Define the model's default state.
      *
@@ -26,14 +26,15 @@ class RoomFactory extends Factory
             "slug" => Str::slug($this->faker->words(3, true)) ,
             "description_min" => $this->faker->text(100),
             "description_max" => $this->faker->text(400),
-            "active" => rand(0,1),
+            "active" => 1,
             "quantity" => $this->faker->numberBetween(5, 15),
             "beds" => $this->faker->numberBetween(3, 9),
             "adults" => $this->faker->numberBetween(3, 9),
+            "kids" => $this->faker->numberBetween(0, 2),
             "breakfast" => true,
             "breakfast_price" => $this->faker->numberBetween(10, 20) ,
             "price" => $this->faker->numberBetween(10, 30)*10 ,
-            "thumbnail" => $this->faker->imageUrl(360, 360, 'animals', true) ,
+            "thumbnail" => 'room-'.rand(0,10).'.jpg' ,
         ];
     }
 }

@@ -52,3 +52,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
+Route::get('/rooms', [HomeController::class, 'rooms'])->name('rooms');
+Route::get('/room/{room}', [HomeController::class, 'room'])->name('room');
+Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+Route::get('/blog/post/{slug}', [HomeController::class, 'post'])->name('blog');

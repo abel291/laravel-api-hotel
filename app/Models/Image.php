@@ -19,8 +19,8 @@ class Image extends Model
     
 
     // Accessors & Mutators
-    public function getImagePathAttribute($path='')
+    public function getImagePathAttribute($value='')
     {
-    	return $path.'/'.$this->image;
+    	return '/storage/images/'.$this->image;
     }
 }

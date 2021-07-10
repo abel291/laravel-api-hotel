@@ -22,7 +22,7 @@ class ImageFactory extends Factory
     public function definition()
     {
         return [
-            "image" => Str::slug($this->faker->words(3, true)),                
+            "image" =>'gallery-img-'.rand(0,20).'.jpg',                
         ];
     }
 }

@@ -22,9 +22,9 @@ class GalleryFactory extends Factory
     public function definition()
     {
         return [
-            "name" => $this->faker->words(3, true),
-            "slug" => Str::slug($this->faker->words(3, true)) ,            
-            "active" => rand(0,1),    
+            "name" => $this->faker->words(1, true),
+            "slug" => Str::slug($this->faker->words(1, true)) ,            
+            "active" => 1,    
         ];
     }
 }

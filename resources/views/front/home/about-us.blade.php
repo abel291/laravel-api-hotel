@@ -19,26 +19,23 @@
     'img' =>'img/home/about.jpg'
     ])
 
-    <div class="rounded-xl -mt-5 bg-white overflow-x-hidden">
+    <div class="container mx-auto max-w-screen-xl">
+        
 
-        <div class="container mx-auto max-w-screen-lg space-y-20 md:space-y-28">
-
-            <div>
-                <div class=" max-w-md flex flex-col md:flex-row md:items-center justify-between pb-14 ">
-
-                    <div class="">
-                        <div class="font-bold mb-1">Got a questions?</div>
-                        <div class="text-gray-500">hello@hotelsochi.com</div>
+            <div class="section-p-y">
+                <div class=" max-w-md flex flex-col md:flex-row md:items-center justify-between pb-14 space-y-4 md:space-y-0 md:space-x-5">
+                    <div>
+                        <div class="font-bold mb-1 text-gray-700">Got a questions?</div>
+                        <div class="text-gray-400">hello@hotelhotelcartagena.com</div>
                     </div>
                     <div>
-                        <div class="font-bold mb-1">For partners</div>
-                        <div class="text-gray-500">partners@hotelsochi.com</div>
+                        <div class="font-bold mb-1 text-gray-700">For partners</div>
+                        <div class="text-gray-400">partners@hotelhotelcartagena.com</div>
                     </div>
-
                 </div>
 
                 <div class="flex flex-col md:flex-row justify-between space-y-8 md:space-y-0">
-                    <div class="md:w-1/2">
+                    <div class="md:w-1/2 md:pr-5">
                         @include('front.pieces.title', [
                         'title' => 'NUESTRA HISTORIA',
                         'sub_title' => 'Una breve historia
@@ -46,19 +43,19 @@
                         ])
                     </div>
 
-                    <div class="md:w-1/2 flex flex-col space-y-5 md:pl-6 md:pt-8">
+                    <div class="md:w-1/2 flex flex-col space-y-5  md:pt-8">
                         <p>El clima subtropical húmedo, las altas montañas, la vegetación exótica, las interminables playas,
                             los
                             parques nacionales, la arquitectura histórica, los atractivos lugares de interés, los festivales
                             de arte
-                            y el animado entorno multicultural hacen de Sochi un destino turístico destacado.
+                            y el animado entorno multicultural hacen de Hotel Cartagena un destino turístico destacado.
 
                         </p>
 
                         <p>
-                            Sochi tiene mucho que ofrecer a los amantes de la naturaleza, los deportes, la historia, el ocio
+                            Hotel Cartagena tiene mucho que ofrecer a los amantes de la naturaleza, los deportes, la historia, el ocio
                             en la
-                            playa soleada y las aventuras activas. Hay mucho que hacer y muchas cosas que ver en Sochi, por
+                            playa soleada y las aventuras activas. Hay mucho que hacer y muchas cosas que ver en Hotel Cartagena, por
                             lo que
                             nunca se aburrirá. </p>
 
@@ -66,23 +63,25 @@
                 </div>
             </div>
 
-            <div class="relative">
-                <div class="z-10 absolute top-0 left-0 flex justify-center">
-                    <button id="btn-next" class=" py-4 px-5 bg-white focus:outline-none text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button id="btn-back" class=" py-4 px-5 bg-white focus:outline-none text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
+            <div class=" section-p-y overflow-hidden">
+                <div class="relative">
+                    <div class="z-10 absolute top-0 left-0 flex justify-center">
+                        <button id="btn-next" class=" py-4 px-5 bg-white focus:outline-none text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button id="btn-back" class=" py-4 px-5 bg-white focus:outline-none text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
-                <div id="gallery-img" class="">
+                <div id="carousel-list" class="">
                     <div class="swiper-wrapper ">
 
                         <div class="swiper-slide h-96">
@@ -109,18 +108,18 @@
                 </div>
             </div>
 
-            <div>
-                <div class="w-full mb-10 md:mb-15">
+            <div class="section-p-y">
+                <div class="w-full mb-8 md:mb-12">
                     @include('front.pieces.title', [
                     'title' => 'QUÉ OFRECEMOS',
                     'sub_title' => 'Nuestro enfoque.',
                     ])
                 </div>
-                <div class=" space-y-10 md:space-y-15">
+                <div class=" space-y-8 md:space-y-12">
 
                     <div class="grid grid-cols-2 gap-x-5">
                         <div class="col-span-2 md:col-span-1 mb-5 md:mb-0">
-                            <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Calidad de servicio</h3>
+                            <h3 class="text-3xl md:text-4xl font-bold text-gray-700">Calidad de servicio</h3>
                         </div>
                         <div class="col-span-2 md:col-span-1  text-gray-600 space-y-4 leading-relaxed">
                             <p>
@@ -139,7 +138,7 @@
 
                     <div class="grid grid-cols-2 gap-x-5">
                         <div class="col-span-2 md:col-span-1 mb-5 md:mb-0">
-                            <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Personal amigable</h3>
+                            <h3 class="text-3xl md:text-4xl font-bold text-gray-700">Personal amigable</h3>
                         </div>
 
                         <div class="col-span-2 md:col-span-1  text-gray-600 space-y-4 leading-relaxed">
@@ -159,7 +158,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-x-5">
                         <div class="col-span-2 md:col-span-1 mb-5 md:mb-0">
-                            <h3 class="text-3xl md:text-4xl font-bold text-gray-800">La satisfacción del cliente</h3>
+                            <h3 class="text-3xl md:text-4xl font-bold text-gray-700">La satisfacción del cliente</h3>
                         </div>
 
                         <div class="col-span-2 md:col-span-1  text-gray-600 space-y-4 leading-relaxed">
@@ -176,8 +175,8 @@
                 </div>
             </div>
 
-            <div>
-                <div class="w-full mb-10 md:mb-15">
+            <div class="section-p-y">
+                <div class="w-full mb-8 md:mb-12">
                     @include('front.pieces.title', [
                     'title' => 'CONOCE AL EQUIPO',
                     'sub_title' => 'Personal del hotel.',
@@ -190,7 +189,7 @@
                                 style="background-image:url(img/home/team-1.jpg)">
                             </div>
                             <div class="px-2 py-3">
-                                <div class="text-2xl font-bold text-cool-gray-800 mb-1">Robert Fox</div>
+                                <div class="text-2xl font-bold text-cool-gray-700 mb-1">Robert Fox</div>
                                 <div class="text-gray-400 uppercase">CEO, HEAD OF COMMUNITY</div>
                             </div>
                         </div>
@@ -201,7 +200,7 @@
                                 style="background-image:url(img/home/team-2.jpg)">
                             </div>
                             <div class="px-2 py-3">
-                                <div class="text-2xl font-bold text-cool-gray-800 mb-1">Kristin Mccoy</div>
+                                <div class="text-2xl font-bold text-cool-gray-700 mb-1">Kristin Mccoy</div>
                                 <div class="text-gray-400 uppercase">CO-FOUNDER & CPO</div>
                             </div>
                         </div>
@@ -212,7 +211,7 @@
                                 style="background-image:url(img/home/team-3.jpg)">
                             </div>
                             <div class="px-2 py-3">
-                                <div class="text-2xl font-bold text-cool-gray-800 mb-1">Shane Watson</div>
+                                <div class="text-2xl font-bold text-cool-gray-700 mb-1">Shane Watson</div>
                                 <div class="text-gray-400 uppercase">CHIEF OPERATING OFFICER</div>
                             </div>
                         </div>
@@ -223,7 +222,7 @@
                                 style="background-image:url(img/home/team-4.jpg)">
                             </div>
                             <div class="px-2 py-3">
-                                <div class="text-2xl font-bold text-cool-gray-800 mb-1">Francisco Pena</div>
+                                <div class="text-2xl font-bold text-cool-gray-700 mb-1">Francisco Pena</div>
                                 <div class="text-gray-400 uppercase">CHIEF FINANCIAL OFFICER</div>
                             </div>
                         </div>
@@ -234,7 +233,7 @@
                                 style="background-image:url(img/home/team-5.jpg)">
                             </div>
                             <div class="px-2 py-3">
-                                <div class="text-2xl font-bold text-cool-gray-800 mb-1">Calvin Flore</div>
+                                <div class="text-2xl font-bold text-cool-gray-700 mb-1">Calvin Flore</div>
                                 <div class="text-gray-400 uppercase">ASSET MANAGEMENT</div>
                             </div>
                         </div>
@@ -245,7 +244,7 @@
                                 style="background-image:url(img/home/team-6.jpg)">
                             </div>
                             <div class="px-2 py-3">
-                                <div class="text-2xl font-bold text-cool-gray-800 mb-1">Kathryn Cooper</div>
+                                <div class="text-2xl font-bold text-cool-gray-700 mb-1">Kathryn Cooper</div>
                                 <div class="text-gray-400 uppercase">ANIMATOR</div>
                             </div>
                         </div>
@@ -254,12 +253,12 @@
                 </div>
             </div>
 
-            <div class="mx-auto w-full md:w-3/4 text-center ">
+            <div class="mx-auto w-full md:w-3/4 text-center section-p-y">
                 <div class=" ">
-                
-                    <div class="text-gray-800 text-5xl md:text-6xl mb-5 font-bold">Haz espacio para la aventura.</div>
+
+                    <div class="text-gray-700 text-5xl md:text-6xl mb-5 font-bold">Haz espacio para la aventura.</div>
                     <div class="text-gray-500 mb-5">Reserve su habitación ahora mismo y comience su increíble
-                        aventura llena de descubrimientos y experiencias con Sochi.</div>
+                        aventura llena de descubrimientos y experiencias con Hotel Cartagena.</div>
                     <div>
                         <a href=""
                             class="px-4 py-2 justify-center  md:px-6 rounded-full text-white bg-orange-500 flex md:inline-flex items-center  space-x-2 ">
@@ -276,13 +275,13 @@
             </div>
 
 
-        </div>
+        
 
 
     </div>
 
     @push('scripts')
         <script src="{{ mix('js/swiper.js') }}"></script>
-       
+
     @endpush
 @endsection
