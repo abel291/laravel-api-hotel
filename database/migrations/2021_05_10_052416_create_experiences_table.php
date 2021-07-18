@@ -21,7 +21,7 @@ class CreateExperiencesTable extends Migration
             $table->text('description_min');
             $table->text('description_max');
             $table->integer('price');
-            $table->string('type_price');
+            $table->enum('type_price', ['reservation','night']);
             $table->boolean('active');
             $table->timestamps();
             $table->softDeletes();

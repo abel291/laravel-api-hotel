@@ -16,7 +16,7 @@ mix
   .postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
-  ])
+   ])
   .postCss('resources/css/front.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),

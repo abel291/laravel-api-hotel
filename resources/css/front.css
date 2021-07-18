@@ -3,6 +3,11 @@
 @import 'tailwindcss/utilities';
 @import 'flatpickr/dist/themes/material_blue.css';  /*flatpickr fechas*/
 
+.blur{
+	backdrop-filter: blur(12px);
+	background: #7575759c;
+}
+
 .section-p-y {
     @apply py-8 ;    
 }
@@ -47,4 +52,8 @@
     .section-p-y {
         @apply py-16; 
     }
+}
+
+.img-list-room{
+    filter: brightness(0.9);
 }

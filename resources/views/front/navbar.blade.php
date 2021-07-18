@@ -49,7 +49,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <button
+                <a href="{{route('reservation')}}"
                     class="px-5 py-2 bg-orange-500 rounded-full text-white inline-flex space-x-1 items-center font-bold text-sm tracking-wide  focus:outline-none focus:shadow-outline">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
@@ -59,7 +59,7 @@
                     </svg>
                     <span>Reservacion</span>
 
-                </button>
+                </a>
             </div>
         </div>
     </div>

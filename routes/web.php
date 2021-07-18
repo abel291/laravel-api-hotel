@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Admin\Users\ListUsers;
 use App\Http\Livewire\Admin\Rooms\ListRooms;
@@ -31,11 +32,12 @@ Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');*/
 
-Route::middleware(['auth:sanctum', 'verified'])->prefix('dashboard')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('dashboard')
+->group(function () {
 
     Route::get('/', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('home');
 
     Route::get('/users', ListUsers::class)->name('users');
     Route::get('/rooms', ListRooms::class)->name('rooms');
@@ -56,3 +58,5 @@ Route::get('/rooms', [HomeController::class, 'rooms'])->name('rooms');
 Route::get('/room/{room}', [HomeController::class, 'room'])->name('room');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('/blog/post/{slug}', [HomeController::class, 'post'])->name('blog');
+
+Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation');

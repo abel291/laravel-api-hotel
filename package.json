@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "@tailwindcss/ui": "^0.6.0",
-        "alpinejs": "^2.7.3",
+        "alpinejs": "^3.1.0",
         "axios": "^0.19",
         "cross-env": "^7.0",
         "fslightbox": "^3.3.0-2",

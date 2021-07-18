@@ -70,9 +70,9 @@ class CreateReservations extends Component
         'email' => 'required|email|max:255|confirmed',        
         /*'room_quantity',
         'room_quantity_selected',
-        'room_total_price_days',       
+        'room_total_price_night',       
         'room_selectd.quantity_availables',        
-        'room_selectd.total_price_days', */
+        'room_selectd.total_price_night', */
 
     ];
     public function updated($property)
@@ -200,7 +200,7 @@ class CreateReservations extends Component
 
         }
 
-        $price_room_experiencie = $this->room_selected->total_price_days + $experience->total_price;
+        $price_room_experiencie = $this->room_selected->total_price_night + $experience->total_price;
 
         $this->reservation->total_price = $price_room_experiencie * $this->reservation->room_quantity;
         
@@ -323,7 +323,7 @@ class CreateReservations extends Component
 
                 $value->quantity_availables = $value->quantity - $value->reservations->sum('room_quantity');
 
-                $value->total_price_days = $value->price * $this->reservation->days;
+                $value->total_price_night = $value->price * $this->reservation->days;
 
                 return $value;
             });

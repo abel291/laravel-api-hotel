@@ -28,7 +28,7 @@ class ExperiencieFactory extends Factory
             "description_max" => $this->faker->text(400),
             "active" => rand(0,1),                      
             "price" => $this->faker->numberBetween(40, 50) ,
-            "type_price" => $this->faker->randomElement(['reservation','nigth']) ,
+            "type_price" => $this->faker->randomElement(['reservation','night']) ,
             "thumbnail" => 'asd' ,
         ];
     }

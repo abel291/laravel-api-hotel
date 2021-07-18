@@ -25,8 +25,7 @@
                 addDays=selectedDates[0].fp_incr(1)
                 if(selectedDates[0] >= calendar_end_date.selectedDates[0]){
                     
-                    calendar_end_date.setDate(addDays)
-                    
+                    calendar_end_date.setDate(addDays)                    
                     
                 }                                        
                 calendar_end_date.config.minDate = addDays //add +1 days

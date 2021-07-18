@@ -23,8 +23,12 @@ class ComplementFactory extends Factory
     public function definition()
     {
         return [
-            "name" => $this->faker->words(3, true),
+            "name" => $this->faker->words(3, true),            
             "icon" => 'complements-'.rand(0,12).'.png',
+            "price" => $this->faker->numberBetween(8, 14) ,
+            "description_min" => $this->faker->text(100),
+            "active" => 1,                   
+            "type_price" => $this->faker->randomElement(['reservation','night']) ,
             
         ];
     }

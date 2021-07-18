@@ -25,7 +25,6 @@ class HomeController extends Controller
         
         return view('front.home.about-us',compact('page'));
     }
-
     
     public function contact(){
         $page=Page::where('type','contact')->first();
@@ -75,4 +74,12 @@ class HomeController extends Controller
         $post = Blog::where('active',1)->where('slug',$slug)->with('tags')->first();  
         return view('front.home.post',compact('page','post'));
     }
+
+    public function reservation(Request $request){
+        //dd($request->all());
+        
+        
+        return view('front.home.reservation');
+    }
+
 }

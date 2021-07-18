@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         ]);
        // User::factory(1)->create();
        
-        $complements = Complement::factory()->count(10);        
+        $complements = Complement::factory()->count(5);        
         $experiences = Experience::factory()->count(3);
         
         Room::factory()->count(10)        

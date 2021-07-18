@@ -11,12 +11,20 @@ class Complement extends Model
 
     protected $fillable = [
         'name',
-        'icon'
+        'icon',
+        'price',
+        'type_price',
+        'active',
+        'description_min',
     ];
 
     protected $casts = [
         'name' => 'string',
         'icon' => 'string',
+        'price' => 'integer',
+        'type_price' => 'string',
+        'active' => 'boolean',
+        'description_min' => 'string',
     ];
 
     public function rooms()

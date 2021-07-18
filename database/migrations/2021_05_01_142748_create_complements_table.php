@@ -17,6 +17,10 @@ class CreateComplementsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('icon');
+            $table->integer('price');
+            $table->enum('type_price', ['reservation','night']);
+            $table->text('description_min');
+            $table->boolean('active');
             $table->timestamps();
         });
     }

@@ -12,6 +12,8 @@
 
     
     <link href="{{ asset('css/front.css') }}" rel="stylesheet">
+    @livewireStyles  
+    @stack('styles')
   
     
 </head>
@@ -22,7 +24,9 @@
     
     @include('front.footer')
 
+    @livewireScripts  
     <script src="{{ mix('js/app.js') }}"></script>
+    
     @stack('scripts')
 </body>
 
