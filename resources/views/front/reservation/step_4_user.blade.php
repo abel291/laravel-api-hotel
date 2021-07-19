@@ -9,7 +9,7 @@
                     <th></th>
                     <th class="px-4 py-2 text-left font-semibold">Producto</th>
                     <th class="px-4 py-2 text-left font-semibold">Entrada - Salida</th>
-                    <th class="px-4 py-2 text-left font-semibold">Precio</th>
+                    <th class="px-4 py-2 text-left font-semibold">Precio</th>                  
                     <th class="px-4 py-2 text-left font-semibold">Habitaciones</th>
                     <th class="px-4 py-2 text-left font-semibold">Total</th>
                 </tr>
@@ -29,6 +29,7 @@
                 <td class="p-4 ">
                     <span x-text="start_date + ' - ' + end_date"></span>
                 </td>
+                
                 <td class="p-4 ">
                     <span x-text=formatNumber(room_selected.price_per_total_night)></span>
                 </td>
@@ -36,7 +37,7 @@
                     <span x-text="room_quantity"></span>
                 </td>
                 <td class="p-4 ">
-                    <span x-text=formatNumber(room_selected.total_price_per_reservation)></span>
+                    <span x-text=formatNumber(price_per_reservation)></span>
                 </td>
             </tr>
             <template x-for="com in complements_cheked">
@@ -54,8 +55,9 @@
 
                     <td class="px-4 py-2">
 
-                        <span x-text="formatNumber(com.price)"></span>
+                        <span x-text="formatNumber(com.price_per_total_night)"></span>
                     </td>
+                    
                     <td class="px-4 py-2">
                         <span x-text="room_quantity"></span>
                     </td>
@@ -201,42 +203,69 @@
                 <div class="mt-1">
                     <textarea id="special_request" name="about" rows="3"
                         class="form-input rounded-md mt-1 focus:border-gray-500 block w-full focus:shadow-none  border-gray-300 border-1"
-                        placeholder="Algo a tener en cuenta...." value="{{$client->special_request}}"></textarea>
+                        placeholder="Algo a tener en cuenta....">{{$client->special_request}}</textarea>
                 </div>
             </div>
         </div>
     </div>
+    <div class="space-y-8">
 
-    <div class="flex space-x-3 justify-end">
-        <div>
-            <button x-on:click="step=3"
-                class="font-bold w-full py-3 px-14 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-300 focus:outline-none ">Volver</button>
-        </div>
-        <div class="">
-            <button class="font-bold py-3 w-64 rounded-full  text-white bg-orange-500 focus:outline-none "
-                x-on:click="step_4_confirmation" :class="{ 'bg-orange-300' : isLoading , 'bg-orange-500' : !isLoading}">
+        <h2 class="text-4xl font-bold text-gray-700">Pago con tarjeta</h2>
+        <!-- Stripe Elements Placeholder -->
+        <div class="space-y-3">
 
-                <span x-show="!isLoading">
-                    Ultimno paso
-                </span>
-                <div x-show="isLoading">
-                    <div class="flex items-center justify-center">
-                        <div>
-                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="4">
-                                </circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
-                            </svg>
-                        </div>
-                        <span>Chekeando datos...</span>
-                    </div>
+            <div class="sm:w-1/2 space-y-3 ">
+                <label for="card-holder-name" class=" mb-1 block text-sm font-medium text-gray-700">
+                    Nombre del titular</label>
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none capitalize"
+                    id="card-holder-name" type="text" placeholder="como aparece en la targeta"
+                    value="{{ $client->name}}">
+            </div>
+
+            <div class="sm:w-1/2 space-y-3">
+                <label for="card-holder-name" class="block text-sm font-medium text-gray-700">
+                    Numero de Targeta</label>
+                <!-- Stripe Elements Placeholder -->
+                <div id="card-element" class="rounded-md bg-white p-2.5 border border-gray-300"
+                    x-init="init_stripe('{{env('STRIPE_KEY')}}')">
                 </div>
 
-            </button>
+                <span id="error-card-input" class="error text-sm text-red-600 ml-1"></span>
+
+            </div>
         </div>
     </div>
+</div>
+
+<div class="flex space-x-3 justify-end">
+    <div>
+        <button x-on:click="step=3"
+            class="font-bold w-full py-3 px-14 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-300 focus:outline-none ">Volver</button>
+    </div>
+    <div class="">
+        <button id='card-button' class="font-bold py-3 w-64 rounded-full  text-white bg-orange-500 focus:outline-none "
+            :class="{ 'bg-orange-400' : isLoading , 'bg-orange-500' : !isLoading}">
+
+            <span x-show="!isLoading">
+                Reservar habitacion
+            </span>
+            <div x-show="isLoading">
+                <div class="flex items-center justify-center">
+                    <div>
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                    </div>
+                    <span>Chekeando datos...</span>
+                </div>
+            </div>
+
+        </button>
+    </div>
+</div>
 </div>

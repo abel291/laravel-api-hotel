@@ -24,9 +24,9 @@ use App\Http\Livewire\Admin\Pages\ListPages;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 /*Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
@@ -59,4 +59,16 @@ Route::get('/room/{room}', [HomeController::class, 'room'])->name('room');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('/blog/post/{slug}', [HomeController::class, 'post'])->name('blog');
 
-Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation');
+
+
+Route::prefix('reservation')->name('reservation.')->group(function () {
+
+    Route::get('/', [ReservationController::class, 'index'])->name('index');
+
+    Route::post('/step_1_check_date', [ReservationController::class, 'step_1_check_date'])->name('step_1_check_date');
+
+    Route::post('/step_4_confirmation', [ReservationController::class, 'step_4_confirmation'])->name('step_4_confirmation');
+    
+    Route::post('/step_5_finalize', [ReservationController::class, 'step_5_finalize'])->name('step_5_finalize');
+
+});

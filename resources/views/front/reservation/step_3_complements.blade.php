@@ -2,15 +2,13 @@
     <h2 class="text-4xl font-bold text-gray-700">Agregue paquetes adicionale</h2>
     
     <div class="grid grid-cols-2 gap-5">
-        <template x-for="complement in complements">
-            
-                
+        <template x-for="complement in complements" :key="complement.id">             
             
 
             <div class="flex item-start border border-gray-200 p-4 rounded-lg space-x-3">
                 <div>
                     <input x-on:click="complement_selected(complement.id,$event.target.checked)" type="checkbox"
-                        class="h-5 w-5" :value="complement.id">
+                        class="h-5 w-5" :value="complement.id" >
                 </div>
                 <div class="flex flex-col text-gray-700 ">
                     <span class="font-bold " x-text="complement.name"></span>

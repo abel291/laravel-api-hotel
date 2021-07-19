@@ -9,7 +9,7 @@
                 Fecha de inicio
             </label>
 
-            <input x-init="start_date='{{ $reservation->start_date->format('Y-m-d') }}'" x-model="start_date"
+            <input x-init="start_date='{{$start_date->format('Y-m-d') }}'" x-model="start_date"
                 class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="step_1_start_date"
                 type="text" :disabled="isLoading">
 
@@ -21,7 +21,7 @@
                 Fecha de salida
             </label>
 
-            <input x-init="end_date='{{ $reservation->end_date->format('Y-m-d') }}'" x-model="end_date"
+            <input x-init="end_date='{{$end_date->format('Y-m-d') }}'" x-model="end_date"
                 class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="step_1_end_date"
                 type="text" :disabled="isLoading">
 

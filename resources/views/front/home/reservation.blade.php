@@ -13,7 +13,7 @@
     </div>  
 
     <div class="container mx-auto max-w-screen-xl section-p-y relative">      
-        @livewire('front.reservations')
+        
     </div>
     
     @push('scripts')        

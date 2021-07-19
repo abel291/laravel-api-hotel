@@ -9,12 +9,10 @@
     <title> @yield('seo_title','Hotel Cartagena') </title>
     <meta name="description" content=" @yield('seo_desc','Hotel Cartagena') ">
     <meta name="keywords" content=" @yield('seo_keys','Hotel Cartagena') " >
-
     
-    <link href="{{ asset('css/front.css') }}" rel="stylesheet">
-    @livewireStyles  
+    <link href="{{ asset('css/front.css') }}" rel="stylesheet">    
     @stack('styles')
-  
+    <script src="https://js.stripe.com/v3/"></script> 
     
 </head>
 
@@ -24,10 +22,10 @@
     
     @include('front.footer')
 
-    @livewireScripts  
-    <script src="{{ mix('js/app.js') }}"></script>
     
+    <script src="{{ mix('js/app.js') }}"></script>
     @stack('scripts')
+    
 </body>
 
 </html>
