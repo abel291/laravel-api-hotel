@@ -150,44 +150,44 @@ class Reservations extends Component
     
     public function step_4_confirmation(){
         
-        // $rooms=$this->rooms();
+        $rooms=$this->rooms();
         
-        // $room=$rooms->firstWhere('id',$room_id); 
-        // $complements=[];
-        // $total_price_final=0;
-        // $total_price_per_complements = 0;
+        $room=$rooms->firstWhere('id',$room_id); 
+        $complements=[];
+        $total_price_final=0;
+        $total_price_per_complements = 0;
         
-        // if (array_key_exists($room_quantity , $room->price_per_quantity_room_selected)) {
+        if (array_key_exists($room_quantity , $room->price_per_quantity_room_selected)) {
             
-        //     $room->total_price_per_reservation = $room->price_per_quantity_room_selected[$room_quantity];      
+            $room->total_price_per_reservation = $room->price_per_quantity_room_selected[$room_quantity];      
 
-        //     if($ids_complements_cheked){
+            if($ids_complements_cheked){
             
-        //         $complements = $room->complements->whereIn('id',$ids_complements_cheked);
+                $complements = $room->complements->whereIn('id',$ids_complements_cheked);
                 
-        //         $price_per_complements = $complements->sum('total_price');
+                $price_per_complements = $complements->sum('total_price');
             
-        //     }
+            }
 
-        //     $total_price_final= $room->total_price_per_reservation + $price_per_complements;
+            $total_price_final= $room->total_price_per_reservation + $price_per_complements;
         
-        // }
+        }
 
-        // // dd([
-        // //     $room_id,
-        // //     $room_quantity,
-        // //     $ids_complements_cheked,
-        // //     '------------',
-        // //     $room->id,
-        // //     $complements->pluck('id')
+        // dd([
+        //     $room_id,
+        //     $room_quantity,
+        //     $ids_complements_cheked,
+        //     '------------',
+        //     $room->id,
+        //     $complements->pluck('id')
 
-        // // ]);
+        // ]);
 
-        // return json_encode([
-        //     'complements' => $complements,
-        //     'room' => $room,
-        //     'total_price' => $total_price_final,            
-        // ]);   
+        return json_encode([
+            'complements' => $complements,
+            'room' => $room,
+            'total_price' => $total_price_final,            
+        ]);   
     }
     
 

@@ -75,11 +75,4 @@ class HomeController extends Controller
         return view('front.home.post',compact('page','post'));
     }
 
-    public function reservation(Request $request){
-        //dd($request->all());
-        
-        
-        return view('front.home.reservation');
-    }
-
 }

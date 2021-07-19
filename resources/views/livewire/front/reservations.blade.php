@@ -1,5 +1,5 @@
 <div>
-
+    
     <div x-data="reservation_step">
 
         <div x-show="step==1" x-transition.duration.500ms>
@@ -13,7 +13,7 @@
         <div x-show="step==3" x-transition.duration.500ms>
             @include('livewire.front.step_3_complements')
         </div>
-
+        verificar los datos de $client ... de donde salen
         <div x-show="step==4" x-transition.duration.500ms>
             @include('livewire.front.step_4_user')
         </div>
@@ -27,7 +27,7 @@
     <script defer>
         document.addEventListener('alpine:init', () => {
         Alpine.data('reservation_step', () => ({
-            step: 1,
+            step: 4,
             night: 0,
             start_date: '',
             end_date: '',
@@ -36,7 +36,8 @@
             room_quantity: '',
             
             complements: [],
-            complements_cheked: [],            
+            ids_complements_cheked: [], 
+            complements_cheked: [],//solo para el paso final
             rooms:[],
             room_selected: {},
             
@@ -65,74 +66,83 @@
                 }
                 finally {
                     this.isLoading=false;
-                }
-                    
-                
-                
+                }                
             },
             step_2_select_room(id) {
 
-            this.room_id=id;
-            this.room_quantity=document.getElementById('quantity_availables_' + id).value;      
+                this.room_id=id;
+                this.room_quantity=document.getElementById('quantity_availables_' + id).value;      
 
-            this.room_selected = this.rooms.find(x => x.id === this.room_id);  
+                this.room_selected = this.rooms.find(x => x.id === this.room_id);  
 
-            this.room_selected.total_price_per_reservation = this.room_selected.price_per_quantity_room_selected[this.room_quantity];
+                this.room_selected.total_price_per_reservation = this.room_selected.price_per_quantity_room_selected[this.room_quantity];
 
-            this.complements = this.room_selected.complements
+                this.complements = this.room_selected.complements
 
-            this.step = 3;
+                this.step = 3;
 
-            this.complements_cheked = []
+                this.ids_complements_cheked = []
 
             },
             
             complement_selected(complement_id, checked) {
-
+                
                 if (checked) {
 
-                    let complements_selected = this.complements.find(x => x.id === complement_id);
-
-                    this.complements_cheked.push(complements_selected)
+                    //let complements_selected = this.complements.find(x => x.id === complement_id);
+                    console.log(complement_id)
+                    this.ids_complements_cheked.push(complement_id)
 
                 } else {
-                    this.complements_cheked = this.complements_cheked.filter(function(x) {return x.id !== complement_id})
                     
-                    
-                    // if(removeIndex){
-                    //     this.ids_complements_cheked.splice(removeIndex, 1);
-                    // }
+                    this.ids_complements_cheked=this.ids_complements_cheked.filter(x => x !==complement_id);
                 }  
-                console.log(this.complements_cheked);       
+                console.log(this.ids_complements_cheked);       
             },                     
-            step_3_complements() {
+            async step_3_confirmation() {
 
                 // .reduce para sumar el precio de la reservacion mas los complementos,
                 //se pasa como valor incial el precio de la reservacion -> room_selected.total_price_per_reservation
-                this.total_price = this.complements_cheked.reduce(function(prev, complement){
 
-                    return prev + complement.total_price;
+                // this.total_price = this.complements_cheked.reduce(function(prev, complement){
 
-                },this.room_selected.total_price_per_reservation);                
+                //     return prev + complement.total_price;
 
-                this.step = 4
-            },
-            step_4_chekout(){
-                //termianr la peticion de para mostrar el input de pago y el chekout
-            let room_id=this.room_selected.id
-            let room_quantity=room_quantity; 
-            let ids_complements_cheked=this.complements_cheked.map(x=>x.id)
+                // },this.room_selected.total_price_per_reservation);                
+
+                // this.step = 4
+
                 
-            //     this.$wire.step_5_confirmation(room_id,room_quantity,ids_complements_cheked)
-            //     .then(result => {
-            //             result = JSON.parse(result)                        
-            //             this.room_selected = result.room;
-            //             this.complements_cheked = result.complements;
-            //             this.total_price = result.total_price;
-            //             this.step = 5;                        
-            //         })                   
+                this.isLoading=true;                
+                try {
+                    const response = await 
+                        
+                        axios.post('api/reservation/step_4_confirmation', {                    
+                            start_date: this.start_date,
+                            end_date: this.end_date,
+                            adults: this.adults,
+                            kids: this.kids,
 
-             },
+                            room_id:this.room_selected.id,
+                            room_quantity: this.room_quantity,
+                            ids_complements_cheked:this.ids_complements_cheked,
+                            
+                        })
+
+                        this.room=response.data.room;
+                        this.total_price=response.data.total_price;
+                        this.complements_cheked=response.data.complements;
+
+                        this.step=4                    
+                        
+                    } catch (error) {
+                        this.errors()
+                    }
+                    finally {
+                        this.isLoading=false;
+                    }
+            },
+            
             formatNumber(n) {
 
                 numberFormat = new Intl.NumberFormat('de-DE', {
@@ -147,7 +157,7 @@
             },
             init() {
                 this.$nextTick(() => {
-                    console.log(this.adults);
+                    
                     const calendar_start_date =  flatpickr('#step_1_start_date', {
                         altInput: true,
                         altFormat: 'F j, Y',

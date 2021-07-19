@@ -76,10 +76,8 @@
         </div>
         <div class="">
             <button class="font-bold py-3 w-64 rounded-full  text-white  focus:outline-none "
-            
-                wire:loading.class="bg-orange-400" wire:loading.class.remove="bg-orange-500"
                 x-on:click="step_1_check_date"
-                :class="{ 'bg-orange-300' : isLoading , 'bg-orange-500' : !isLoading}">
+                :class="{ 'bg-orange-400' : isLoading , 'bg-orange-500' : ! isLoading }">
 
                 <span x-show="!isLoading" >
                     Chekear disponibilidad

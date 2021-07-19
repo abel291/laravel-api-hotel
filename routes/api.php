@@ -20,4 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('reservation')->name('reservation.')->group(function () {
 
         Route::post('/step_1_check_date', [ReservationController::class, 'step_1_check_date'])->name('step_1_check_date');
+
+        Route::post('/step_4_confirmation', [ReservationController::class, 'step_4_confirmation'])->name('step_4_confirmation');
 });
