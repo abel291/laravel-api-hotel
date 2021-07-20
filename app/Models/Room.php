@@ -57,7 +57,7 @@ class Room extends Model
     }
 
     
-    protected $with = ['complements'];
+    
     public function complements()
     {
         return $this->belongsToMany(Complement::class);

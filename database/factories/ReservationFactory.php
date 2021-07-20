@@ -28,14 +28,10 @@ class ReservationFactory extends Factory
         $reservation_date = $this->faker->dateTimeInInterval('now','+1 month');
         
         $start_date = $reservation_date->format('Y-m-d');
-        $days=rand(2,8);
-        $end_date = $reservation_date->modify('+'.$days.' day')->format('Y-m-d');
+        $night=rand(2,8);
+        $end_date = $reservation_date->modify('+'.$night.' day')->format('Y-m-d');
         
-        $room = Room::get();
-        $experience = Experience::get();
-        
-        
-        
+        $room = Room::get();     
         //dd($date_reservation);      
         
           return [
@@ -43,7 +39,7 @@ class ReservationFactory extends Factory
             
             "end_date" => $end_date,
             
-            "days" => $days,
+            "night" => $night,
             
             "discount_percent" => 0,
             
@@ -58,18 +54,16 @@ class ReservationFactory extends Factory
             "canceled_date" => null,
 
             "room_quantity" => rand(1,3),
+            
+            "adults" => rand(1,3),
+
+            "kids" => rand(1,3),
 
             "order" => rand(10000,99999),
 
-            "room_reservation" => $room->random()->only('name','beds','adults','price'),
-            "experience_reservation" => $experience->random()->only('name','price','type_price'),
+            "room_reservation" => $room->random()->only('name','beds','adults','price'),            
 
             "room_id" => $room->random()->id,
-            "experience_id" => $experience->random()->id,          
-            
-            
-
-
         ];
     }
 }

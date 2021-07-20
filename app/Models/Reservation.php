@@ -14,7 +14,7 @@ class Reservation extends Model
     protected $fillable = [
         'start_date',
         'end_date',
-        'days',
+        'night',
         'discount_percent',
         'room_quantity',
         'total_price',        
@@ -40,11 +40,7 @@ class Reservation extends Model
         
     ];
 
-    public function experience()
-    {
-        return $this->belongsTo(Experience::class);
-    }
-
+   
     public function room()
     {
         return $this->belongsTo(Room::class);

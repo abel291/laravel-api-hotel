@@ -10,7 +10,10 @@ use App\Models\Client;
 use App\Models\Complement;
 use App\Models\Reservation;
 use Faker as Faker;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationOrder;
 
 class ReservationController extends Controller
 {   
@@ -32,8 +35,14 @@ class ReservationController extends Controller
         return view('front.reservation.reservation',compact('client','start_date','end_date'));
     }
     
-    public function step_1_check_date(Request $request){
+    public function step_1_check_date(Request $request){        
         
+        Validator::make($request->all(), [
+            'start_date' => 'required|date_format:Y-m-d|before:reservation.end_date',
+            'end_date' => 'required|date_format:Y-m-d|after:reservation.start_date',
+            'adults' => 'required|min:1',
+            'kids' => 'required',
+        ])->validate();
         
         $start_date=Carbon::createFromFormat('Y-m-d', $request->start_date);
 
@@ -48,16 +57,14 @@ class ReservationController extends Controller
             $request->adults,
             $request->kids,
         ); 
-
+         //guardo en session para usar en step_4
         session([
             'start_date'=>$request->start_date,
             'end_date'=>$request->end_date,
             'adults'=>$request->adults,
             'kids'=>$request->kids,
             'night'=>$night,            
-        ]);        
-        
-        //guardo en session para usar en step_4
+        ]);    
 
         return compact('night','rooms');
 
@@ -121,8 +128,93 @@ class ReservationController extends Controller
     }
     public function step_5_finalize(Request $request){
 
-        echo $request->stripe_id;
-        dd(session());
+            //terminar la pasarela de pago
+        
+        Validator::make($request->all(), [
+            'client_name' => 'required|string|max:255',
+            'client_phone' => 'required|string|max:255',
+            'client_country' => 'required|string|max:255',
+            'client_city' => 'required|string|max:255',
+            'client_email' => 'required|email|max:255|confirmed', 
+            'client_check_in' => 'nullable|string|max:255', 
+            'client_special_request' => 'nullable|string|max:1000', 
+        ])->validate();
+
+        $rooms=$this->rooms(
+            $request->session()->get('start_date'),
+            $request->session()->get('end_date'),
+            $request->session()->get('night'),
+            $request->session()->get('adults'),
+            $request->session()->get('kids'),
+        );
+        $room=$rooms->firstWhere('id',$request->session()->get('room_id'));
+        
+        $complements = $room->complements->whereIn('id',$request->session()->get('ids_complements_cheked'));
+
+        if ($complements) {
+            $complements->transform(function ($item, $key) {
+
+                return $item->only(['name', 'price', 'type_price','total_price','price_per_total_night']);
+            
+            });
+            $room->complements_cheked=$complements;
+        }
+
+
+        $client = new Client();
+        $client->name=$request->client_name;
+        $client->email=$request->client_email;
+        $client->phone=$request->client_phone;
+        $client->country=$request->client_country;
+        $client->city=$request->client_city;
+        
+        $reservation = new Reservation();
+        $reservation->start_date=$request->session()->get('start_date');
+        $reservation->end_date=$request->session()->get('end_date');
+        $reservation->night=$request->session()->get('night');
+        $reservation->adults=$request->session()->get('adults');
+        $reservation->kids=$request->session()->get('kids');
+        $reservation->check_in=$request->client_check_in;
+        $reservation->special_request=$request->client_special_request;        
+        $reservation->room_quantity=$request->session()->get('room_quantity');
+        $reservation->total_price=$request->session()->get('total_price');        
+
+        $description_stripe = $client->name . " - " . $room->name . " - " . $reservation->night . ' noche(s)';
+
+        try {
+
+            $payment = $client->charge($reservation->total_price * 100, $request->methodpayment, [
+                'description' => $description_stripe
+            ]);
+        } catch (\Stripe\Exception\CardException $e) {
+            $msg='Por alguna razon no se puede cargar esta targeta';
+            return response()->json(['error'=>$msg], $e->getHttpStatus() );
+            
+            
+        } catch (\Exception $e) {
+
+            dd($e);
+            $msg='Hubo un error en la pasarela de pago por favor intente mas tarde';
+            return response()->json(['error'=>$msg], 500 );
+            
+            
+        }
+
+        $client->stripe_id = $payment->id;
+        $client->save();
+        $reservation->client()->associate($client->id);
+        $reservation->room()->associate($room->id);
+        $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price','complements_cheked']);
+
+        $reservation->order = rand(1, 9) . $reservation->start_date->format('md') . $client->id;
+        $reservation->save();
+
+        DB::commit();
+
+        Mail::to($client->email)->queue(new ReservationOrder($reservation,'order'));
+
+        return response()->json(['order'=>$reservation->order], 200 );
+        
     }
     
     public function rooms($start_date,$end_date,$night,$adults=1,$kids=0)

@@ -17,7 +17,9 @@ class CreateReservationsTable extends Migration
             $table->id();                     
             $table->date('start_date');
             $table->date('end_date');            
-            $table->tinyInteger('days');            
+            $table->tinyInteger('night');            
+            $table->tinyInteger('adults')->default(0);
+            $table->tinyInteger('kids')->default(0)->nullable();    
             $table->float('discount_percent',10,2)->nullable();            
             $table->float('total_price',10,2);     
             $table->string('check_in',8)->default('02:30 PM')->nullable();
@@ -26,12 +28,10 @@ class CreateReservationsTable extends Migration
             $table->date('canceled_date')->nullable();
             $table->string('order')->index();
             $table->tinyInteger('room_quantity');
-            $table->foreignId('room_id');
-            $table->foreignId('experience_id')->nullable();           
+            $table->foreignId('room_id')->index();  
             $table->foreignId('client_id')->index();           
 
             $table->json('room_reservation');
-            $table->json('experience_reservation')->nullable();                          
             $table->timestamps();
         });
     }

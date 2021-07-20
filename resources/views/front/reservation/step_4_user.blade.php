@@ -1,5 +1,89 @@
 <div class="max-w-5xl mx-auto space-y-16">
+    <div class="space-y-8">
+        <h2 class="text-4xl font-bold text-gray-700">Detalles de facturación</h2>
+        <div class="grid grid-cols-2 gap-5">
+            <div>
+                <label for="name" class="mb-2 block font-bold text-gray-600 ">Nombre Y Apellido</label>
+                <input 
+                    class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="name" type="text"
+                     x-model="client_name">
+                <span x-text="errors.client_name" class="pl-1 text-red-600 text-sm block"></span>
+            </div>
 
+            <div>
+                <label for="phone" class="mb-2 block font-bold text-gray-600 ">Telefono</label>
+                <input 
+                    class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="phone" type="text"
+                     x-model="client_phone">
+                <span x-text="errors.client_phone" class="pl-1 text-red-600 text-sm block"></span>
+
+            </div>
+            <!---------------------------->
+            <div>
+                <label for="email" class="mb-2 block font-bold text-gray-600 ">Email </label>
+                <input x-model="client_email"
+                    class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="email"
+                    type="email" >
+                <span x-text="errors.client_email" class="pl-1 text-red-600 text-sm block"></span>
+
+            </div>
+
+            <div>
+                <label for=" c_email" class="mb-2 block font-bold text-gray-600 ">Confirmar email</label>
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="c_email"
+                    type="email"  x-model="client_email_confirmation">
+                
+
+            </div>
+
+            <div>
+                <label for=" country" class="mb-2 block font-bold text-gray-600 ">Pais</label>
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="country"
+                    type="text" x-model="client_country">
+                <span x-text="errors.client_country" class="pl-1 text-red-600 text-sm block"></span>
+
+            </div>
+
+            <div>
+                <label for="city" class="mb-2 block font-bold text-gray-600 ">Ciudad</label>
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="city"
+                    type="text"  x-model="client_city">
+                <span x-text="errors.client_city" class="pl-1 text-red-600 text-sm block"></span>
+            </div>
+            <!---------------------------->
+            <div x-data x-init="
+                $nextTick(() => {            
+                const check_in = flatpickr($refs.check_in, {                                                               
+                        enableTime: true,
+                        noCalendar: true,                                        
+                        dateFormat: 'G:i K',                                        
+                        time_24hr: false,
+                        defaultDate:'2:00 PM'
+                        
+                    });
+                });
+                    ">
+                <label for="check_in_date" class="mb-2 block font-bold text-gray-600">Hora de llegada</label>
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" x-ref="check_in"
+                    id="check_in_date" type="text" x-model="client_check_in">
+                <span x-text="errors.client_check_in" class="pl-1 text-red-600 text-sm block"></span>
+
+            </div>
+            <!---------------------------->
+            <div class="special_request col-span-2">
+
+                <label for="special_request" class="mb-2 block font-bold text-gray-600 ">Peticion especial</Label>
+
+                <div class="mt-1">
+                    <textarea id="special_request" name="about" rows="3"
+                        class="form-input rounded-md mt-1 focus:border-gray-500 block w-full focus:shadow-none  border-gray-300 border-1"
+                        placeholder="Algo a tener en cuenta...." x-model="client_special_request"></textarea>
+                    <span x-text="errors.client_special_request" class="pl-1 text-red-600 text-sm block"></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="space-y-8">
         <h2 class="text-4xl font-bold text-gray-700">Tu orden</h2>
 
@@ -9,7 +93,7 @@
                     <th></th>
                     <th class="px-4 py-2 text-left font-semibold">Producto</th>
                     <th class="px-4 py-2 text-left font-semibold">Entrada - Salida</th>
-                    <th class="px-4 py-2 text-left font-semibold">Precio</th>                  
+                    <th class="px-4 py-2 text-left font-semibold">Precio</th>
                     <th class="px-4 py-2 text-left font-semibold">Habitaciones</th>
                     <th class="px-4 py-2 text-left font-semibold">Total</th>
                 </tr>
@@ -29,7 +113,7 @@
                 <td class="p-4 ">
                     <span x-text="start_date + ' - ' + end_date"></span>
                 </td>
-                
+
                 <td class="p-4 ">
                     <span x-text=formatNumber(room_selected.price_per_total_night)></span>
                 </td>
@@ -57,7 +141,7 @@
 
                         <span x-text="formatNumber(com.price_per_total_night)"></span>
                     </td>
-                    
+
                     <td class="px-4 py-2">
                         <span x-text="room_quantity"></span>
                     </td>
@@ -98,120 +182,9 @@
     </div>
 
 
+
     <div class="space-y-8">
-        <h2 class="text-4xl font-bold text-gray-700">Detalles de facturación</h2>
-        <div class="grid grid-cols-2 gap-5">
-            <div>
-                <label for="name" class="mb-2 block font-bold text-gray-600 ">
-                    Nombre Y Apellido
-                    @error('client.name')
-                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                    @enderror
-                </label>
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="name"
-                    type="text" value="{{$client->name}}">
-            </div>
-
-            <div>
-                <label for="phone" class="mb-2 block font-bold text-gray-600 ">Telefono
-                    @error('client.phone')
-                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                    @enderror
-                </label>
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="phone"
-                    type="text" value="{{$client->phone}}">
-
-            </div>
-            <!---------------------------->
-            <div>
-                <label for="email" class="mb-2 block font-bold text-gray-600 ">Email
-                    @error('email')
-                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                    @enderror
-
-                </label>
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="email"
-                    type="email" value="{{$client->email}}">
-
-            </div>
-
-            <div>
-                <label for=" c_email" class="mb-2 block font-bold text-gray-600 ">
-                    Confirmar email
-                </label>
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="c_email"
-                    type="email" value="{{$client->email}}">
-            </div>
-
-            <div>
-                <label for=" country" class="mb-2 block font-bold text-gray-600 ">Pais
-                    @error('client.country')
-                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                    @enderror
-                </label>
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="country"
-                    type="text" value="{{$client->country}}">
-
-            </div>
-
-            <div>
-                <label for="city" class="mb-2 block font-bold text-gray-600 ">Ciudad
-                    @error('client.city')
-                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                    @enderror
-
-                </label>
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="city"
-                    type="text" value="{{$client->city}}">
-            </div>
-            <!---------------------------->
-            <div x-data x-init="
-                $nextTick(() => {            
-                const check_in = flatpickr($refs.check_in, {                                                               
-                        enableTime: true,
-                        noCalendar: true,                                        
-                        dateFormat: 'G:i K',                                        
-                        time_24hr: false,
-                        defaultDate:'2:00 PM'
-                        
-                    });
-                });
-                    ">
-                <label for="check_in_date" class="mb-2 block font-bold text-gray-600 ">
-                    Hora de llegada
-                    @error('reservation.check_in')
-                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                    @enderror
-
-                </label>
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" x-ref="check_in"
-                    id="check_in_date" type="text">
-
-            </div>
-
-
-            <!---------------------------->
-            <div class="special_request col-span-2">
-
-                <label for="special_request" class="mb-2 block font-bold text-gray-600 ">
-                    Peticion especial
-                    @error('reservation.end_date')
-                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                    @enderror
-                </Label>
-
-                <div class="mt-1">
-                    <textarea id="special_request" name="about" rows="3"
-                        class="form-input rounded-md mt-1 focus:border-gray-500 block w-full focus:shadow-none  border-gray-300 border-1"
-                        placeholder="Algo a tener en cuenta....">{{$client->special_request}}</textarea>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="space-y-8">
-
-        <h2 class="text-4xl font-bold text-gray-700">Pago con tarjeta</h2>
-        <!-- Stripe Elements Placeholder -->
+        <h3 class="text-4xl font-bold text-gray-700">Pago con tarjeta</h3>        
         <div class="space-y-3">
 
             <div class="sm:w-1/2 space-y-3 ">
@@ -219,13 +192,13 @@
                     Nombre del titular</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none capitalize"
                     id="card-holder-name" type="text" placeholder="como aparece en la targeta"
-                    value="{{ $client->name}}">
+                    x>
             </div>
 
             <div class="sm:w-1/2 space-y-3">
                 <label for="card-holder-name" class="block text-sm font-medium text-gray-700">
                     Numero de Targeta</label>
-                <!-- Stripe Elements Placeholder -->
+                
                 <div id="card-element" class="rounded-md bg-white p-2.5 border border-gray-300"
                     x-init="init_stripe('{{env('STRIPE_KEY')}}')">
                 </div>
