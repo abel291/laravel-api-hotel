@@ -3,9 +3,6 @@
 @import 'tailwindcss/utilities';
 @import 'flatpickr/dist/themes/material_blue.css';  /*flatpickr fechas*/
 
-body *{
-    @apply text-gray-700 ;    
-}
 .blur{
 	backdrop-filter: blur(12px);
 	background: #7575759c;

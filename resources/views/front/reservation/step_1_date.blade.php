@@ -39,7 +39,7 @@
 
             <select class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none appearance-none"
                 id="adults" x-model.number="adults" :disabled="isLoading">
-                <option value="1" >1 Adulto</option>
+                <option value="1">1 Adulto</option>
                 <option value="2">2 Adultos</option>
                 <option value="3">3 Adultos</option>
                 <option value="4">4 Adultos</option>
@@ -58,7 +58,7 @@
 
             <select id="kids" x-model.number="kids" :disabled="isLoading"
                 class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none appearance-none">
-                <option value="1" >1 Niño</option>
+                <option value="1">1 Niño</option>
                 <option value="2">2 Niños</option>
                 <option value="3">3 Niños</option>
                 <option value="4">4 Niños</option>
@@ -77,16 +77,16 @@
                 class="block text-center font-bold w-full py-3 px-12 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-300 focus:outline-none ">Cancelar</a>
         </div>
         <div class="">
-            <button class="font-bold py-3 w-64 rounded-full  text-white  focus:outline-none "
-                x-on:click="step_1_check_date"
-                :class="{ 'bg-orange-400' : isLoading , 'bg-orange-500' : ! isLoading }">
+            
+            <button class="font-bold py-3 w-64 rounded-full  focus:outline-none " x-on:click="step_1_check_date"
+                :class="{ 'bg-orange-400 cursor-default' : isLoading , 'bg-orange-500' : ! isLoading }" :disabled="isLoading">
 
-                <span x-show="!isLoading" >
+                <span class="text-white" x-show="!isLoading">
                     Chekear disponibilidad
                 </span>
 
-                <div x-show="isLoading"  >
-                    <div class="flex items-center justify-center">
+                <div x-show="isLoading">
+                    <div class="flex items-center justify-center ">
                         <div>
                             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24">
@@ -98,8 +98,8 @@
                                 </path>
                             </svg>
                         </div>
-                        <span>Chekeando...</span>
-                        
+                        <span class="text-white">Chekeando...</span>
+
                     </div>
                 </div>
 

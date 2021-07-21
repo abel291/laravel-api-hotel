@@ -38,8 +38,8 @@
 
             <div class="img-item  w-full md:w-2/4 lg:w-1/3 p-2 {{$item->imageable->slug}}">
                 <div class="overflow-hidden">
-                    <a data-fslightbox="{{$item->imageable->slug}}" href="/storage/galleries/{{$item->image}}">
-                        <img src="/storage/galleries/thumbnail/{{$item->image}}" 
+                    <a data-fslightbox="{{$item->imageable->slug}}" href="/storage/images/{{$item->image}}">
+                        <img src="/storage/images/thumbnail/{{$item->image}}" 
                             class="rounded-md w-full transition duration-500 transform hover:scale-110" 
                             
                         >

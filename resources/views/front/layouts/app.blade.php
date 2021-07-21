@@ -16,12 +16,11 @@
     
 </head>
 
-<body class="flex flex-col min-h-screen text-gray-700 ">    
+<body class="">
     
-    @yield('content','ñlkk')
+    @yield('content')
     
     @include('front.footer')
-
     
     <script src="{{ mix('js/app.js') }}"></script>
     @stack('scripts')

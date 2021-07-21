@@ -44,7 +44,7 @@
                         </div>
 
                         <button x-on:click="step_2_select_room(room.id)"
-                            class="w-full py-2 px-4 bg-orange-500 text-white font-bold rounded-full">
+                            class="w-full py-2 px-4 bg-orange-500 text-white font-bold rounded-full focus:outline-none ">
                             Reservar
                         </button>
 

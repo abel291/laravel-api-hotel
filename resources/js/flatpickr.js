@@ -1,9 +1,5 @@
 
 
-import flatpickr from "flatpickr";
-import language from 'flatpickr/dist/l10n/es';
-flatpickr.localize(language.es);
-
 const start_date = document.getElementById('start_date')
 const end_date = document.getElementById('end_date')
 

@@ -1,4 +1,98 @@
 <div class="max-w-5xl mx-auto space-y-16">
+    
+    <!-- tu orden -->
+    <div class="space-y-8">
+        <h2 class="text-4xl font-bold text-gray-700">Tu orden</h2>
+
+        <table class="min-w-full text-gray-700">
+            <thead>
+                <tr class="uppercase border-b border-gray-200">
+                    
+                    <th class="px-4 py-2 text-left font-semibold">Producto</th>
+                    <th class="px-4 py-2 text-left font-semibold">Entrada - Salida</th>
+                    <th class="px-4 py-2 text-left font-semibold">Precio</th>
+                    <th class="px-4 py-2 text-left font-semibold">Habitaciones</th>
+                    <th class="px-4 py-2 text-left font-semibold">Total</th>
+                </tr>
+            </thead>
+            <tr class="border-b border-gray-200">
+                
+                <td class="px-4 py-6 text-xl font-bold capitalize">
+
+                    <div class="flex items-center space-x-5 ">
+
+                        <span x-text="room_selected.name"></span>
+                    </div>
+                </td>
+                <td class="p-4 ">
+                    <span x-text="start_date + ' - ' + end_date"></span>
+                </td>
+
+                <td class="p-4 ">
+                    <span x-text=formatNumber(room_selected.price_per_total_night)></span>
+                </td>
+                <td class="p-4 ">
+                    <span x-text="room_quantity"></span>
+                </td>
+                <td class="p-4 ">
+                    <span x-text=formatNumber(price_per_reservation)></span>
+                </td>
+            </tr>
+            <template x-for="com in complements_cheked">
+                <tr class="border-b border-gray-200">
+                    <td class="pl-10 py-2">
+                        <span class="text-green-500 font-bold"> -Adicioinal- </span>
+                        <span x-text="com.name"></span>
+                    </td>
+
+                    <td class="px-4 py-2">
+                        <span x-text="start_date + ' - ' + end_date"></span>
+                    </td>
+
+                    <td class="px-4 py-2">
+
+                        <span x-text="formatNumber(com.price_per_total_night)"></span>
+                    </td>
+
+                    <td class="px-4 py-2">
+                        <span x-text="room_quantity"></span>
+                    </td>
+
+                    <td class="px-4 py-2">
+                        <span x-text="formatNumber(com.total_price)"></span>
+                    </td>
+
+                </tr>
+            </template>
+        </table>
+    </div>
+    <!-- total -->
+    <div class="space-y-8">
+        <h2 class="text-4xl font-bold text-gray-700 pt-8">Total</h2>
+        <table class="w-1/2 ">
+
+            <tr class="border-b border-gray-200">
+                <td class="px-4 py-6 font-bold">
+                    SUB-TOTAL
+                </td>
+                <td>
+                    <span x-text="formatNumber(total_price)"></span>
+                </td>
+
+
+            </tr>
+            <tr class="border-b border-gray-200">
+                <td class="px-4 py-6 font-bold">
+                    TOTAL
+                </td>
+                <td>
+                    <span class=" font-bold text-lg" x-text="formatNumber(total_price)"></span>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <!-- form data user -->
     <div class="space-y-8">
         <h2 class="text-4xl font-bold text-gray-700">Detalles de facturación</h2>
         <div class="grid grid-cols-2 gap-5">
@@ -82,115 +176,20 @@
             </div>
         </div>
     </div>
-    <div class="space-y-8">
-        <h2 class="text-4xl font-bold text-gray-700">Tu orden</h2>
-
-        <table class="min-w-full text-gray-700">
-            <thead>
-                <tr class="uppercase border-b border-gray-200">
-                    <th></th>
-                    <th class="px-4 py-2 text-left font-semibold">Producto</th>
-                    <th class="px-4 py-2 text-left font-semibold">Entrada - Salida</th>
-                    <th class="px-4 py-2 text-left font-semibold">Precio</th>
-                    <th class="px-4 py-2 text-left font-semibold">Habitaciones</th>
-                    <th class="px-4 py-2 text-left font-semibold">Total</th>
-                </tr>
-            </thead>
-            <tr class="border-b border-gray-200">
-                <td class="px-4 py-6">
-                    <img :src="'/storage/rooms/thumbnail/'+room_selected.thumbnail"
-                        class="w-20 h-20  object-cover rounded-md">
-                </td>
-                <td class="px-4 py-6 text-xl font-bold capitalize">
-
-                    <div class="flex items-center space-x-5 ">
-
-                        <span x-text="room_selected.name"></span>
-                    </div>
-                </td>
-                <td class="p-4 ">
-                    <span x-text="start_date + ' - ' + end_date"></span>
-                </td>
-
-                <td class="p-4 ">
-                    <span x-text=formatNumber(room_selected.price_per_total_night)></span>
-                </td>
-                <td class="p-4 ">
-                    <span x-text="room_quantity"></span>
-                </td>
-                <td class="p-4 ">
-                    <span x-text=formatNumber(price_per_reservation)></span>
-                </td>
-            </tr>
-            <template x-for="com in complements_cheked">
-                <tr class="border-b border-gray-200">
-                    <td></td>
-
-                    <td class="pl-10 py-2 pr-4 ">
-                        <span class="text-green-500 font-bold"> -Adicioinal- </span>
-                        <span x-text="com.name"></span>
-                    </td>
-
-                    <td class="px-4 py-2">
-                        <span x-text="start_date + ' - ' + end_date"></span>
-                    </td>
-
-                    <td class="px-4 py-2">
-
-                        <span x-text="formatNumber(com.price_per_total_night)"></span>
-                    </td>
-
-                    <td class="px-4 py-2">
-                        <span x-text="room_quantity"></span>
-                    </td>
-
-                    <td class="px-4 py-2">
-                        <span x-text="formatNumber(com.total_price)"></span>
-                    </td>
-
-                </tr>
-            </template>
-        </table>
-    </div>
-
-    <div class="space-y-8">
-        <h2 class="text-4xl font-bold text-gray-700 pt-8">Total</h2>
-        <table class="w-1/2 ">
-
-            <tr class="border-b border-gray-200">
-                <td class="px-4 py-6 font-bold">
-                    SUB-TOTAL
-                </td>
-                <td>
-                    <span x-text="formatNumber(total_price)"></span>
-                </td>
-
-
-            </tr>
-            <tr class="border-b border-gray-200">
-                <td class="px-4 py-6 font-bold">
-                    TOTAL
-                </td>
-                <td>
-                    <span class=" font-bold text-lg" x-text="formatNumber(total_price)"></span>
-                </td>
-            </tr>
-
-        </table>
-    </div>
-
+    <!-- input stripe -->
     <div class="space-y-8">
         <h3 class="text-4xl font-bold text-gray-700">Pago con tarjeta</h3>
-        <div class="space-y-3">
+        <div class="space-y-4">
 
             <div class="sm:w-1/2 space-y-2 ">
                 <label for="card-holder-name" class="block text-sm font-medium text-gray-700">
                     Nombre del titular
-                    <span x-text="input_stripe_error_name" class="pl-2 text-red-600 text-sm"></span>
+                    
                 </label>
 
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none capitalize"
                     type="text" placeholder="como aparece en la targeta" x-model='input_stripe_name'>
+                    <span x-text="input_stripe_error_name" class="pl-1 text-red-600 text-sm block"></span>
 
             </div>
 
@@ -200,7 +199,7 @@
 
                 <div id="card-element"
                     class="w-full p-2.5 border border-gray-300 rounded-md focus:outline-none capitalize"
-                    x-init="init_stripe('{{env('STRIPE_KEY')}}')">
+                    data-stripe_id="{{env('STRIPE_KEY')}}">
                 </div>
 
                 <span x-text='input_stripe_error_card' class="pl-1 text-red-600 text-sm block"></span>
@@ -209,6 +208,7 @@
         </div>
     </div>
 
+    <!-- buttom -->
     <div class="flex space-x-3 justify-end">
         <div>
             <button x-on:click="step=3"
@@ -217,7 +217,7 @@
         <div class="">
             <button id='card-button'
                 class="font-bold py-3 w-64 rounded-full  text-white bg-orange-500 focus:outline-none "
-                :class="{ 'bg-orange-400' : isLoading , 'bg-orange-500' : !isLoading}">
+                :class="{ 'bg-orange-400 cursor-default' : isLoading , 'bg-orange-500' : !isLoading}" :disabled="isLoading">
 
                 <span x-show="!isLoading">
                     Reservar habitacion

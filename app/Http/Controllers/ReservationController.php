@@ -67,8 +67,11 @@ class ReservationController extends Controller
             'kids' => $request->kids,
             'night' => $night,
         ]);
-       //dd($rooms->toArray());
-        return compact('night', 'rooms');
+        //dd($rooms->first());
+        return  response()->json([
+            'night'=>$night,
+            'rooms'=>$rooms->values(),//se aplica el ->values() por un error de indices que retornaba  y {} y debe ser []
+        ]);
     }
 
     public function step_4_confirmation(Request $request)
@@ -125,9 +128,6 @@ class ReservationController extends Controller
     }
     public function step_5_finalize(Request $request)
     {
-
-        //
-
         Validator::make($request->all(), [
             'client_name' => 'required|string|max:255',
             'client_phone' => 'required|string|max:255',
@@ -145,6 +145,7 @@ class ReservationController extends Controller
             $request->session()->get('adults'),
             $request->session()->get('kids'),
         );
+
         $room = $rooms->firstWhere('id', $request->session()->get('room_id'));
 
         $complements = $room->complements->whereIn('id', $request->session()->get('ids_complements_cheked'));
@@ -204,7 +205,10 @@ class ReservationController extends Controller
 
         Mail::to($client->email)->queue(new ReservationOrder($reservation, 'order'));
 
-        return response()->json(['order' => $reservation->order], 200);
+        return response()->json([
+            'order' => $reservation->order,
+            'create_date' => $reservation->created_at->format('Y-m-d')
+        ]);
     }
 
     public function rooms($start_date, $end_date, $night, $adults = 1, $kids = 0)
@@ -266,7 +270,7 @@ class ReservationController extends Controller
                         $complement->price_per_total_night = $complement->price;
                     }
                     return $complement;
-                });
+                });                
 
                 return $item;
             });
