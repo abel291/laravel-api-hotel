@@ -4,17 +4,15 @@
         <div class="grid grid-cols-2 gap-5">
             <div>
                 <label for="name" class="mb-2 block font-bold text-gray-600 ">Nombre Y Apellido</label>
-                <input 
-                    class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="name" type="text"
-                     x-model="client_name">
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="name"
+                    type="text" x-model="client_name">
                 <span x-text="errors.client_name" class="pl-1 text-red-600 text-sm block"></span>
             </div>
 
             <div>
                 <label for="phone" class="mb-2 block font-bold text-gray-600 ">Telefono</label>
-                <input 
-                    class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="phone" type="text"
-                     x-model="client_phone">
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="phone"
+                    type="text" x-model="client_phone">
                 <span x-text="errors.client_phone" class="pl-1 text-red-600 text-sm block"></span>
 
             </div>
@@ -23,7 +21,7 @@
                 <label for="email" class="mb-2 block font-bold text-gray-600 ">Email </label>
                 <input x-model="client_email"
                     class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="email"
-                    type="email" >
+                    type="email">
                 <span x-text="errors.client_email" class="pl-1 text-red-600 text-sm block"></span>
 
             </div>
@@ -31,8 +29,8 @@
             <div>
                 <label for=" c_email" class="mb-2 block font-bold text-gray-600 ">Confirmar email</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="c_email"
-                    type="email"  x-model="client_email_confirmation">
-                
+                    type="email" x-model="client_email_confirmation">
+
 
             </div>
 
@@ -47,7 +45,7 @@
             <div>
                 <label for="city" class="mb-2 block font-bold text-gray-600 ">Ciudad</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="city"
-                    type="text"  x-model="client_city">
+                    type="text" x-model="client_city">
                 <span x-text="errors.client_city" class="pl-1 text-red-600 text-sm block"></span>
             </div>
             <!---------------------------->
@@ -107,7 +105,7 @@
 
                     <div class="flex items-center space-x-5 ">
 
-                        <span x-text=room_selected.name></span>
+                        <span x-text="room_selected.name"></span>
                     </div>
                 </td>
                 <td class="p-4 ">
@@ -181,64 +179,67 @@
         </table>
     </div>
 
-
-
     <div class="space-y-8">
-        <h3 class="text-4xl font-bold text-gray-700">Pago con tarjeta</h3>        
+        <h3 class="text-4xl font-bold text-gray-700">Pago con tarjeta</h3>
         <div class="space-y-3">
 
-            <div class="sm:w-1/2 space-y-3 ">
-                <label for="card-holder-name" class=" mb-1 block text-sm font-medium text-gray-700">
-                    Nombre del titular</label>
+            <div class="sm:w-1/2 space-y-2 ">
+                <label for="card-holder-name" class="block text-sm font-medium text-gray-700">
+                    Nombre del titular
+                    <span x-text="input_stripe_error_name" class="pl-2 text-red-600 text-sm"></span>
+                </label>
+
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none capitalize"
-                    id="card-holder-name" type="text" placeholder="como aparece en la targeta"
-                    x>
+                    type="text" placeholder="como aparece en la targeta" x-model='input_stripe_name'>
+
             </div>
 
-            <div class="sm:w-1/2 space-y-3">
+            <div class="sm:w-1/2 space-y-2">
                 <label for="card-holder-name" class="block text-sm font-medium text-gray-700">
                     Numero de Targeta</label>
-                
-                <div id="card-element" class="rounded-md bg-white p-2.5 border border-gray-300"
+
+                <div id="card-element"
+                    class="w-full p-2.5 border border-gray-300 rounded-md focus:outline-none capitalize"
                     x-init="init_stripe('{{env('STRIPE_KEY')}}')">
                 </div>
 
-                <span id="error-card-input" class="error text-sm text-red-600 ml-1"></span>
+                <span x-text='input_stripe_error_card' class="pl-1 text-red-600 text-sm block"></span>
 
             </div>
         </div>
     </div>
-</div>
 
-<div class="flex space-x-3 justify-end">
-    <div>
-        <button x-on:click="step=3"
-            class="font-bold w-full py-3 px-14 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-300 focus:outline-none ">Volver</button>
-    </div>
-    <div class="">
-        <button id='card-button' class="font-bold py-3 w-64 rounded-full  text-white bg-orange-500 focus:outline-none "
-            :class="{ 'bg-orange-400' : isLoading , 'bg-orange-500' : !isLoading}">
+    <div class="flex space-x-3 justify-end">
+        <div>
+            <button x-on:click="step=3"
+                class="font-bold w-full py-3 px-14 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-300 focus:outline-none ">Volver</button>
+        </div>
+        <div class="">
+            <button id='card-button'
+                class="font-bold py-3 w-64 rounded-full  text-white bg-orange-500 focus:outline-none "
+                :class="{ 'bg-orange-400' : isLoading , 'bg-orange-500' : !isLoading}">
 
-            <span x-show="!isLoading">
-                Reservar habitacion
-            </span>
-            <div x-show="isLoading">
-                <div class="flex items-center justify-center">
-                    <div>
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
-                        </svg>
+                <span x-show="!isLoading">
+                    Reservar habitacion
+                </span>
+                <div x-show="isLoading">
+                    <div class="flex items-center justify-center">
+                        <div>
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                        </div>
+                        <span>Chekeando datos...</span>
                     </div>
-                    <span>Chekeando datos...</span>
                 </div>
-            </div>
 
-        </button>
+            </button>
+        </div>
     </div>
-</div>
 </div>

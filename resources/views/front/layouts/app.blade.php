@@ -16,7 +16,7 @@
     
 </head>
 
-<body>    
+<body class="flex flex-col min-h-screen text-gray-700 ">    
     
     @yield('content','ñlkk')
     

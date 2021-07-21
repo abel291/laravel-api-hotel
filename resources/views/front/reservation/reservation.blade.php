@@ -13,27 +13,34 @@
 </div>
 
 <div class="container mx-auto max-w-screen-xl section-p-y relative min-h-screen flex items-center justify-center">
+
+    
     <div x-data="reservation_step" class="w-full">
-        <div class="max-w-xl mx-auto text-red-500 rounded-lg p-4">
+        
+        <div class="max-w-xl mx-auto text-red-500 rounded-lg py-4">
             <div class="" x-show="errors.default">
                 <span class="block font-bold text-xl" x-text="errors.default"></span>
             </div>
         </div>
 
-        <div x-show="step==1" x-transition.duration.500ms>
+        <div x-show="step==1">
             @include('front.reservation.step_1_date')
         </div>
 
-        <div x-show="step==2" x-transition.duration.500ms>
+        <div x-show="step==2">
             @include('front.reservation.step_2_rooms')
         </div>
 
-        <div x-show="step==3" x-transition.duration.500ms>
+        <div x-show="step==3">
             @include('front.reservation.step_3_complements')
         </div>
 
-        <div x-show="step==4" x-transition.duration.500ms>
+        <div x-show="step==4">
             @include('front.reservation.step_4_user')
+        </div>
+
+        <div x-show="step==5">
+            @include('front.reservation.step_5_order_details')
         </div>
 
 
@@ -67,10 +74,22 @@
                         client_country:'{{$client->country}}',
                         client_city:'{{$client->city}}',
                         client_check_in:'',
-                        client_special_request:'{{$client->special_request}}'  ,
+                        client_special_request:'{{$client->special_request}}',
+
+                        
+                        errors:[],
+
+                        //stripe
 
                         stripe_key:'',
-                        errors:[],
+                        input_stripe_error_card:'',
+                        input_stripe_error_name:'',
+                        input_stripe_name:'',
+
+
+                        //STEP 5 
+                        order:0,
+                        pay_date:'',
             
                         async step_1_check_date(){
                             this.isLoading=true;
@@ -101,7 +120,7 @@
             
                             this.room_id=id;
                             this.room_quantity=document.getElementById('quantity_availables_' + id).value;      
-            
+                            console.log(this.rooms)
                             this.room_selected = this.rooms.find(x => x.id === this.room_id);  
             
                             this.complements = this.room_selected.complements
@@ -142,7 +161,6 @@
                                         
                                     })
             
-                                    this.room_selected=response.data.room;
                                     this.complements_cheked=response.data.complements_cheked;
                                     this.price_per_reservation=response.data.price_per_reservation;
                                     this.total_price=response.data.total_price;                    
@@ -164,19 +182,19 @@
                                     axios.post('/reservation/step_5_finalize', {                    
                                         methodpayment: methodpayment,
 
-                                        client_name:this.client_name,
-                                        client_phone:this.client_phone,
-                                        client_email:this.client_email,
-                                        client_email_confirmation:this.client_email_confirmation,
-                                        client_country:this.client_country,
-                                        client_city:this.client_city,
-                                        client_check_in:this.client_check_in,
-                                        client_special_request:this.client_special_request,                                        
+                                        client_name : this.client_name,
+                                        client_phone : this.client_phone,
+                                        client_email : this.client_email,
+                                        client_email_confirmation : this.client_email_confirmation,
+                                        client_country : this.client_country,
+                                        client_city : this.client_city,
+                                        client_check_in : this.client_check_in,
+                                        client_special_request : this.client_special_request,                                        
 
                                     })
 
-                                    this.code=response.data.order
-                                    this.step=4      
+                                    this.order=response.data.order
+                                    this.step=5    
                                     
                                 } catch (errors) {
                                     this.validator_errors(errors)
@@ -238,7 +256,7 @@
                                 var style = {
                                     base: {
                                         color: '#303238',
-                                        fontSize: '14px',
+                                        fontSize: '16px',
                                         fontFamily: '"Open Sans", sans-serif',
                                         fontSmoothing: 'antialiased',
                                         '::placeholder': {
@@ -259,61 +277,84 @@
                                 });
                                 cardElement.mount('#card-element');
 
-                                const cardHolderName = document.getElementById('card-holder-name');
+                                //const cardHolderName = document.getElementById('card-holder-name');
                                 const cardButton = document.getElementById('card-button');
-                                const input_error = document.getElementById('error-card-input')
                                 
                                 cardButton.addEventListener('click', async (e) => {
                                     
-                                    input_error.innerText = ""
+                                    this.input_stripe_error_name = "";
+                                    this.input_stripe_error_card = "";                                    
+                                    
+                                    if(!this.input_stripe_name){
+                                        this.input_stripe_error_name = 'El nombre del titular de la targeta es requerido';
+                                        this.isLoading=false;
+                                        return true;
+                                    }
+
                                     this.isLoading=true;
-                                    const { paymentMethod,error } = await stripe.createPaymentMethod(
+                                    const { paymentMethod,errors} = await stripe.createPaymentMethod(
                                         'card', cardElement, {
                                             billing_details: {
-                                                name: cardHolderName.value
+                                                name: this.input_stripe_name
                                             }
                                         }
                                     );
 
-                                    if (error) { 
-                                        this.isLoading=false;                                   
-                                        if (error.type == "validation_error") {
-
-                                            input_error.innerText = error.message
-
-                                        } 
-                                        else {
-                                            input_error.innerText = "Algo ha fallado con la pasarela de pago"
-                                        }
+                                    if (errors) { 
+                                        this.isLoading=false;                               
+                                        this.validator_errors(errors,'stripe')                                        
                                     } else {
                                         this.step_5_finalize(paymentMethod.id)
+                                        cardElement.clear();
                                     }
                                 });
                                 
-                                cardElement.addEventListener('change', function(event) {
-                                    input_error.innerText = ""
-                                });
+                                
                             });
                         },                   
 
-                        validator_errors(errors){
+                        validator_errors(errors,type=''){
                             
-                            
-                            if(errors.response.status==422){// -->input laravel validator
-                                
-                                let er =  errors.response.data.errors
-                                for (let key in er) {                                    
-                                    er[key] = er[key][0];                                   
+                            if(type=='stripe'){                                
+                               
+                                if (error.type == "validation_error") {
+
+                                    this.input_stripe_error_card = errors.message
                                 }
-                                this.errors=er;    
+
+                                else {
+                                    this.input_stripe_error_card = "Algo ha fallado con la pasarela de pago"
+                                }
+                            
+                            }else{
+                            
+                                if(errors.response.status==422){// -->input laravel validator
+                                    
+                                    let er =  errors.response.data.errors
+                                    for (let key in er) {                                    
+                                        er[key] = er[key][0];                                   
+                                    }
+                                    this.errors=er;    
+
+                                }
+                                else{
+                                    //window.location = '/'
+                                    console.log(errors.response)
+                                    
+                                    if(errors.response.data.error){
+                                        
+                                        this.errors.default = errors.response.data.error  
+                                    
+                                    }else{
+                                        
+                                        this.errors.default='Ha ocurrido un error por favor intente mas tarde'
+                                    }
+
+                                    this.step=1
+                                }
 
                             }
-                            else{
-                                //window.location = '/'
-                                console.log(errors.response)
-                                this.errors.default='Ha ocurrido un error por favor intente mas tarde'
-                                this.step=1
-                            }
+
                         },
                     }))
                 });
