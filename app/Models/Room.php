@@ -20,8 +20,7 @@ class Room extends Model
         'thumbnail',
         'beds',
         'adults',        
-        'breakfast',
-        'breakfast_price'
+        
     ];
 
     protected $casts = [
@@ -30,7 +29,7 @@ class Room extends Model
         'description_min' => 'string',
         'description_max' => 'string',        
         'quantity' => 'integer',
-        'price' => 'integer',        
+        'price' => 'float',        
         'active' => 'boolean',
         'beds' => 'integer',
         'adults' => 'integer',        
@@ -41,9 +40,7 @@ class Room extends Model
         'quantity' => 0,
         'price' => 0,
         'beds' => 0,
-        'adults' => 0,
-        'breakfast' => false,
-        'breakfast_price' => 0,        
+        'adults' => 0,             
     ];
 
 
@@ -62,12 +59,7 @@ class Room extends Model
     {
         return $this->belongsToMany(Complement::class);
     }
-
-    public function experiences()
-    {
-        return $this->belongsToMany(Experience::class);
-    }
-
+    
     public function reservations()
     {
         return $this->hasMany(Reservation::class);

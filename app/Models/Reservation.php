@@ -23,24 +23,20 @@ class Reservation extends Model
         'state',
         'canceled_date',
         'order',
-        'room_reservation',
-        'experience_reservation'
+        'room_reservation',        
     ];
     protected $casts = [
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'canceled_date' => 'datetime:Y-m-d',
-        'room_reservation' => 'object',
-        'experience_reservation' => 'object',   
+        'room_reservation' => 'object',     
         'total_price' => 'integer',   
     ];
     protected $attributes = [
         'check_in' => '02:30 PM',
         'total_price' => 0        
         
-    ];
-
-   
+    ];   
     public function room()
     {
         return $this->belongsTo(Room::class);
@@ -51,16 +47,6 @@ class Reservation extends Model
         return $this->belongsTo(Client::class);
     }
 
-    // Accessors & Mutators
-    public function getTotalPriceCurrAttribute($value='')// no se usa
-    {
-        
-        return '$'.number_format($this->total_price);
-    }
-    public function getPriceCurrAttribute()// no se usa
-    {        
-        return '$'.number_format($this->price);
-    }
 
    
 

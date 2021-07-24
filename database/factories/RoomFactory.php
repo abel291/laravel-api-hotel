@@ -31,9 +31,7 @@ class RoomFactory extends Factory
             "beds" => $this->faker->numberBetween(3, 9),
             "adults" => $this->faker->numberBetween(3, 9),
             "kids" => $this->faker->numberBetween(0, 2),
-            "breakfast" => true,
-            "breakfast_price" => $this->faker->numberBetween(10, 20) ,
-            "price" => $this->faker->numberBetween(10, 30)*10 ,
+            "price" => $this->faker->numberBetween(1000, 3000)/100,
             "thumbnail" => 'room-'.rand(0,10).'.jpg' ,
         ];
     }

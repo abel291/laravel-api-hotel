@@ -20,13 +20,11 @@ class Rooms extends Migration
             $table->text('description_min');
             $table->text('description_max');           
             $table->tinyInteger('quantity')->default(0);            
-            $table->integer('price')->default(0);
+            $table->decimal('price',10,2)->default(0);
             $table->boolean('active')->default(0);
             $table->tinyInteger('beds')->default(0);
             $table->tinyInteger('adults')->default(0);
             $table->tinyInteger('kids')->default(0)->nullable();
-            $table->boolean('breakfast')->default(false);
-            $table->integer('breakfast_price')->default(false);
             $table->string('thumbnail');
             $table->timestamps();
             $table->softDeletes();

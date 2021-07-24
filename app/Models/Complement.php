@@ -12,27 +12,28 @@ class Complement extends Model
     protected $fillable = [
         'name',
         'icon',
+        'description_min',
         'price',
         'type_price',
         'active',
-        'description_min',
     ];
 
     protected $casts = [
         'name' => 'string',
-        'icon' => 'string',
-        'price' => 'integer',
+        'description_min' => 'string',
+        'price' => 'float',
         'type_price' => 'string',
         'active' => 'boolean',
-        'description_min' => 'string',
+    ];
+    protected $attributes = [
+        'active' => 0,        
+        'price' => 0,
+        'type_price' => 'reservation',
+        
     ];
 
     public function rooms()
     {
         return $this->belongsToMany(Room::class);
-    }
-    public function getIconPathAttribute($value='')
-    {
-        return '/storage/complements/'.$this->icon;
     }
 }

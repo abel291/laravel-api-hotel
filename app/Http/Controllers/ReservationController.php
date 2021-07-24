@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 //use App\Helpers\ReservationSystem;
 
-use App\Helpers\Helper;
+use App\Helpers\Helpers;
 use App\Helpers\ReservationSystem;
 use App\Models\Room;
 use Carbon\Carbon;

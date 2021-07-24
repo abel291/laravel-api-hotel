@@ -24,6 +24,10 @@ class CreateComplements extends Component
 
     protected $rules = [
         'complement.name' => 'required|string|max:255',
+        'complement.description_min' => 'required|string|max:1000',
+        'complement.active' => 'required|boolean',
+        'complement.price' => 'required|numeric',
+        'complement.type_price' => 'required|string|max:255',        
         'icon' => 'image|max:2048|mimes:jpeg,jpg,png',
     ];
 
@@ -77,10 +81,13 @@ class CreateComplements extends Component
         $this->edit_var = true;
         $this->open = true;
         $this->complement = $complement;
+        //dd($this->complement->active);
+        
     }
 
     public function update(Complement $complement)
-    {
+    {   
+        
         $this->rules['icon'] = 'nullable|image|max:2048|mimes:jpeg,jpg,png';
         $this->validate();
         $complement = $this->complement;
@@ -94,7 +101,6 @@ class CreateComplements extends Component
             //->save(storage_path('app/public') . '/complement/' . $complement->icon);
             
             Storage::put('complements/'.$complement->icon, $img->__toString());
-
         }
 
         $complement->save();
@@ -102,8 +108,8 @@ class CreateComplements extends Component
         $this->edit_var = false;
 
         $this->dispatchBrowserEvent('notification', [
-            'title' => "servicio Editada",
-            'subtitle' => "La servicio  <b>" . $this->complement->name . "</b>  a sido  Editada correctamente"
+            'title' => "Complemento Editado",
+            'subtitle' => "El Complemento  <b>" . $this->complement->name . "</b>  a sido  Editado correctamente"
         ]);
         $this->reset('icon');
         $this->emit('resetListComplements');
@@ -123,7 +129,7 @@ class CreateComplements extends Component
         $this->open_modal_confirmation = false;
 
         $this->dispatchBrowserEvent('notification', [
-            'title' => "Servicio Eliminada",
+            'title' => "Complemento Eliminada",
             'subtitle' => ""
         ]);
     }

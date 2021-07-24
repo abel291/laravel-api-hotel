@@ -24,12 +24,11 @@ class ComplementFactory extends Factory
     {
         return [
             "name" => $this->faker->words(3, true),            
-            "icon" => 'complements-'.rand(0,12).'.png',
-            "price" => $this->faker->numberBetween(8, 14) ,
-            "description_min" => $this->faker->text(100),
-            "active" => 1,                   
-            "type_price" => $this->faker->randomElement(['reservation','night']) ,
-            
+            "icon" => 'complements-'.rand(0,12).'.png',            
+            "price" => $this->faker->numberBetween(1000, 3000)/100 ,
+            "type_price" => $this->faker->randomElement(['reservation','night','free']) ,
+            'description_min' => $this->faker->text(100),
+            "active" => 1,      
         ];
     }
 }

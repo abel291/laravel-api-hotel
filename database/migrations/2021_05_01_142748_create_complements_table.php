@@ -15,10 +15,10 @@ class CreateComplementsTable extends Migration
     {
         Schema::create('complements', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('icon');
-            $table->integer('price');
-            $table->enum('type_price', ['reservation','night']);
+            $table->string('name');            
+            $table->string('icon');            
+            $table->decimal('price',10,2)->default(0);
+            $table->enum('type_price', ['reservation','night','free']);
             $table->text('description_min');
             $table->boolean('active');
             $table->timestamps();

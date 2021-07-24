@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Complement;
-use App\Models\Experience;
+
 use App\Models\Gallery;
 use App\Models\Reservation;
 use App\Models\Client;
@@ -30,16 +30,16 @@ class DatabaseSeeder extends Seeder
             'name'=>'123123',
             'email'=>'ad@ad.com',
             'phone'=>'123123123',
-            'password'=> Hash::make('123123')            
+            'password'=> Hash::make('123123')  
+                      
         ]);
        // User::factory(1)->create();
        
         $complements = Complement::factory()->count(5);        
-        $experiences = Experience::factory()->count(3);
+        //additionals = Additional::factory()->count(3);
         
         Room::factory()->count(10)        
         ->hasAttached($complements)        
-        ->hasAttached($experiences)        
         ->hasImages(12)
         ->create();      
         

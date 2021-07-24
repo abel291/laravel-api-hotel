@@ -42,7 +42,6 @@ Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('das
     //Route::get('/users', ListUsers::class)->name('users');
     Route::get('/rooms', ListRooms::class)->name('rooms');
     Route::get('/complements', ListComplements::class)->name('complements');
-    Route::get('/experiences', ListExperiences::class)->name('experiences');
     Route::get('/galleries', ListGalleries::class)->name('galleries');
     Route::get('/reservations', ListReservations::class)->name('reservations');
     Route::get('/blog', ListPosts::class)->name('blog');

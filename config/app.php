@@ -232,7 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'ImageManager' => Intervention\Image\Facades\Image::class,
         'ReservationSystem' => App\Helpers\ReservationSystem::class,
-        'Helpers' => App\Helpers\Helper::class,
+        'Helpers' => App\Helpers\Helpers::class,
 
     ],
 

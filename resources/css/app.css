@@ -36,7 +36,9 @@
 	backdrop-filter: blur(12px);
 	background: #7575759c;
 }
-.form-input:focus {
+.form-input:focus,
+.form-select:focus
+ {
 	outline: none;
 	box-shadow: 0 0 0 2px #cbd5e085;
 	border-color:  #e2e8f0;
