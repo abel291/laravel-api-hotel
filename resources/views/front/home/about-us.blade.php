@@ -1,4 +1,10 @@
-@extends('front.layouts.app')
+@extends('front.layouts.app',[
+    'nav_type'   =>'img',
+    'banner_type'   =>'img',
+    'page_title'         =>$page->title,
+    'page_sub_title'     =>$page->sub_title,
+    'page_img'           =>$page->img,
+])
 
 @section('seo_title', $page->seo_title)
 
@@ -6,21 +12,9 @@
 
 @section('seo_keys', $page->seo_keys)
 
-
 @section('content')
-
-    <div class=" absolute inset-0 top-0 text-white">
-        @include('front.navbar')
-    </div>
-
-    @include('front.pieces.banner_title', [
-    'title' => $page->title,
-    'sub_title' => $page->sub_title,
-    'img' =>'img/home/about.jpg'
-    ])
-
-    <div class="container mx-auto max-w-screen-xl">
-        
+    
+    <div class="container mx-auto max-w-screen-xl">       
 
             <div class="section-p-y">
                 <div class=" max-w-md flex flex-col md:flex-row md:items-center justify-between pb-14 space-y-4 md:space-y-0 md:space-x-5">
@@ -260,7 +254,7 @@
                     <div class="text-gray-500 mb-5">Reserve su habitación ahora mismo y comience su increíble
                         aventura llena de descubrimientos y experiencias con Hotel Cartagena.</div>
                     <div>
-                        <a href=""
+                        <a href="{{route('reservation.index')}}"
                             class="px-4 py-2 justify-center  md:px-6 rounded-full text-white bg-orange-500 flex md:inline-flex items-center  space-x-2 ">
 
                             <span class="font-bold ">Reservacion</span>

@@ -1,6 +1,15 @@
 <div class="max-w-5xl mx-auto space-y-16">
     
-    <!-- tu orden -->
+    <!-- tu orden 
+    
+    {{-- {{$client->name}}
+{{$client->phone}}
+{{$client->email}}
+
+{{$client->country}}
+{{$client->city}}
+{{$client->special_request}} --}}
+-->
     <div class="space-y-8">
         <h2 class="text-4xl font-bold text-gray-700">Tu orden</h2>
 
@@ -99,31 +108,28 @@
             <div>
                 <label for="name" class="mb-2 block font-bold text-gray-600 ">Nombre Y Apellido</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="name"
-                    type="text" x-model="client_name">
-                <span x-text="errors.client_name" class="pl-1 text-red-600 text-sm block"></span>
+                    type="text" x-model="client_name" x-init="client_name='{{$client->name}}'">
             </div>
 
             <div>
                 <label for="phone" class="mb-2 block font-bold text-gray-600 ">Telefono</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="phone"
-                    type="text" x-model="client_phone">
-                <span x-text="errors.client_phone" class="pl-1 text-red-600 text-sm block"></span>
+                    type="text" x-model="client_phone" x-init="client_phone='{{$client->phone}}'">
 
             </div>
             <!---------------------------->
             <div>
                 <label for="email" class="mb-2 block font-bold text-gray-600 ">Email </label>
-                <input x-model="client_email"
+                <input x-model="client_email" x-init="client_email='{{$client->email}}'"
                     class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="email"
                     type="email">
-                <span x-text="errors.client_email" class="pl-1 text-red-600 text-sm block"></span>
 
             </div>
 
             <div>
                 <label for=" c_email" class="mb-2 block font-bold text-gray-600 ">Confirmar email</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="c_email"
-                    type="email" x-model="client_email_confirmation">
+                    type="email" x-model="client_email_confirmation" x-init="client_email_confirmation='{{$client->email}}'">
 
 
             </div>
@@ -131,16 +137,14 @@
             <div>
                 <label for=" country" class="mb-2 block font-bold text-gray-600 ">Pais</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="country"
-                    type="text" x-model="client_country">
-                <span x-text="errors.client_country" class="pl-1 text-red-600 text-sm block"></span>
+                    type="text" x-model="client_country" x-init="client_country='{{$client->country}}'">
 
             </div>
 
             <div>
                 <label for="city" class="mb-2 block font-bold text-gray-600 ">Ciudad</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="city"
-                    type="text" x-model="client_city">
-                <span x-text="errors.client_city" class="pl-1 text-red-600 text-sm block"></span>
+                    type="text" x-model="client_city" x-init="client_city='{{$client->city}}'">
             </div>
             <!---------------------------->
             <div x-data x-init="
@@ -158,7 +162,6 @@
                 <label for="check_in_date" class="mb-2 block font-bold text-gray-600">Hora de llegada</label>
                 <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" x-ref="check_in"
                     id="check_in_date" type="text" x-model="client_check_in">
-                <span x-text="errors.client_check_in" class="pl-1 text-red-600 text-sm block"></span>
 
             </div>
             <!---------------------------->
@@ -169,8 +172,7 @@
                 <div class="mt-1">
                     <textarea id="special_request" name="about" rows="3"
                         class="form-input rounded-md mt-1 focus:border-gray-500 block w-full focus:shadow-none  border-gray-300 border-1"
-                        placeholder="Algo a tener en cuenta...." x-model="client_special_request"></textarea>
-                    <span x-text="errors.client_special_request" class="pl-1 text-red-600 text-sm block"></span>
+                        placeholder="Algo a tener en cuenta...." x-model="client_special_request" x-init="client_special_request='{{$client->special_request}}'"></textarea>
 
                 </div>
             </div>
@@ -187,10 +189,8 @@
                     
                 </label>
 
-                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none capitalize"
-                    type="text" placeholder="como aparece en la targeta" x-model='input_stripe_name'>
-                    <span x-text="input_stripe_error_name" class="pl-1 text-red-600 text-sm block"></span>
-
+                <input class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none uppercase"
+                    type="text" placeholder="como aparece en la targeta" x-model='input_stripe_name' x-init="input_stripe_name='{{$client->name}}'">
             </div>
 
             <div class="sm:w-1/2 space-y-2">

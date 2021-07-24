@@ -39,7 +39,7 @@ Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('das
         return view('dashboard');
     })->name('home');
 
-    Route::get('/users', ListUsers::class)->name('users');
+    //Route::get('/users', ListUsers::class)->name('users');
     Route::get('/rooms', ListRooms::class)->name('rooms');
     Route::get('/complements', ListComplements::class)->name('complements');
     Route::get('/experiences', ListExperiences::class)->name('experiences');
@@ -50,14 +50,22 @@ Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('das
     Route::get('/pages', ListPages::class)->name('pages');
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
+Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/about-us', [HomeController::class, 'about'])->name('about_us');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 Route::get('/rooms', [HomeController::class, 'rooms'])->name('rooms');
 Route::get('/room/{room}', [HomeController::class, 'room'])->name('room');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
-Route::get('/blog/post/{slug}', [HomeController::class, 'post'])->name('blog');
+Route::get('/blog/post/{slug}', [HomeController::class, 'post'])->name('post');
+Route::get('/terms-conditions', [HomeController::class, 'terms_conditions'])->name('terms-conditions');
+Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('privacy-policy');
+Route::get('/cancellation-policies', [HomeController::class, 'cancellation_policies'])->name('cancellation-policies');
+//Route::get('/cancellation-reservation', [HomeController::class, 'cancellation_reservation'])->name('cancellation-reservation');
+Route::get('/cookies-policy', [HomeController::class, 'cookies_policy'])->name('cookies-policy');
+
+
+
 
 
 

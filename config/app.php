@@ -230,7 +230,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'ImageManager' => Intervention\Image\Facades\Image::class
+        'ImageManager' => Intervention\Image\Facades\Image::class,
+        'ReservationSystem' => App\Helpers\ReservationSystem::class,
+        'Helpers' => App\Helpers\Helper::class,
 
     ],
 

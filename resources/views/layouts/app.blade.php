@@ -23,7 +23,7 @@
     <!-- https://material.io/resources/icons/?style=twotone -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone" rel="stylesheet">
     
-    @livewireStyles   
+    @livewireStyles
     
     
     
@@ -95,11 +95,9 @@
 
     @stack('modals')
     
-    @livewireScripts  
-    
-    
-    <script src="{{ mix('js/app.js') }}" ></script>
-    <script src="https://js.stripe.com/v3/"></script>  
+    @livewireScripts 
+    <script   src="{{ mix('js/app.js') }}" defer></script>
+    {{-- <script src="https://js.stripe.com/v3/"></script>   --}}
     @stack('scripts')
     
 </body>

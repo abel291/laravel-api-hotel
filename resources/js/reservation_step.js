@@ -18,14 +18,14 @@ export default () => ({
     isLoading: false,
 
     //step 4
-    client_name: '{{$client->name}}',
-    client_phone: '{{$client->phone}}',
-    client_email: '{{$client->email}}',
-    client_email_confirmation: '{{$client->email}}',
-    client_country: '{{$client->country}}',
-    client_city: '{{$client->city}}',
+    client_name: '',
+    client_phone: '',
+    client_email: '',
+    client_email_confirmation: '',
+    client_country: '',
+    client_city: '',
     client_check_in: '',
-    client_special_request: '{{$client->special_request}}',
+    client_special_request: '',
 
     //stripe
     stripe_key: '',
@@ -43,6 +43,7 @@ export default () => ({
     async step_1_check_date() {
         this.isLoading = true;
         this.errors = [];
+        
         try {
             const response = await
                 axios.post('/reservation/step_1_check_date', {
@@ -176,7 +177,7 @@ export default () => ({
 
     init() {
         this.$nextTick(() => {
-
+            
             const calendar_start_date = flatpickr('#step_1_start_date', {
                 altInput: true,
                 altFormat: 'F j, Y',
@@ -213,7 +214,7 @@ export default () => ({
 
     init_stripe(stripe_key) {
         this.$nextTick(() => {
-
+            console.log(this.errors.length)
             var style = {
                 base: {
                     color: '#303238',
@@ -280,26 +281,25 @@ export default () => ({
     validator_errors(errors) {
 
         if (errors.response.status == 422) {// -->input laravel validator
-
+            
             let er = errors.response.data.errors
             for (let key in er) {
-                er[key] = er[key][0];
+                console.log(er[key][0])
+                this.errors.push( er[key][0] )  
             }
-            this.errors = er;
-
         }
         else {
             //window.location = '/'
             if (errors.response.data.error) {
 
-                this.errors.default = errors.response.data.error
+                this.errors[0] = errors.response.data.error
 
             } else {
 
-                this.errors.default = 'Ha ocurrido un error por favor intente mas tarde'
+                this.errors[0] = 'Ha ocurrido un error por favor intente mas tarde'
             }
             scroll_top()
-            this.step = 1
+            //this.step = 1
         }
 
     },

@@ -59,24 +59,24 @@ class DatabaseSeeder extends Seeder
 
         $pages=[
             'home',
-            'about-us',
+            'about_us',
             'gallery',
             'contact',
             'rooms',
             'blog',
-            'privacy-policy',
-            'cancellation-policies',
-            'terms-conditions',
-            
+            'privacy_policy',
+            'cancellation_policies',
+            'terms_conditions',
+            'reservation',            
         ];
         $faker = Faker\Factory::create();
         foreach ($pages as $key => $value) {
            Page::create([
-            'title' => $faker->sentence(3),
+            'title' => $faker->sentence(4),
             'sub_title' => $faker->sentence(3),
             'description' => $faker->text(400),            
             'slug' => Str::slug($faker->sentence()),
-            'img' => $faker->imageUrl(360, 360, 'animals', true),            
+            'img' => 'page-img-'.rand(1,20).'.jpg',              
             'seo_title' => $faker->sentence(),
             'seo_desc' => $faker->sentence(),
             'seo_keys' => $faker->sentence(),

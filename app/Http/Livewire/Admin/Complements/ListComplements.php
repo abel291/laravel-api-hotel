@@ -45,10 +45,12 @@ class ListComplements extends Component
         'resetListComplements' => 'resetList'
     ];
     public function render()
-    {
+    {   
+        
         $data = Complement::where('name','like','%'.$this->search.'%')
             ->orderBy($this->sortBy,$this->sortDirection)
             ->paginate(10);
+        
         return view('livewire.admin.complements.list-complements',compact('data'));
     }
 }

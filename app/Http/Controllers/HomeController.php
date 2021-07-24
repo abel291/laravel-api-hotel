@@ -15,13 +15,14 @@ use Illuminate\Database\Eloquent\Builder;
 class HomeController extends Controller
 {
 
-    public function index(){
+    public function home(){
         $page=Page::where('type','home')->first();
-        return view('front.home.home',compact('page'));
+        $rooms=Room::where('active',1)->get()->random(5);
+        return view('front.home.home',compact('page','rooms'));
     }
     
     public function about(){
-        $page=Page::where('type','about-us')->first();
+        $page=Page::where('type','about_us')->first();
         
         return view('front.home.about-us',compact('page'));
     }
@@ -75,4 +76,54 @@ class HomeController extends Controller
         return view('front.home.post',compact('page','post'));
     }
 
+    public function terms_conditions(){
+        $page = Page::where('type','terms_conditions')->first();
+        
+        return view('front.home.terms-conditions',compact('page'));
+    }
+
+    public function cancellation_policies(){
+        $page = Page::where('type','cancellation_policies')->first();
+        
+        return view('front.home.cancellation-policies',compact('page'));
+    }
+
+    public function privacy_policy(){
+        $page = Page::where('type','privacy_policy')->first();
+        
+        return view('front.home.privacy-policy',compact('page'));
+    }
+    // public function cancellation_reservation(){
+    //     $page = Page::where('type','privacy_policy')->first();
+        
+    //     return view('front.home.cancellation-reservation',compact('page'));
+    // }
+    public function cookies_policy(){
+        
+        
+        return view('front.home.cookies-policy',compact('page'));
+    }
+    public function reservation(Request $request){
+        {
+
+            $start_date = $request->start_date ? $request->start_date : Carbon::now()->format('Y-m-d');
+    
+            $end_date = $request->end_date ? $request->end_date : Carbon::now()->addDay()->format('Y-m-d');
+    
+            $adults = $request->adults ? $request->adults : 1;
+    
+            $client = new Client;
+            $faker = Faker\Factory::create();
+            $client->name = $faker->name;
+            $client->phone = $faker->phoneNumber;
+            $client->email = $faker->safeEmail;
+            $client->country = $faker->country;
+            $client->city = $faker->city;
+            $client->special_request = $faker->text($maxNbChars = 200);
+            
+            $page = Page::where('type','reservation')->first();
+            return view('front.reservation.reservation', compact('client', 'start_date', 'end_date','adults','page'));
+        }
+    }
+    
 }

@@ -1,4 +1,11 @@
-@extends('front.layouts.app')
+@extends('front.layouts.app',[
+    
+    'nav_type'   =>'img',
+    'banner_type'   =>'img',
+    'page_title'         =>$page->title,
+    'page_sub_title'     =>$page->sub_title,
+    'page_img'           =>$page->img,
+])
 
 @section('seo_title', $room->name)
 
@@ -7,11 +14,7 @@
 @section('seo_keys', $room->seo_keys)
 
 
-@section('content')
-
-    <div class=" absolute inset-0 top-0 text-white">
-        @include('front.navbar')
-    </div>
+@section('content')    
 
     @include('front.pieces.banner_title', [
     'title' => $room->name,
@@ -96,6 +99,17 @@
                             @endforeach
                         </div>
                     </div>
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-3xl text-gray-700 ">Lista de precios</h3>
+                        <div class="grid grid-cols-6 gap-5">
+                            @foreach ($room->complements as $complement)
+                                <div class="flex items-center col-span-3 md:col-span-2">
+                                    <img class="mr-3" src="{{ $complement->icon_path }}" alt="{{ $complement->name }}">
+                                    <div>{{ $complement->name }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 
             </div>
 
@@ -105,19 +119,19 @@
                         <span class="block text-sm mb-2">PRECIO</span>
                         <div>
                             <span class="font-bold text-3xl">${{ $room->price }}.00</span>
-                            <span class="text-lg">/ night</span>
+                            <span class="text-lg">/ noche</span>
                         </div>
 
                     </div>
                     <div class="px-6 py-6 space-y-4 border border-gray-200">
                         <div class="flex items-center text-gray-600 space-x-8 font-semibold">
-                            <span>Capacidad:{{ $room->adult }} </span>
-                            <span>Niños:{{ $room->kids }}</span>
+                            <span>Capacidad: {{ $room->adults }} </span>
+                            <span>Niños: {{ $room->kids }}</span>
                         </div>
                         <div class="space-y-3 text-center">
-                            <button class="w-full bg-orange-500 py-3 text-lg text-white rounded-full font-bold">
+                            <a href="{{route('reservation.index')}}" class="block w-full bg-orange-500 py-3 text-lg text-white rounded-full font-bold">
                                 Reservar
-                            </button>
+                            </a>
                             <div class="text-sm text-gray-400">Consultar la disponibilidad de esta habitación</div>
                         </div>
                     </div>
@@ -128,7 +142,7 @@
 
                     </div>
                     <div>
-                        <form class="py-4 text-gray-500 flex flex-col space-y-3">
+                        <form action="{{route('reservation.index')}}" class="py-4 text-gray-500 flex flex-col space-y-3">
 
                             <div class="border border-gray-300 rounded-md w-full flex">
 
@@ -169,10 +183,11 @@
                                 </div>
 
                                 <div class=" w-1/2 py-2 px-4 flex space-x-2 items-center ">
-                                    <label for="adults" class="font-bold text-gray-500">Niños:</label>
+                                    <label for="kids" class="font-bold text-gray-500">Niños:</label>
 
-                                    <select class="focus:outline-none w-12 rounded-md border-gray-300" name="adults"
-                                        id="adults">
+                                    <select class="focus:outline-none w-12 rounded-md border-gray-300" name="kids"
+                                        id="kids">
+                                        <option value="0">0 </option>
                                         <option value="1">1 </option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>

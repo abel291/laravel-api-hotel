@@ -1,4 +1,11 @@
-@extends('front.layouts.app')
+@extends('front.layouts.app',[
+    
+    'nav_type'   =>'white',
+'banner_type'   =>'white',
+    'page_title'         =>$page->title,
+    'page_sub_title'     =>$page->sub_title,
+    'page_img'           =>'',
+])
 
 @section('seo_title', $page->seo_title)
 
@@ -8,16 +15,6 @@
 
 
 @section('content')
-
-    <div class="md:text-gray-700 border-b border-gray-200">    
-        @include('front.navbar')
-    </div>
-
-    @include('front.pieces.banner_title_white', [
-    'title' => $page->title,
-    'sub_title' =>  $page->sub_title,
-    ])
-    
 
     <div class="container mx-auto max-w-screen-xl section-p-y">
         <div>        

@@ -6,9 +6,7 @@ flatpickr.localize(language.es);
 
 import Alpine from 'alpinejs'
 import reservation_step from './reservation_step.js'
-
 Alpine.data('reservation_step', reservation_step)
-
 Alpine.start()
 
 
