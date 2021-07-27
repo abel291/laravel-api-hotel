@@ -46,6 +46,10 @@ class Reservation extends Model
     {
         return $this->belongsTo(Client::class);
     }
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
+    }
 
 
    

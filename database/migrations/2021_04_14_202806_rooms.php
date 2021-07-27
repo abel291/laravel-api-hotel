@@ -21,6 +21,7 @@ class Rooms extends Migration
             $table->text('description_max');           
             $table->tinyInteger('quantity')->default(0);            
             $table->decimal('price',10,2)->default(0);
+            $table->string('price_text',20)->default('$0.00')->nullable();
             $table->boolean('active')->default(0);
             $table->tinyInteger('beds')->default(0);
             $table->tinyInteger('adults')->default(0);

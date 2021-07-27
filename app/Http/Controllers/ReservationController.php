@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationOrder;
+use App\Models\Discount;
 use App\Models\Page;
 
 class ReservationController extends Controller
@@ -85,7 +86,7 @@ class ReservationController extends Controller
         
     }
 
-    public function step_4_confirmation(Request $request)
+    public function step_3_confirmation(Request $request)
     {
 
         //habitacion seleccionada 
@@ -115,7 +116,7 @@ class ReservationController extends Controller
 
         return  compact('total_price', 'complements_cheked', 'price_per_reservation');
     }
-    public function step_5_finalize(Request $request)
+    public function step_4_finalize(Request $request)
     {
         Validator::make($request->all(), [
             'client_name' => 'required|string|max:255',
@@ -172,6 +173,37 @@ class ReservationController extends Controller
             ]);
         }
         
+    }
+    public function dicount_code(Request $request){
+        
+        
+        Validator::make($request->all(), [
+            'code' => 'required|exists:discounts,code',
+        ])->validate();
+
+        if(!session()->has('room_id')){
+            $error="no se puede usar este codigo de descuento";
+            return response()->json(['error'=>$error],500);
+        }
+
+        $discount=Discount::where('code',$request->code)
+        ->with('reservations')->firstOrFail();
+        
+        if( $discount->quantity <= $discount->reservations->sum('room_quantity') ){
+            
+            $error="Este codigo de descuento ya no esta disponible";
+            return response()->json(['error'=>$error],500);
+        
+        }
+        $total_price= session()->get('total_price');
+        $price_discount= round( $total_price * (( (100 - $discount->percent) / 100)) ,2); 
+        $percent=$discount->percent;
+        return compact('total_price','price_discount','percent');
+        
+        
+        
+
+
     }
 
     

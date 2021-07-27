@@ -97,7 +97,7 @@
     
     @livewireScripts 
     <script   src="{{ mix('js/app.js') }}" defer></script>
-    {{-- <script src="https://js.stripe.com/v3/"></script>   --}}
+    <script src="https://js.stripe.com/v3/"></script>  
     @stack('scripts')
     
 </body>

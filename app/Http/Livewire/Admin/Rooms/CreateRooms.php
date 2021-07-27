@@ -13,6 +13,7 @@ use Intervention\Image\ImageManagerStatic as ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
+
 class CreateRooms extends Component
 {
 
@@ -38,6 +39,7 @@ class CreateRooms extends Component
         'room.active' => 'required|boolean',        
         'room.beds' => 'required|numeric',   
         'room.adults' => 'required|numeric|max:255',        
+        'room.kids' => 'required|numeric|max:255',        
         'thumbnail' => 'image|max:2048|mimes:jpeg,jpg,png',
         'images.*' => 'image|max:2048|mimes:jpeg,jpg,png',
         'complements.*' => 'numeric',        
@@ -46,7 +48,7 @@ class CreateRooms extends Component
     public function mount(){
 
         $this->room=new Room;
-
+    
     }
 
     public function create(){
@@ -66,8 +68,7 @@ class CreateRooms extends Component
         $room->thumbnail=$room->slug.'.'.$this->thumbnail->extension();         
         $room->save();
 
-        $room->complements()->sync($this->complements); //complementos  
-        
+        $room->complements()->sync($this->complements); //complementos        
 
         $this->thumbnail->storeAs('rooms/thumbnail', $room->thumbnail);
 

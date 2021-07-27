@@ -69,8 +69,16 @@
             </x-jet-input>
 
         </div>
+        <div class="mr-4 w-28">
+
+            <x-jet-label>Niños</x-jet-label>
+            <x-jet-input class="mb-3 " type="number" wire:model.defer="kids">
+            </x-jet-input>
+
+        </div>
 
     </div>
+    
     <x-jet-button wire:click="check_1_date" wire:loading.attr="disabled">
         chequear
     </x-jet-button>

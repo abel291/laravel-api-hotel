@@ -35,7 +35,7 @@
                                 <span class="error text-sm text-red-600 block">{{ $message }}</span>
                                 @enderror
                             </x-jet-label>
-                            <x-form.input-price wire:model.defer="complement.price"></x-form.input-price>
+                            <x-form.input-price  :symbol="$" wire:model.defer="complement.price"></x-form.input-price >
                         </div>
                         <div class="w-full md:w-40">
                             <x-jet-label>

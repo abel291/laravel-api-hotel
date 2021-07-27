@@ -5,13 +5,13 @@
         reservation:{},
         client:{},
         room:{},
-        experience:{}
+        complements:{}
     }" @open-modal-details.window="
         show = true;
         reservation=$event.detail;         
         client = reservation.client;
         room = reservation.room_reservation;
-        experience = reservation.experience_reservation;
+        complements = reservation.complements_reservation;
 
         ">       
 
@@ -55,7 +55,7 @@
 
                             <div class="font-medium text-gray-500 col-span-3 "> Noches: </div>
                             <div class="col-span-3">
-                                <span x-text="reservation.days"></span>
+                                <span x-text="reservation.night"></span>
                             </div>
 
                             <div x-show="room.price > 1" class="font-medium text-gray-500 col-span-3 ">Precio por Noches: </div>
@@ -64,25 +64,25 @@
                                 <span class=" text-xs text-gray-400">por cada habitacion </span>
                             </div>
 
-                            <div x-show="reservation.experience_reservation"
+                            <div x-show="reservation.complements_reservation"
                                 class="col-span-6 border-b border-gray-200">
                             </div>
 
-                            <div x-show="reservation.experience_reservation"
+                            <div x-show="reservation.complements_reservation"
                                 class="font-medium text-gray-500 col-span-3 ">
-                                Experiences: </div>
-                            <div x-show="reservation.experience_reservation" class="col-span-3">
-                                <span x-text="experience.name"></span>
+                                complementss: </div>
+                            <div x-show="reservation.complements_reservation" class="col-span-3">
+                                <span x-text="complements.name"></span>
                             </div>
 
-                            <div x-show="reservation.experience_reservation"
+                            <div x-show="reservation.complements_reservation"
                                 class="font-medium text-gray-500 col-span-3 ">
                                 Precio: </div>
-                            <div x-show="reservation.experience_reservation" class="col-span-3">
-                                $<span x-text="experience.price"></span>
+                            <div x-show="reservation.complements_reservation" class="col-span-3">
+                                $<span x-text="complements.price"></span>
                             </div>
 
-                            <div x-show="reservation.experience_reservation"
+                            <div x-show="reservation.complements_reservation"
                                 class="col-span-6 border-b border-gray-200">
                             </div>
 

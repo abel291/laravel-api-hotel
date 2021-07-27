@@ -11,6 +11,7 @@ use App\Models\Gallery;
 use App\Models\Reservation;
 use App\Models\Client;
 use App\Models\Blog;
+use App\Models\Discount;
 use App\Models\Page;
 use App\Models\Tag;
 use Hash;
@@ -41,8 +42,10 @@ class DatabaseSeeder extends Seeder
         Room::factory()->count(10)        
         ->hasAttached($complements)        
         ->hasImages(12)
-        ->create();      
-        
+        ->create();  
+
+        Discount::factory(20)->create();
+
         Client::factory()->count(30)         
         ->has(Reservation::factory()->count(1))        
         ->create();        
@@ -53,7 +56,9 @@ class DatabaseSeeder extends Seeder
         
         Blog::factory(13)
         ->hasAttached($tags)
-        ->create();  
+        ->create(); 
+        
+        
         
         //Page::factory()->count(4)->create();
 

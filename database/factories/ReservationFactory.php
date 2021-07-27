@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Discount;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\Experience;
@@ -31,7 +32,8 @@ class ReservationFactory extends Factory
         $night=rand(2,8);
         $end_date = $reservation_date->modify('+'.$night.' day')->format('Y-m-d');
         
-        $room = Room::get();     
+        $room = Room::get();    
+        $dicount = Discount::get()->random();    
         //dd($date_reservation);      
         
           return [
@@ -41,7 +43,7 @@ class ReservationFactory extends Factory
             
             "night" => $night,
             
-            "discount_percent" => 0,
+            "discount_percent" => $dicount->porcent,
             
             "total_price" => $this->faker->numberBetween(40, 50)*10 ,  
             
@@ -64,6 +66,8 @@ class ReservationFactory extends Factory
             "room_reservation" => $room->random()->only('name','beds','adults','price'),            
 
             "room_id" => $room->random()->id,
+            
+            "discount_id" => $dicount->id,
         ];
     }
 }

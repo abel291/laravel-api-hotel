@@ -1,6 +1,6 @@
 <div>
     <div class="pb-6">
-        <div class="  max-w-7xl mx-auto sm:px-4 lg:px-8">
+        <div class=" max-w-7xl mx-auto sm:px-4 lg:px-8">
             <div class="mb-2">
                 <div class="flex justify-between">
                     <div class="flex mb-2 items-center">
@@ -17,8 +17,6 @@
                             </svg>
                         </div>
                     </div>
-
-                    </button>
                     {{ $component_create }}
                 </div>
                 <div class="flex flex-col">

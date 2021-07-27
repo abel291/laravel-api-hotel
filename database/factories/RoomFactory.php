@@ -20,7 +20,8 @@ class RoomFactory extends Factory
      * @return array
      */
     public function definition()
-    {
+    {   
+        $price=$this->faker->numberBetween(1000, 3000)/100;
         return [
             "name" => $this->faker->words(3, true),
             "slug" => Str::slug($this->faker->words(3, true)) ,
@@ -31,7 +32,8 @@ class RoomFactory extends Factory
             "beds" => $this->faker->numberBetween(3, 9),
             "adults" => $this->faker->numberBetween(3, 9),
             "kids" => $this->faker->numberBetween(0, 2),
-            "price" => $this->faker->numberBetween(1000, 3000)/100,
+            "price" => $price,
+            "price_text" => "$$price",
             "thumbnail" => 'room-'.rand(0,10).'.jpg' ,
         ];
     }

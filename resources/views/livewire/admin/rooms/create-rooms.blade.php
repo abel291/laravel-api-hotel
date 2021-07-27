@@ -42,75 +42,76 @@
                         </ul>
                     </div>
                     @endif
-                    <div x-show="tab === 'tab_data'">
-                        <x-jet-label>
-                            Nombre de la habitacion
-                            @error('room.name')
-                            <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                            @enderror
-                        </x-jet-label>
+                    <div class="space-y-4" x-show="tab === 'tab_data'">
+                        <div>
+                            <x-jet-label>
+                                Nombre de la habitacion
+                                @error('room.name')
+                                <span class="error text-sm text-red-600 block">{{ $message }}</span>
+                                @enderror
+                            </x-jet-label>
 
-                        <x-jet-input class="mb-3 w-full sm:w-3/4" type="text" wire:model.defer="room.name">
-                        </x-jet-input>
+                            <x-jet-input class="mb-3 w-full sm:w-3/4" type="text" wire:model.defer="room.name">
+                            </x-jet-input>
+                        </div>
 
-                        <x-jet-label>
-                            Url de la habitacion
-                            @error('room.slug')
-                            <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                            @enderror
-                        </x-jet-label>
+                        <div>
+                            <x-jet-label>
+                                Url de la habitacion
+                                @error('room.slug')
+                                <span class="error text-sm text-red-600 block">{{ $message }}</span>
+                                @enderror
+                            </x-jet-label>
 
-                        <x-jet-input class="mb-3 w-full sm:w-3/4" type="text" wire:model.defer="room.slug">
-                        </x-jet-input>
+                            <x-jet-input class="mb-3 w-full sm:w-3/4" type="text" wire:model.defer="room.slug">
+                            </x-jet-input>
+                        </div>
 
-                        <x-jet-label>
-                            Descripcion corta
-                            @error('room.description_min')
-                            <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                            @enderror
-                        </x-jet-label>
+                        <div>
+                            <x-jet-label>
+                                Descripcion corta
+                                @error('room.description_min')
+                                <span class="error text-sm text-red-600 block">{{ $message }}</span>
+                                @enderror
+                            </x-jet-label>
 
-                        <textarea rows="8" class="mb-3 w-full form-input rounded-md shadow-sm"
-                            wire:model.defer="room.description_min"></textarea>
+                            <textarea rows="4" class="mb-3 w-full form-input rounded-md shadow-sm"
+                                wire:model.defer="room.description_min"></textarea>
+                        </div>
 
-                        <x-jet-label>
-                            Descripcion Larga
-                            @error('room.description_max')
-                            <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                            @enderror
-                        </x-jet-label>
+                        <div>
+                            <x-jet-label>
+                                Descripcion Larga
+                                @error('room.description_max')
+                                <span class="error text-sm text-red-600 block">{{ $message }}</span>
+                                @enderror
+                            </x-jet-label>
 
-                        <textarea rows="8" class="mb-3 w-full form-input rounded-md shadow-sm"
-                            wire:model.defer="room.description_max"></textarea>
-
-
-                        <div class="grid grid-cols-3 gap-4" x-data="{
-                            breakfast : @entangle('room.breakfast').defer ,   
-                        }">
-
-                            <div>
+                            <textarea rows="8" class="mb-3 w-full form-textarea "
+                                wire:model.defer="room.description_max"></textarea>
+                        </div>
+                        <div class="flex flex-wrap space-x-4">
+                            <div class="w-full md:w-32">
                                 <x-jet-label>
-                                    Precio por noche
-                                    @error('room.price')
-                                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
-                                    @enderror
-                                </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.price">
-                                </x-jet-input>
-                            </div>
-
-                            <div>
-                                <x-jet-label>
-                                    Cantidad de Habitaciones
-                                    @error('room.quantity')
+                                    Adultos
+                                    @error('room.adults')
                                     <span class="error text-sm text-red-600  block">{{ $message }}</span>
                                     @enderror
                                 </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.quantity">
+                                <x-jet-input type="number" wire:model.defer="room.adults">
                                 </x-jet-input>
                             </div>
-
-                            <div>
+                            <div class="w-full md:w-32">
+                                <x-jet-label>
+                                    Niños
+                                    @error('room.kids')
+                                    <span class="error text-sm text-red-600  block">{{ $message }}</span>
+                                    @enderror
+                                </x-jet-label>
+                                <x-jet-input type="number" wire:model.defer="room.kids">
+                                </x-jet-input>
+                            </div>
+                            <div class="w-full md:w-32">
                                 <x-jet-label>
                                     Camas
                                     @error('room.beds')
@@ -119,73 +120,43 @@
                                 </x-jet-label>
                                 <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.beds"></x-jet-input>
                             </div>
+                        </div>
 
-                            <div>
-                                <x-jet-label>
-                                    Cantidad de Perosnas
-                                    @error('room.adults')
-                                    <span class="error text-sm text-red-600  block">{{ $message }}</span>
-                                    @enderror
-                                </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.adults">
-                                </x-jet-input>
-                            </div>
-
-                            <div>
-                                <x-jet-label id="id_breakfast">
-                                    Ofrecer desayuno
-                                    @error('room.breakfast')
-                                    <span class="error text-sm text-red-600  block">{{ $message }}</span>
-                                    @enderror
-                                </x-jet-label>
-                                <input for="id_breakfast" @click="breakfast = !breakfast" x-model="breakfast"
-                                    type="checkbox"
-                                    class="focus:ring-indigo-500 h-4 w-4 text-gray-600 border-gray-300 rounded">
-
-                            </div>
-
-                            <div x-show="breakfast">
+                        <div class="flex space-x-4">
+                            <div class="w-32">
                                 <x-jet-label>
                                     Precio por noche
-                                    @error('room.breakfast_price')
+                                    @error('room.price')
+                                    <span class="error text-sm text-red-600 block">{{ $message }}</span>
+                                    @enderror
+                                </x-jet-label>
+                                <x-form.input-price  wire:model.defer="room.price">
+                                    </x-form.price>
+
+                            </div>
+                            <div class="">
+                                <x-jet-label>
+                                    N° de Habitaciones
+                                    @error('room.quantity')
                                     <span class="error text-sm text-red-600  block">{{ $message }}</span>
                                     @enderror
                                 </x-jet-label>
-                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.breakfast_price">
+                                <x-jet-input class="mb-3 w-28" type="number" wire:model.defer="room.quantity">
                                 </x-jet-input>
                             </div>
-
+                            
                         </div>
-                        <div class="mb-5">
-
+                        <div>
                             <x-jet-label>
-                                Activo
+                                Activado
                                 @error('room.active')
-                                <span class="error text-sm text-red-600 block">{{ $message }}</span>
+                                <span class="error text-sm text-red-600  block">{{ $message }}</span>
                                 @enderror
                             </x-jet-label>
-
-                            <div class="flex">
-                                <div class="flex items-center mr-4">
-                                    <input id="active_yes" name="active" wire:model.defer="room.active" value="1"
-                                        type="radio"
-                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                        {{ $room->active ? '' : 'checked' }}>
-                                    <label for="active_yes" class="ml-3 block text-sm font-medium text-gray-700">
-                                        Si
-                                    </label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="active_no" name="active" wire:model.defer="room.active" value="0"
-                                        type="radio"
-                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                        {{ $room->active ? '' : 'checked' }}>
-                                    <label for="active_no" class="ml-3 block text-sm font-medium text-gray-700">
-                                        No
-                                    </label>
-                                </div>
-                            </div>
+                            <x-form.input-active wire:model.defer="room.active">
+                                </x-form.active>
                         </div>
+
 
                     </div>
 
@@ -251,7 +222,7 @@
                                         class="form-checkbox h-5 w-5 text-gray-600">
                                     <div class="ml-2">
                                         <span class=" text-gray-700 text-sm">
-                                             {{$item->name}}
+                                            {{$item->name}}
 
                                         </span>
                                         <span class="text-xs text-gray-400">

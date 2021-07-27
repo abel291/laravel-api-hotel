@@ -1,4 +1,7 @@
 export default () => ({
+
+    currencyFormat:'',
+
     step: 1,
     night: 0,
     start_date: '',
@@ -27,23 +30,28 @@ export default () => ({
     client_check_in: '',
     client_special_request: '',
 
+    codeDiscount:'',
+    error_input_code_discount:'',
+    
     //stripe
+    stripe: '',
+    cardElement: '',
     stripe_key: '',
+    input_stripe_name: '',
     input_stripe_error_card: '',
     input_stripe_error_name: '',
-    input_stripe_name: '',
+    
 
     //STEP 5 
     order: 0,
     create_date: '',
-
 
     errors: [],
 
     async step_1_check_date() {
         this.isLoading = true;
         this.errors = [];
-        
+
         try {
             const response = await
                 axios.post('/reservation/step_1_check_date', {
@@ -106,7 +114,7 @@ export default () => ({
         try {
             const response = await
 
-                axios.post('/reservation/step_4_confirmation', {
+                axios.post('/reservation/step_3_confirmation', {
 
                     room_id: this.room_selected.id,
                     room_quantity: this.room_quantity,
@@ -129,55 +137,100 @@ export default () => ({
             this.scroll_top()
         }
     },
-    async step_5_finalize(methodpayment) {
+    async step_4_finalize() {
+        
+        console.log(this.stripe);
+        this.input_stripe_error_name = "";
+        this.input_stripe_error_card = "";
 
+        if (!this.input_stripe_name) {
+            this.input_stripe_error_name = 'El nombre del titular de la targeta es requerido';
+            this.isLoading = false;
+            return true;
+        }
+
+        this.isLoading = true;
+        const { paymentMethod, error } = await this.stripe.createPaymentMethod(
+            'card', this.cardElement, {
+            billing_details: {
+                name: this.input_stripe_name
+            }
+        }
+        );
+
+        if (error) {
+            this.isLoading = false;
+            this.input_stripe_error_card = error.message
+        }
+
+        else {
+
+            try {
+                const response = await
+
+                    axios.post('/reservation/step_4_finalize', {
+                        methodpayment: paymentMethod.id,
+                        client_name: this.client_name,
+                        client_phone: this.client_phone,
+                        client_email: this.client_email,
+                        client_email_confirmation: this.client_email_confirmation,
+                        client_country: this.client_country,
+                        client_city: this.client_city,
+                        client_check_in: this.client_check_in,
+                        client_special_request: this.client_special_request,
+                    })
+
+                this.order = response.data.order
+                this.create_date = response.data.create_date
+                this.step = 5
+
+
+            } catch (errors) {
+                this.validator_errors(errors)
+            }
+            finally {
+                this.isLoading = false;
+                this.scroll_top()
+            }
+        }//else
+    },
+    async applyCodeDiscount(){     
+        this.$refs.price_discount.innerText="";
+        this.error_input_code_discount=''         
+        
+        if (!this.codeDiscount) {
+            this.error_input_code_discount = 'El codigo de descuento es requerido';
+            return true;
+        }
+
+        this.isLoading = true;
         try {
             const response = await
+                axios.post('/reservation/dicount_code', {
+                    code: this.codeDiscount,
+                });
 
-                axios.post('/reservation/step_5_finalize', {
-                    methodpayment: methodpayment,
+            this.total_price = response.data.total_price;
+            this.$refs.price_discount.innerText = response.data.price_discount;
 
-                    client_name: this.client_name,
-                    client_phone: this.client_phone,
-                    client_email: this.client_email,
-                    client_email_confirmation: this.client_email_confirmation,
-                    client_country: this.client_country,
-                    client_city: this.client_city,
-                    client_check_in: this.client_check_in,
-                    client_special_request: this.client_special_request,
-
-                })
-
-            this.order = response.data.order
-            this.create_date = response.data.create_date
-            this.step = 5
-
-
+        
         } catch (errors) {
+
             this.validator_errors(errors)
+
         }
         finally {
-            this.isLoading = false;
-            this.scroll_top()
+            this.isLoading = false;              
         }
     },
 
     formatNumber(n) {
-        n = n ? n : 0;// number NaN
-        let numberFormat = new Intl.NumberFormat('de-DE', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        })
-        return numberFormat.format(parseFloat(n))
-
-
+        n = n ? n : 0;// number NaN = 0
+        return '$'+ this.currencyFormat.format(parseFloat(n))
     },
-
     init() {
         this.$nextTick(() => {
-            
+
             const calendar_start_date = flatpickr('#step_1_start_date', {
                 altInput: true,
                 altFormat: 'F j, Y',
@@ -203,18 +256,8 @@ export default () => ({
                 defaultDate: this.end_date,
                 minDate: this.end_date,
             });
-            
-            const stripe_id =  document.getElementById('card-element').getAttribute('data-stripe_id');
-            
-            this.init_stripe(stripe_id)
-            
-            
-        });
-    },
 
-    init_stripe(stripe_key) {
-        this.$nextTick(() => {
-            console.log(this.errors.length)
+            //init stripe credit card
             var style = {
                 base: {
                     color: '#303238',
@@ -232,60 +275,30 @@ export default () => ({
                     },
                 },
             };
-            const stripe_id =  document.getElementById('card-element').getAttribute('data-stripe_id');
-            const stripe = Stripe(stripe_key);
-            const elements = stripe.elements();
-            const cardElement = elements.create('card', {
+            let stripe_key = document.getElementById('card-element').getAttribute('data-stripe_id');
+            this.stripe = Stripe(stripe_key);
+            let elements = this.stripe.elements();
+            this.cardElement = elements.create('card', {
                 style: style
             });
-            cardElement.mount('#card-element');
+            this.cardElement.mount('#card-element');
 
-            const cardButton = document.getElementById('card-button');
-
-            cardButton.addEventListener('click', async (e) => {
-
-                this.input_stripe_error_name = "";
-                this.input_stripe_error_card = "";
-
-                if (!this.input_stripe_name) {
-                    this.input_stripe_error_name = 'El nombre del titular de la targeta es requerido';
-                    this.isLoading = false;
-                    return true;
-                }
-
-                this.isLoading = true;
-                const { paymentMethod, error } = await stripe.createPaymentMethod(
-                    'card', cardElement, {
-                    billing_details: {
-                        name: this.input_stripe_name
-                    }
-                }
-                );
-
-                if (error) {
-                    this.isLoading = false;
-                    this.input_stripe_error_card = error.message
-                }
-
-                else {
-
-                    this.step_5_finalize(paymentMethod.id)
-                    cardElement.clear();
-                }
-            });
-
+            
 
         });
+
+        this.currencyFormat = Intl.NumberFormat('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        })
     },
-
     validator_errors(errors) {
-
+        this.errors=[];
         if (errors.response.status == 422) {// -->input laravel validator
-            
+
             let er = errors.response.data.errors
             for (let key in er) {
-                console.log(er[key][0])
-                this.errors.push( er[key][0] )  
+                this.errors.push(er[key][0])
             }
         }
         else {
@@ -298,9 +311,10 @@ export default () => ({
 
                 this.errors[0] = 'Ha ocurrido un error por favor intente mas tarde'
             }
-            scroll_top()
+            
             //this.step = 1
         }
+        this.scroll_top()
 
     },
     scroll_top() {

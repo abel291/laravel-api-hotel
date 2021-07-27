@@ -30,6 +30,7 @@ class CreateReservationsTable extends Migration
             $table->tinyInteger('room_quantity');
             $table->foreignId('room_id')->index();  
             $table->foreignId('client_id')->index();           
+            $table->foreignId('discount_id')->nullable();         
 
             $table->json('room_reservation');
             $table->timestamps();

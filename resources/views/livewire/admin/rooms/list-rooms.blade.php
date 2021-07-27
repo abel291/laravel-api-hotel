@@ -55,7 +55,7 @@
                     </td>
                     <td>
                         <div class=" text-sm text-gray-500">
-                            ${{ number_format($item->price) }}
+                            {{ Helpers::format_price($item->price) }}
                         </div>
                     </td>
                     <td class="text-sm font-medium ">

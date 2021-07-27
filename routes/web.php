@@ -12,6 +12,7 @@ use App\Http\Livewire\Admin\Reservations\ListReservations;
 use App\Http\Livewire\Admin\Blog\ListPosts;
 use App\Http\Livewire\Admin\Blog\ListTags;
 use App\Http\Livewire\Admin\Pages\ListPages;
+use App\Http\Livewire\Admin\Discount\ListDiscount;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('das
     Route::get('/blog', ListPosts::class)->name('blog');
     Route::get('/tags', ListTags::class)->name('tags');
     Route::get('/pages', ListPages::class)->name('pages');
+    Route::get('/discounts', ListDiscount::class)->name('discounts');
 });
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
@@ -64,18 +66,16 @@ Route::get('/cancellation-policies', [HomeController::class, 'cancellation_polic
 Route::get('/cookies-policy', [HomeController::class, 'cookies_policy'])->name('cookies-policy');
 
 
-
-
-
-
 Route::prefix('reservation')->name('reservation.')->group(function () {
 
     Route::get('/', [ReservationController::class, 'index'])->name('index');
 
     Route::post('/step_1_check_date', [ReservationController::class, 'step_1_check_date'])->name('step_1_check_date');
 
-    Route::post('/step_4_confirmation', [ReservationController::class, 'step_4_confirmation'])->name('step_4_confirmation');
+    Route::post('/step_3_confirmation', [ReservationController::class, 'step_3_confirmation'])->name('step_3_confirmation');
     
-    Route::post('/step_5_finalize', [ReservationController::class, 'step_5_finalize'])->name('step_5_finalize');
+    Route::post('/step_4_finalize', [ReservationController::class, 'step_4_finalize'])->name('step_4_finalize');
+
+    Route::post('/dicount_code', [ReservationController::class, 'dicount_code'])->name('dicount_code');
 
 });

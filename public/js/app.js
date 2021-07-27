@@ -25978,6 +25978,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   return {
+    currencyFormat: '',
     step: 1,
     night: 0,
     start_date: '',
@@ -26003,11 +26004,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     client_city: '',
     client_check_in: '',
     client_special_request: '',
+    codeDiscount: '',
+    error_input_code_discount: '',
     //stripe
+    stripe: '',
+    cardElement: '',
     stripe_key: '',
+    input_stripe_name: '',
     input_stripe_error_card: '',
     input_stripe_error_name: '',
-    input_stripe_name: '',
     //STEP 5 
     order: 0,
     create_date: '',
@@ -26097,7 +26102,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this3.isLoading = true;
                 _context2.prev = 1;
                 _context2.next = 4;
-                return axios.post('/reservation/step_4_confirmation', {
+                return axios.post('/reservation/step_3_confirmation', {
                   room_id: _this3.room_selected.id,
                   room_quantity: _this3.room_quantity,
                   ids_complements_cheked: _this3.ids_complements_cheked
@@ -26134,19 +26139,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2, null, [[1, 11, 14, 18]]);
       }))();
     },
-    step_5_finalize: function step_5_finalize(methodpayment) {
+    step_4_finalize: function step_4_finalize() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        var response;
+        var _yield$_this4$stripe$, paymentMethod, error, response;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.prev = 0;
-                _context3.next = 3;
-                return axios.post('/reservation/step_5_finalize', {
-                  methodpayment: methodpayment,
+                console.log(_this4.stripe);
+                _this4.input_stripe_error_name = "";
+                _this4.input_stripe_error_card = "";
+
+                if (_this4.input_stripe_name) {
+                  _context3.next = 7;
+                  break;
+                }
+
+                _this4.input_stripe_error_name = 'El nombre del titular de la targeta es requerido';
+                _this4.isLoading = false;
+                return _context3.abrupt("return", true);
+
+              case 7:
+                _this4.isLoading = true;
+                _context3.next = 10;
+                return _this4.stripe.createPaymentMethod('card', _this4.cardElement, {
+                  billing_details: {
+                    name: _this4.input_stripe_name
+                  }
+                });
+
+              case 10:
+                _yield$_this4$stripe$ = _context3.sent;
+                paymentMethod = _yield$_this4$stripe$.paymentMethod;
+                error = _yield$_this4$stripe$.error;
+
+                if (!error) {
+                  _context3.next = 18;
+                  break;
+                }
+
+                _this4.isLoading = false;
+                _this4.input_stripe_error_card = error.message;
+                _context3.next = 34;
+                break;
+
+              case 18:
+                _context3.prev = 18;
+                _context3.next = 21;
+                return axios.post('/reservation/step_4_finalize', {
+                  methodpayment: paymentMethod.id,
                   client_name: _this4.client_name,
                   client_phone: _this4.client_phone,
                   client_email: _this4.client_email,
@@ -26157,57 +26201,105 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   client_special_request: _this4.client_special_request
                 });
 
-              case 3:
+              case 21:
                 response = _context3.sent;
                 _this4.order = response.data.order;
                 _this4.create_date = response.data.create_date;
                 _this4.step = 5;
-                _context3.next = 12;
+                _context3.next = 30;
                 break;
 
-              case 9:
-                _context3.prev = 9;
-                _context3.t0 = _context3["catch"](0);
+              case 27:
+                _context3.prev = 27;
+                _context3.t0 = _context3["catch"](18);
 
                 _this4.validator_errors(_context3.t0);
 
-              case 12:
-                _context3.prev = 12;
+              case 30:
+                _context3.prev = 30;
                 _this4.isLoading = false;
 
                 _this4.scroll_top();
 
-                return _context3.finish(12);
+                return _context3.finish(30);
 
-              case 16:
+              case 34:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 9, 12, 16]]);
+        }, _callee3, null, [[18, 27, 30, 34]]);
+      }))();
+    },
+    applyCodeDiscount: function applyCodeDiscount() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _this5.$refs.price_discount.innerText = "";
+                _this5.error_input_code_discount = '';
+
+                if (_this5.codeDiscount) {
+                  _context4.next = 5;
+                  break;
+                }
+
+                _this5.error_input_code_discount = 'El codigo de descuento es requerido';
+                return _context4.abrupt("return", true);
+
+              case 5:
+                _this5.isLoading = true;
+                _context4.prev = 6;
+                _context4.next = 9;
+                return axios.post('/reservation/dicount_code', {
+                  code: _this5.codeDiscount
+                });
+
+              case 9:
+                response = _context4.sent;
+                _this5.total_price = response.data.total_price;
+                _this5.$refs.price_discount.innerText = response.data.price_discount;
+                _context4.next = 17;
+                break;
+
+              case 14:
+                _context4.prev = 14;
+                _context4.t0 = _context4["catch"](6);
+
+                _this5.validator_errors(_context4.t0);
+
+              case 17:
+                _context4.prev = 17;
+                _this5.isLoading = false;
+                return _context4.finish(17);
+
+              case 20:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[6, 14, 17, 20]]);
       }))();
     },
     formatNumber: function formatNumber(n) {
-      n = n ? n : 0; // number NaN
+      n = n ? n : 0; // number NaN = 0
 
-      var numberFormat = new Intl.NumberFormat('de-DE', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-      return numberFormat.format(parseFloat(n));
+      return '$' + this.currencyFormat.format(parseFloat(n));
     },
     init: function init() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.$nextTick(function () {
         var calendar_start_date = flatpickr('#step_1_start_date', {
           altInput: true,
           altFormat: 'F j, Y',
           dateFormat: 'Y-m-d',
-          defaultDate: _this5.start_date,
-          minDate: _this5.start_date,
+          defaultDate: _this6.start_date,
+          minDate: _this6.start_date,
           onClose: function onClose(selectedDates, dateStr, instance) {
             var addDays = selectedDates[0].fp_incr(1);
 
@@ -26223,19 +26315,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           altInput: true,
           altFormat: 'F j, Y',
           dateFormat: 'Y-m-d',
-          defaultDate: _this5.end_date,
-          minDate: _this5.end_date
-        });
-        var stripe_id = document.getElementById('card-element').getAttribute('data-stripe_id');
+          defaultDate: _this6.end_date,
+          minDate: _this6.end_date
+        }); //init stripe credit card
 
-        _this5.init_stripe(stripe_id);
-      });
-    },
-    init_stripe: function init_stripe(stripe_key) {
-      var _this6 = this;
-
-      this.$nextTick(function () {
-        console.log(_this6.errors.length);
         var style = {
           base: {
             color: '#303238',
@@ -26253,78 +26336,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         };
-        var stripe_id = document.getElementById('card-element').getAttribute('data-stripe_id');
-        var stripe = Stripe(stripe_key);
-        var elements = stripe.elements();
-        var cardElement = elements.create('card', {
+        var stripe_key = document.getElementById('card-element').getAttribute('data-stripe_id');
+        _this6.stripe = Stripe(stripe_key);
+
+        var elements = _this6.stripe.elements();
+
+        _this6.cardElement = elements.create('card', {
           style: style
         });
-        cardElement.mount('#card-element');
-        var cardButton = document.getElementById('card-button');
-        cardButton.addEventListener('click', /*#__PURE__*/function () {
-          var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(e) {
-            var _yield$stripe$createP, paymentMethod, error;
 
-            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
-              while (1) {
-                switch (_context4.prev = _context4.next) {
-                  case 0:
-                    _this6.input_stripe_error_name = "";
-                    _this6.input_stripe_error_card = "";
-
-                    if (_this6.input_stripe_name) {
-                      _context4.next = 6;
-                      break;
-                    }
-
-                    _this6.input_stripe_error_name = 'El nombre del titular de la targeta es requerido';
-                    _this6.isLoading = false;
-                    return _context4.abrupt("return", true);
-
-                  case 6:
-                    _this6.isLoading = true;
-                    _context4.next = 9;
-                    return stripe.createPaymentMethod('card', cardElement, {
-                      billing_details: {
-                        name: _this6.input_stripe_name
-                      }
-                    });
-
-                  case 9:
-                    _yield$stripe$createP = _context4.sent;
-                    paymentMethod = _yield$stripe$createP.paymentMethod;
-                    error = _yield$stripe$createP.error;
-
-                    if (error) {
-                      _this6.isLoading = false;
-                      _this6.input_stripe_error_card = error.message;
-                    } else {
-                      _this6.step_5_finalize(paymentMethod.id);
-
-                      cardElement.clear();
-                    }
-
-                  case 13:
-                  case "end":
-                    return _context4.stop();
-                }
-              }
-            }, _callee4);
-          }));
-
-          return function (_x) {
-            return _ref.apply(this, arguments);
-          };
-        }());
+        _this6.cardElement.mount('#card-element');
+      });
+      this.currencyFormat = Intl.NumberFormat('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
     },
     validator_errors: function validator_errors(errors) {
+      this.errors = [];
+
       if (errors.response.status == 422) {
         // -->input laravel validator
         var er = errors.response.data.errors;
 
         for (var key in er) {
-          console.log(er[key][0]);
           this.errors.push(er[key][0]);
         }
       } else {
@@ -26333,10 +26368,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           this.errors[0] = errors.response.data.error;
         } else {
           this.errors[0] = 'Ha ocurrido un error por favor intente mas tarde';
-        }
+        } //this.step = 1
 
-        scroll_top(); //this.step = 1
       }
+
+      this.scroll_top();
     },
     scroll_top: function scroll_top() {
       document.getElementById('container-main').scrollIntoView({

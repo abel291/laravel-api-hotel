@@ -34,6 +34,7 @@ class ReservationSystem
         }])
         ->with(['complements' => function ($query) {
             $query->where('active', 1);
+            $query->where('type_price', '!=', 'free');
             $query->select('complements.id', 'name', 'type_price', 'icon', 'price', 'description_min');
         }])->get()
         ->filter(function ($value, $key) {
