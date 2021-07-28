@@ -61,29 +61,37 @@
                         </td>
                     </tr>
                 </template>
-                <tr>
+                <tr class="font-semibold">
                     <td class="py-2">
-                        <span class="font-bold">METODO DE PAGO</span>
+                        <span>METODO DE PAGO</span>
                     </td>
                     <td>
-                        <span class="font-bold"> Targeta de credito </span>
+                        <span> Targeta de credito </span>
                     </td>
                 </tr>
-                <tr>
+                <tr class="font-bold">
                     <td class="py-2">
-                        <span class="font-bold">SUB-TOTAL</span>
+                        <span>SUB-TOTAL</span>
                     </td>
                     <td>
-                        <span class="font-bold" x-text=formatNumber(total_price)></span>
+                        <span x-text=formatNumber(sub_total_price)></span>
                     </td>
+                </tr>
+                <tr class="font-bold" x-show="discount.amount">
+                    <td class="py-2  ">
+                        <span>CUPON DE DESCUENTO</span> 
+                    </td>
+                    <td class="text-green-500 ">
+                        <span x-text="formatNumber(-discount.amount)"></span>
+                    </td>    
                 </tr>
                 
-                <tr>
+                <tr class="font-bold ">
                     <td class="py-2">
-                        <span class="font-bold">TOTAL</span>
+                        <span>TOTAL</span>
                     </td>
                     <td>
-                        <span class="font-bold" x-text=formatNumber(total_price)></span>
+                        <span class="text-xl" x-text=formatNumber(total_price)></span>
                     </td>
                 </tr>
             </tbody>

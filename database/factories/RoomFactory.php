@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Helpers\Helpers;
 class RoomFactory extends Factory
 {
     /**
@@ -21,7 +22,7 @@ class RoomFactory extends Factory
      */
     public function definition()
     {   
-        $price=$this->faker->numberBetween(1000, 3000)/100;
+        $price=$this->faker->numberBetween(50, 200);
         return [
             "name" => $this->faker->words(3, true),
             "slug" => Str::slug($this->faker->words(3, true)) ,
@@ -33,7 +34,7 @@ class RoomFactory extends Factory
             "adults" => $this->faker->numberBetween(3, 9),
             "kids" => $this->faker->numberBetween(0, 2),
             "price" => $price,
-            "price_text" => "$$price",
+            "price_text" => Helpers::format_price($price),
             "thumbnail" => 'room-'.rand(0,10).'.jpg' ,
         ];
     }

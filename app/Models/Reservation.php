@@ -15,7 +15,7 @@ class Reservation extends Model
         'start_date',
         'end_date',
         'night',
-        'discount_percent',
+        'discount_amount',
         'room_quantity',
         'total_price',        
         'check_in',
@@ -30,11 +30,13 @@ class Reservation extends Model
         'end_date' => 'datetime:Y-m-d',
         'canceled_date' => 'datetime:Y-m-d',
         'room_reservation' => 'object',     
-        'total_price' => 'integer',   
+        'total_price' => 'float',   
+        'sub_total_price' => 'float',   
     ];
     protected $attributes = [
         'check_in' => '02:30 PM',
-        'total_price' => 0        
+        'total_price' => 0  ,      
+        'sub_total_price' => 0        
         
     ];   
     public function room()

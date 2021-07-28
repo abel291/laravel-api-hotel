@@ -25992,6 +25992,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     //solo para el paso final
     rooms: [],
     room_selected: {},
+    sub_total_price: 0,
     total_price: 0,
     price_per_reservation: 0,
     isLoading: false,
@@ -26004,8 +26005,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     client_city: '',
     client_check_in: '',
     client_special_request: '',
-    codeDiscount: '',
-    error_input_code_discount: '',
+    discount: {
+      code: '',
+      amount: 0,
+      percent: 0,
+      error_input: ''
+    },
     //stripe
     stripe: '',
     cardElement: '',
@@ -26112,31 +26117,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context2.sent;
                 _this3.complements_cheked = response.data.complements_cheked;
                 _this3.price_per_reservation = response.data.price_per_reservation;
-                _this3.total_price = response.data.total_price;
+                _this3.sub_total_price = response.data.total_price;
+                _this3.total_price = _this3.sub_total_price;
                 _this3.step = 4;
-                _context2.next = 14;
+                _context2.next = 15;
                 break;
 
-              case 11:
-                _context2.prev = 11;
+              case 12:
+                _context2.prev = 12;
                 _context2.t0 = _context2["catch"](1);
 
                 _this3.validator_errors(_context2.t0);
 
-              case 14:
-                _context2.prev = 14;
+              case 15:
+                _context2.prev = 15;
                 _this3.isLoading = false;
 
                 _this3.scroll_top();
 
-                return _context2.finish(14);
+                return _context2.finish(15);
 
-              case 18:
+              case 19:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[1, 11, 14, 18]]);
+        }, _callee2, null, [[1, 12, 15, 19]]);
       }))();
     },
     step_4_finalize: function step_4_finalize() {
@@ -26240,55 +26246,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _this5.$refs.price_discount.innerText = "";
-                _this5.error_input_code_discount = '';
+                _this5.discount.error_input = '';
 
-                if (_this5.codeDiscount) {
-                  _context4.next = 5;
+                if (_this5.discount.code) {
+                  _context4.next = 4;
                   break;
                 }
 
-                _this5.error_input_code_discount = 'El codigo de descuento es requerido';
+                _this5.discount.error_input = 'El codigo de descuento es requerido';
                 return _context4.abrupt("return", true);
 
-              case 5:
+              case 4:
                 _this5.isLoading = true;
-                _context4.prev = 6;
-                _context4.next = 9;
+                _context4.prev = 5;
+                _context4.next = 8;
                 return axios.post('/reservation/dicount_code', {
-                  code: _this5.codeDiscount
+                  code: _this5.discount.code
                 });
 
-              case 9:
+              case 8:
                 response = _context4.sent;
                 _this5.total_price = response.data.total_price;
-                _this5.$refs.price_discount.innerText = response.data.price_discount;
-                _context4.next = 17;
+                _this5.discount.amount = response.data.discount_amount;
+                _this5.discount.percent = response.data.discount_percent;
+                _context4.next = 20;
                 break;
 
               case 14:
                 _context4.prev = 14;
-                _context4.t0 = _context4["catch"](6);
+                _context4.t0 = _context4["catch"](5);
+                _this5.total_price = _this5.sub_total_price;
+                _this5.discount.amount = 0;
+                _this5.discount.percent = 0;
 
                 _this5.validator_errors(_context4.t0);
 
-              case 17:
-                _context4.prev = 17;
-                _this5.isLoading = false;
-                return _context4.finish(17);
-
               case 20:
+                _context4.prev = 20;
+                _this5.isLoading = false;
+                return _context4.finish(20);
+
+              case 23:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, null, [[6, 14, 17, 20]]);
+        }, _callee4, null, [[5, 14, 20, 23]]);
       }))();
     },
     formatNumber: function formatNumber(n) {
       n = n ? n : 0; // number NaN = 0
 
-      return '$' + this.currencyFormat.format(parseFloat(n));
+      return '$ ' + this.currencyFormat.format(parseFloat(n));
     },
     init: function init() {
       var _this6 = this;

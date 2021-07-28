@@ -78,7 +78,7 @@ class ReservationSystem
             return $rooms->values();
         }
     } 
-    public function price_calculation ( $room,int $room_quantity,array $ids_complements_cheked=[], string $code_discount='') {
+    public function price_calculation ( $room,int $room_quantity,array $ids_complements_cheked=[]) {
         
         $total_price = 0;
         $price_per_reservation = 0;
@@ -86,7 +86,7 @@ class ReservationSystem
         $complements_cheked=[];
         $room_quantity_available = array_key_exists($room_quantity, $room->price_per_quantity_room_selected);
 
-        //valido si la habitacion selecionada y la cantidad estan disponibles
+        //valido la habitacion selecionada y si la cantidad estan disponibles
         if ($room && $room_quantity_available) {
 
             $price_per_reservation = $room->price_per_quantity_room_selected[$room_quantity];
@@ -106,7 +106,7 @@ class ReservationSystem
         } else{
             //error
         }
-
+        
         return [ $total_price, $complements_cheked, $price_per_reservation];
 
     } 

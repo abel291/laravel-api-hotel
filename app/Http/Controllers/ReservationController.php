@@ -32,7 +32,7 @@ class ReservationController extends Controller
     }
     public function index(Request $request)
     {
-        
+
         $start_date = $request->start_date ? $request->start_date : Carbon::now()->format('Y-m-d');
         $end_date = $request->end_date ? $request->end_date : Carbon::now()->addDay()->format('Y-m-d');
         $adults = $request->adults ? $request->adults : 1;
@@ -45,14 +45,13 @@ class ReservationController extends Controller
         $client->country = $faker->country;
         $client->city = $faker->city;
         $client->special_request = $faker->text($maxNbChars = 200);
-        
-        $page = Page::where('type','reservation')->first();
-        return view('front.reservation.reservation', compact('client', 'start_date', 'end_date','adults','page'));
+
+        $page = Page::where('type', 'reservation')->first();
+        return view('front.reservation.reservation', compact('client', 'start_date', 'end_date', 'adults', 'page'));
     }
 
     public function step_1_check_date(Request $request)
     {
-
         Validator::make($request->all(), [
             'start_date' => 'required|date_format:Y-m-d|before:reservation.end_date',
             'end_date' => 'required|date_format:Y-m-d|after:reservation.start_date',
@@ -63,7 +62,7 @@ class ReservationController extends Controller
         $start_date = Carbon::createFromFormat('Y-m-d', $request->start_date);
         $end_date = Carbon::createFromFormat('Y-m-d', $request->end_date);
         $night = $start_date->diffInDays($end_date);
-        
+
         $rooms = $this->reservation_system->check_availability(
             $request->start_date,
             $request->end_date,
@@ -71,8 +70,8 @@ class ReservationController extends Controller
             $request->kids,
             $night
         );
-        
-        
+
+
         //guardo en session para otros step        
         session([
             'start_date' => $request->start_date,
@@ -81,15 +80,14 @@ class ReservationController extends Controller
             'kids' => $request->kids,
             'night' => $night,
         ]);
-        
-        return  compact('rooms','night');
-        
+
+        return  compact('rooms', 'night');
     }
 
     public function step_3_confirmation(Request $request)
     {
 
-        //habitacion seleccionada 
+        //habitacion seleccionada
         $room = $this->reservation_system->check_availability(
             $request->session()->get('start_date'),
             $request->session()->get('end_date'),
@@ -100,21 +98,27 @@ class ReservationController extends Controller
         );
 
         //calculo de precios
-        list( $total_price, $complements_cheked, $price_per_reservation ) = $this->reservation_system->price_calculation(
+        list(
+            $total_price,
+            $complements_cheked,
+            $price_per_reservation
+        ) = $this->reservation_system->price_calculation(
             $room,
             $request->room_quantity,
             $request->ids_complements_cheked,
-            ''
-        ); 
+        );
+
+        //guardo en session para otros step
         session([
             'room_id' => $request->room_id,
             'room_quantity' => $request->room_quantity,
             'ids_complements_cheked' => $request->ids_complements_cheked,
             'price_per_reservation' => $price_per_reservation,
+            'sub_total_price' => $total_price,
             'total_price' => $total_price,
         ]);
 
-        return  compact('total_price', 'complements_cheked', 'price_per_reservation');
+        return  compact('complements_cheked', 'price_per_reservation', 'total_price',);
     }
     public function step_4_finalize(Request $request)
     {
@@ -135,14 +139,17 @@ class ReservationController extends Controller
             $request->session()->get('kids'),
             $request->session()->get('night'),
             $request->session()->get('room_id'),
-        );        
-
+        );
+        
+        DB::beginTransaction();
+        
         $client = new Client();
         $client->name = $request->client_name;
         $client->email = $request->client_email;
         $client->phone = $request->client_phone;
         $client->country = $request->client_country;
         $client->city = $request->client_city;
+        $client->save();
         
         $reservation = new Reservation();
         $reservation->start_date = $request->session()->get('start_date');
@@ -153,59 +160,117 @@ class ReservationController extends Controller
         $reservation->check_in = $request->client_check_in;
         $reservation->special_request = $request->client_special_request;
         $reservation->room_quantity = $request->session()->get('room_quantity');
+        $reservation->sub_total_price = $request->session()->get('sub_total_price');
         $reservation->total_price = $request->session()->get('total_price');
 
-        list($reservation,$error) = $this->reservation_system->check_payment(
-            $reservation,
-            $client,
-            $room,
-            $request->methodpayment,
-            $request->session()->get('ids_complements_cheked')
-        );
+        try {
 
-        if($error){
-            return response()->json(['error'=>$error],500);
-        }else{
-            session('');
-            return response()->json([
-                'order' => $reservation->order,
-                'create_date' => $reservation->created_at->format('Y-m-d')
+            
+            $room->complements_cheked = $room->complements->whereIn('id', session()->get('ids_complements_cheked'));
+            if ($room->complements_cheked) {
+                $room->complements_cheked->transform(function ($item, $key) {
+                    return $item->only(['name', 'price', 'type_price', 'total_price', 'price_per_total_night']);
+                });
+            }
+            
+            $reservation->client()->associate($client->id);
+            $reservation->room()->associate($room->id);
+            $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price', 'complements_cheked']);
+
+            if (session()->has('discoun_id')) {
+                $reservation->discount_amount = $request->session()->get('discount_amount');
+                $reservation->discount()->associate(session()->get('discoun_id'));
+            }
+
+            $reservation->order = rand(1, 9) . $reservation->start_date->format('md') . $client->id;
+            $reservation->save();
+
+            $description_stripe = $client->name . " - " . $room->name . " - " . $reservation->night . ' noche(s)';
+            
+            $payment = $client->charge($reservation->total_price * 100, $request->methodpayment, [
+                'description' => $description_stripe
             ]);
+
+            $client->stripe_id = $payment->id;
+            $client->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            $error = 'Al parecer hubo un error! El pago a través de su targeta no se pudo realizar.';
+            return response()->json(['error' => $error], 500);
         }
-        
+
+        Mail::to($client->email)->queue(new ReservationOrder($reservation, 'order'));
+
+        session()->forget([
+            'start_date',
+            'end_date',
+            'adults',
+            'kids',
+            'night' ,
+            
+            'room_id',
+            'room_quantity',
+            'ids_complements_cheked',
+            'price_per_reservation',
+            'sub_total_price',
+            'total_price',
+
+            'discount_id',
+            'discount_amount',
+        ]);
+
+        return response()->json([
+            'order' => $reservation->order,
+            'create_date' => $reservation->created_at->format('Y-m-d')
+        ]);
+
     }
-    public function dicount_code(Request $request){
-        
-        
+    public function dicount_code(Request $request)
+    {
+
+        session()->forget(['discount_id', 'discount_amount']);
+
+        $sub_total_price = session()->get('sub_total_price');
+
+        session([
+            'total_price' => $sub_total_price
+        ]);
+
         Validator::make($request->all(), [
             'code' => 'required|exists:discounts,code',
         ])->validate();
 
-        if(!session()->has('room_id')){
-            $error="no se puede usar este codigo de descuento";
-            return response()->json(['error'=>$error],500);
+        if (!session()->has('room_id')) {
+
+            $error = "No se puede usar este codigo de descuento";
+            return response()->json(['error' => $error], 500);
         }
 
-        $discount=Discount::where('code',$request->code)
-        ->with('reservations')->firstOrFail();
-        
-        if( $discount->quantity <= $discount->reservations->sum('room_quantity') ){
-            
-            $error="Este codigo de descuento ya no esta disponible";
-            return response()->json(['error'=>$error],500);
-        
+        $discount = Discount::where('code', $request->code)->where('active', 1)
+            ->withCount('reservations')->firstOrFail();
+
+        if ($discount->quantity <= $discount->reservations_count) {
+            $error = "Este codigo de descuento ya no esta disponible";
+            return response()->json(['error' => $error], 500);
         }
-        $total_price= session()->get('total_price');
-        $price_discount= round( $total_price * (( (100 - $discount->percent) / 100)) ,2); 
-        $percent=$discount->percent;
-        return compact('total_price','price_discount','percent');
-        
-        
-        
 
+        $discount_amount = round($sub_total_price * ($discount->percent / 100), 2);
 
+        $total_price = $sub_total_price - $discount_amount;
+
+        $discount_percent = $discount->percent;
+
+        session([
+            'discount_id' => $discount->id,
+            'discount_amount' => $discount_amount,
+            //'discount_code' => $discount->code,
+            'total_price' => $total_price
+        ]);
+
+        return compact('total_price', 'discount_amount', 'discount_percent');
     }
-
-    
 }
-?>

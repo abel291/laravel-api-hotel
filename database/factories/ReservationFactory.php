@@ -32,9 +32,13 @@ class ReservationFactory extends Factory
         $night=rand(2,8);
         $end_date = $reservation_date->modify('+'.$night.' day')->format('Y-m-d');
         
-        $room = Room::get();    
-        $dicount = Discount::get()->random();    
-        //dd($date_reservation);      
+        $room = Room::get()->random();
+        $dicount = Discount::get()->random();
+        
+        $price=$this->faker->numberBetween(400, 500);
+        
+        $discount_amount=$room->price*($dicount->porcent/100);
+        //dd($date_reservation);
         
           return [
             "start_date" =>$start_date,
@@ -43,9 +47,11 @@ class ReservationFactory extends Factory
             
             "night" => $night,
             
-            "discount_percent" => $dicount->porcent,
+            "discount_amount" => $discount_amount,
             
-            "total_price" => $this->faker->numberBetween(40, 50)*10 ,  
+            "sub_total_price" => $room->price+$discount_amount ,  
+
+            "total_price" => $room->price-$discount_amount ,  
             
             "check_in" => '02:30 PM',
             
@@ -63,9 +69,9 @@ class ReservationFactory extends Factory
 
             "order" => rand(10000,99999),
 
-            "room_reservation" => $room->random()->only('name','beds','adults','price'),            
+            "room_reservation" => $room->only('name','beds','adults','price'),            
 
-            "room_id" => $room->random()->id,
+            "room_id" => $room->id,
             
             "discount_id" => $dicount->id,
         ];

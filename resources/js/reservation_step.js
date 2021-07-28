@@ -16,6 +16,7 @@ export default () => ({
     rooms: [],
     room_selected: {},
 
+    sub_total_price: 0,
     total_price: 0,
     price_per_reservation: 0,
     isLoading: false,
@@ -29,9 +30,13 @@ export default () => ({
     client_city: '',
     client_check_in: '',
     client_special_request: '',
-
-    codeDiscount:'',
-    error_input_code_discount:'',
+    
+    discount:{
+        code:'',
+        amount:0,
+        percent:0,
+        error_input:''
+    },
     
     //stripe
     stripe: '',
@@ -124,10 +129,9 @@ export default () => ({
 
             this.complements_cheked = response.data.complements_cheked;
             this.price_per_reservation = response.data.price_per_reservation;
-            this.total_price = response.data.total_price;
-
-            this.step = 4
-
+            this.sub_total_price = response.data.total_price;
+            this.total_price = this.sub_total_price;
+            this.step = 4;
 
         } catch (errors) {
             this.validator_errors(errors)
@@ -194,12 +198,12 @@ export default () => ({
             }
         }//else
     },
-    async applyCodeDiscount(){     
-        this.$refs.price_discount.innerText="";
-        this.error_input_code_discount=''         
+    async applyCodeDiscount(){   
         
-        if (!this.codeDiscount) {
-            this.error_input_code_discount = 'El codigo de descuento es requerido';
+        this.discount.error_input=''         
+        
+        if (!this.discount.code) {
+            this.discount.error_input = 'El codigo de descuento es requerido';
             return true;
         }
 
@@ -207,17 +211,17 @@ export default () => ({
         try {
             const response = await
                 axios.post('/reservation/dicount_code', {
-                    code: this.codeDiscount,
+                    code: this.discount.code,
                 });
-
             this.total_price = response.data.total_price;
-            this.$refs.price_discount.innerText = response.data.price_discount;
+            this.discount.amount = response.data.discount_amount;
+            this.discount.percent = response.data.discount_percent;
 
-        
         } catch (errors) {
-
+            this.total_price =this.sub_total_price;
+            this.discount.amount = 0;
+            this.discount.percent = 0;
             this.validator_errors(errors)
-
         }
         finally {
             this.isLoading = false;              
@@ -226,7 +230,7 @@ export default () => ({
 
     formatNumber(n) {
         n = n ? n : 0;// number NaN = 0
-        return '$'+ this.currencyFormat.format(parseFloat(n))
+        return '$ '+ this.currencyFormat.format(parseFloat(n))
     },
     init() {
         this.$nextTick(() => {

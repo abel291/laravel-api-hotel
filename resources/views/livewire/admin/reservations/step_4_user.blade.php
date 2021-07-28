@@ -124,57 +124,68 @@
                 </tr>
             </template>
 
-            <tr class="border-b border-gray-200 text-sm">
-                <td colspan="3" class="pt-6 pb-2  pr-4 text-right ">
+            <tr class="border-b border-gray-200 text-sm font-semibold">
+                <td colspan="3" class="py-2 pr-4 text-right">
                     SUB-TOTAL
                 </td>
-                <td class="pt-6 pb-2">
-                    <span x-text="formatNumber(total_price)"></span>
+                <td class="">
+                    <span x-text="formatNumber(sub_total_price)"></span>
                 </td>
 
             </tr>
-            <tr class="border-b border-gray-200 text-sm font-bold">
+            <tr x-show="discount.amount" class="border-b border-gray-200 text-sm font-semibold">
+                <td colspan="3" class="py-2  pr-4 text-right ">
+                    <span>CUPON DE DESCUENTO</span> 
+                </td>
+                <td class="text-green-500 ">
+                    <span x-text="formatNumber(-discount.amount)"></span>
+                </td>
+
+            </tr>
+            <tr class="border-b border-gray-200 font-bold">
                 <td colspan="3" class="py-2 pr-4 text-right">
                     TOTAL
                 </td>
                 <td>
                     <span x-text="formatNumber(total_price)"></span>
-                    <span x-ref='price_discount' class=" font-normal text-xs line-through text-gray-500"></span>
+
                 </td>
             </tr>
         </table>
         <div>
-        <div class="flex space-x-3">
-            <input  placeholder="Codigo" type="text" maxlength="8" x-model="codeDiscount" class="sm:w-40 rounded-md block w-full  sm:text-sm border border-gray-300 form-input">
-            
-            <x-jet-button
-                x-bind:class="{ 'bg-gray-500 cursor-default' : isLoading , 'bg-gray-800 hover:bg-gray-600' : ! isLoading }"
-                x-bind:disabled="isLoading"
-                x-on:click="applyCodeDiscount">
+            <div class="flex space-x-3">
+                <input placeholder="Codigo" type="text" maxlength="8" x-model="discount.code"
+                    class="sm:w-40 rounded-md block w-full  sm:text-sm border border-gray-300 form-input">
 
-                <span class="" x-show="!isLoading">Aplicar Cupon</span>
+                <x-jet-button
+                    x-bind:class="{ 'bg-gray-500 cursor-default' : isLoading , 'bg-gray-800 hover:bg-gray-600' : ! isLoading }"
+                    x-bind:disabled="isLoading" 
+                    x-on:click="applyCodeDiscount">
 
-                <div x-show="isLoading">
-                    <div class="flex items-center justify-center ">
-                        <div>
-                            <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="4">
-                                </circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
-                            </svg>
+                    <span class="" x-show="!isLoading">Aplicar Cupon</span>
+
+                    <div x-show="isLoading">
+                        <div class="flex items-center justify-center ">
+                            <div>
+                                <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4">
+                                    </circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span class="text-white">Cargando</span>
+
                         </div>
-                        <span class="text-white">Cargando</span>
-
                     </div>
-                </div>
 
-            </x-jet-button>
-        </div>
-        <span x-show="error_input_code_discount" x-text='error_input_code_discount' class="mt-2 text-red-600 text-sm block"></span>
+                </x-jet-button>
+            </div>
+            <span x-show="discount.error_input" x-text='discount.error_input'
+                class="mt-2 text-red-600 text-sm block"></span>
         </div>
     </div>
 
@@ -191,8 +202,8 @@
 
                 <x-jet-input type="text" placeholder="como aparece en la targeta" x-model='input_stripe_name'
                     x-init="input_stripe_name='{{$client->name}}'"></x-jet-input>
-                
-                    <span x-text='input_stripe_error_name' class="pl-1 text-red-600 text-sm block"></span>
+
+                <span x-text='input_stripe_error_name' class="pl-1 text-red-600 text-sm block"></span>
             </div>
 
             <div class="space-y-2">
