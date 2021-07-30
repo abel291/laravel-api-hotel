@@ -20,20 +20,22 @@ class CreateReservationsTable extends Migration
             $table->tinyInteger('night');            
             $table->tinyInteger('adults')->default(0);
             $table->tinyInteger('kids')->default(0)->nullable();    
-            $table->float('discount_amount',10,2)->nullable();
             $table->float('sub_total_price',10,2)->nullable();     
             $table->float('total_price',10,2);     
             $table->string('check_in',8)->default('02:30 PM')->nullable();
             $table->text('special_request')->nullable();
             $table->enum('state', ['canceled','refunded','successful'])->default('successful'); 
-            $table->date('canceled_date')->nullable();
+           
             $table->string('order')->index();
             $table->tinyInteger('room_quantity');
             $table->foreignId('room_id')->index();  
             $table->foreignId('client_id')->index();
             $table->foreignId('discount_id')->nullable();
 
+            $table->date('canceled_date')->nullable();
             $table->json('room_reservation');
+            $table->json('discount_reservation')->nullable();
+            $table->json('refund_reservation')->nullable();
             $table->timestamps();
         });
     }

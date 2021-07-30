@@ -2,43 +2,43 @@
     <!-- form data user -->
     <div class="space-y-4">
         <h2 class="text-xl font-bold text-gray-700">Detalles de facturación</h2>
-        <div class="grid grid-cols-2 gap-5">
+        <div class="grid grid-cols-2 gap-3">
             <div>
                 <x-jet-label for="name">Nombre Y Apellido</x-jet-label>
-                <x-jet-input id="name" type="text" x-model="client_name" x-init="client_name='{{$client->name}}'">
+                <x-jet-input id="name" type="text" x-model="client.name" x-init="client.name='{{$client->name}}'">
                 </x-jet-input>
             </div>
 
             <div>
                 <x-jet-label for="phone">Telefono</x-jet-label>
-                <x-jet-input id="phone" type="text" x-model="client_phone" x-init="client_phone='{{$client->phone}}'">
+                <x-jet-input id="phone" type="text" x-model="client.phone" x-init="client.phone='{{$client->phone}}'">
                 </x-jet-input>
             </div>
             <!---------------------------->
             <div>
                 <x-jet-label for="email">Email </x-jet-label>
-                <x-jet-input x-model="client_email" x-init="client_email='{{$client->email}}'" id="email" type="email">
+                <x-jet-input x-model="client.email" x-init="client.email='{{$client->email}}'" id="email" type="email">
                 </x-jet-input>
             </div>
 
             <div>
                 <x-jet-label for=" c_email">Confirmar email</x-jet-label>
-                <x-jet-input id="c_email" type="email" x-model="client_email_confirmation"
-                    x-init="client_email_confirmation='{{$client->email}}'"></x-jet-input>
+                <x-jet-input id="c_email" type="email" x-model="client.email_confirmation"
+                    x-init="client.email_confirmation='{{$client->email}}'"></x-jet-input>
 
 
             </div>
 
             <div>
                 <x-jet-label for=" country">Pais</x-jet-label>
-                <x-jet-input id="country" type="text" x-model="client_country"
-                    x-init="client_country='{{$client->country}}'">
+                <x-jet-input id="country" type="text" x-model="client.country"
+                    x-init="client.country='{{$client->country}}'">
                 </x-jet-input>
             </div>
 
             <div>
                 <x-jet-label for="city">Ciudad</x-jet-label>
-                <x-jet-input id="city" type="text" x-model="client_city" x-init="client_city='{{$client->city}}'">
+                <x-jet-input id="city" type="text" x-model="client.city" x-init="client.city='{{$client->city}}'">
                 </x-jet-input>
             </div>
             <!---------------------------->
@@ -55,7 +55,7 @@
                 });
                     ">
                 <x-jet-label for="check_in_date">Hora de llegada</x-jet-label>
-                <x-jet-input x-ref="check_in" id="check_in_date" type="text" x-model="client_check_in"></x-jet-input>
+                <x-jet-input x-ref="check_in" id="check_in_date" type="text" x-model="client.check_in"></x-jet-input>
 
             </div>
             <!---------------------------->
@@ -65,15 +65,15 @@
 
                     <div class="mt-1">
                         <textarea id="special_request" name="about" rows="3" class="form-textarea w-full text-sm"
-                            placeholder="Algo a tener en cuenta...." x-model="client_special_request"
-                            x-init="client_special_request='{{$client->special_request}}'"></textarea>
+                            placeholder="Algo a tener en cuenta...." x-model="client.special_request"
+                            x-init="client.special_request='{{$client->special_request}}'"></textarea>
 
                     </div>
             </div>
         </div>
     </div>
     <!-- order -->
-    <div class="space-y-4 ">
+    <div class="space-y-2 ">
         <h2 class="text-xl font-bold mb-4">Tu orden</h2>
         <div>
             <span class=" font-bold ">Fecha: </span><span x-text="start_date + '   ' + end_date"></span>
@@ -197,13 +197,12 @@
             <div class="space-y-2 ">
                 <label for="card-holder-name" class="block text-sm font-medium text-gray-700">
                     Nombre del titular
-
                 </label>
 
-                <x-jet-input type="text" placeholder="como aparece en la targeta" x-model='input_stripe_name'
-                    x-init="input_stripe_name='{{$client->name}}'"></x-jet-input>
+                <x-jet-input type="text" placeholder="como aparece en la targeta" x-model='stripe.name' class="uppercase"
+                    x-init="stripe.name='{{$client->name}}'"></x-jet-input>
 
-                <span x-text='input_stripe_error_name' class="pl-1 text-red-600 text-sm block"></span>
+                <span x-text='stripe.error_name' class="pl-1 text-red-600 text-sm block"></span>
             </div>
 
             <div class="space-y-2">
@@ -211,16 +210,18 @@
                     Numero de Targeta</label>
 
                 <div id="card-element" class="rounded-md bg-white p-2.5 border border-gray-300"
-                    data-stripe_id="{{env('STRIPE_KEY')}}">
+                    stripe-key="{{env('STRIPE_KEY')}}">
                 </div>
 
-                <span x-text='input_stripe_error_card' class="pl-1 text-red-600 text-sm block"></span>
+                <span x-text='stripe.error_card' class="pl-1 text-red-600 text-sm block"></span>
 
             </div>
         </div>
     </div>
-
-    <div class="flex space-x-3 justify-between">
+    <x-jet-button id="button_stripe">enviar</x-jet-butto >
+    
+    
+        <div class="flex space-x-3 justify-between">
         @include('livewire.admin.reservations.button_step',[
         'button_back_step'=>2,
         'step_alpine_fuction'=>'step_4_finalize',

@@ -33,25 +33,21 @@ class ReservationFactory extends Factory
         $end_date = $reservation_date->modify('+'.$night.' day')->format('Y-m-d');
         
         $room = Room::get()->random();
-        $dicount = Discount::get()->random();
-        
-        $price=$this->faker->numberBetween(400, 500);
-        
-        $discount_amount=$room->price*($dicount->porcent/100);
+
+        $discount = Discount::get()->random();
+
+        $discount->amount=$room->price*($discount->percent/100);
         //dd($date_reservation);
-        
-          return [
+         return [
             "start_date" =>$start_date,
             
             "end_date" => $end_date,
             
-            "night" => $night,
+            "night" => $night,           
             
-            "discount_amount" => $discount_amount,
-            
-            "sub_total_price" => $room->price+$discount_amount ,  
+            "sub_total_price" => $room->price+$discount->amount ,  
 
-            "total_price" => $room->price-$discount_amount ,  
+            "total_price" => $room->price-$discount->amount ,  
             
             "check_in" => '02:30 PM',
             
@@ -59,7 +55,7 @@ class ReservationFactory extends Factory
             
             "state" => $this->faker->randomElement($array = array ('canceled','refunded','successful')) ,            
             
-            "canceled_date" => null,
+            "canceled_date" => date('Y-m-d'),
 
             "room_quantity" => rand(1,3),
             
@@ -69,11 +65,13 @@ class ReservationFactory extends Factory
 
             "order" => rand(10000,99999),
 
-            "room_reservation" => $room->only('name','beds','adults','price'),            
+            "room_reservation" => $room->only('name','beds','adults','price'),//model casts object
+
+            "discount_reservation" => $discount->only('code','percent','amount'), //model casts object
 
             "room_id" => $room->id,
             
-            "discount_id" => $dicount->id,
+            "discount_id" => $discount->id,
         ];
     }
 }

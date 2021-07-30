@@ -12,7 +12,7 @@
         </div>
 
         <div x-show="show"
-            class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:max-w-2xl "
+            class="relative bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:max-w-2xl "
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
@@ -20,7 +20,8 @@
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 
             <!--laoding -->
-            <div class="hidden" id="loading-state-modal" wire:loading.class.remove="hidden" wire:target="
+            <div class="hidden absolute inset-0 blur items-center justify-center" 
+                id="loading-state-modal" wire:loading.class.remove="hidden" wire:loading.class='flex' wire:target="
             edit,
             save,
             create,
@@ -34,8 +35,8 @@
             cancel_reservation,
             ">
 
-                <div class="absolute inset-0 blur z-10 "></div>
-                <div class='flex items-center justify-center absolute inset-0   z-20'>
+                
+                
                     <div
                         class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-600 ">
                         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +49,7 @@
                         </svg>
                         <span>Processing</span>
                     </div>
-                </div>
+                
 
             </div>
 

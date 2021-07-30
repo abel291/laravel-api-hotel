@@ -56,7 +56,7 @@ class ListReservations extends Component
             ->with('client','room')
             ->paginate(20);
 
-            //dd($data->getCollection());
+            //dd(json_encode($data->getCollection()->first()->room_reservation));
 
         return view('livewire.admin.reservations.list-reservations',compact('data'));
     }

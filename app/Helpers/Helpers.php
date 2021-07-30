@@ -11,7 +11,7 @@ class Helpers
 
     public static function format_price($price=0) {
         
-        return '$'.number_format($price,2,',','.');
+        return '$ '.number_format($price,2,',','.');
     }
 
 }

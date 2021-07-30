@@ -78,4 +78,8 @@ Route::prefix('reservation')->name('reservation.')->group(function () {
 
     Route::post('/dicount_code', [ReservationController::class, 'dicount_code'])->name('dicount_code');
 
+    Route::get('/report_pdf', [ReservationController::class, 'report_pdf'])->name('report_pdf');
+
+
+
 });

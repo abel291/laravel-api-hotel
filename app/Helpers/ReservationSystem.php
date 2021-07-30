@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ReservationSystem
 {
-    public function check_availability (string $start_date,string $end_date, int $adults,int $kids,int $night,int $room_id=0)
+    public static function check_availability (string $start_date,string $end_date, int $adults,int $kids,int $night,int $room_id=0)
     {     
         $rooms = Room::where('active', 1)
         ->select('rooms.id', 'name', 'slug', 'quantity', 'price', 'beds', 'adults', 'thumbnail')
@@ -78,7 +78,7 @@ class ReservationSystem
             return $rooms->values();
         }
     } 
-    public function price_calculation ( $room,int $room_quantity,array $ids_complements_cheked=[]) {
+    public static function price_calculation ( $room,int $room_quantity,array $ids_complements_cheked=[]) {
         
         $total_price = 0;
         $price_per_reservation = 0;

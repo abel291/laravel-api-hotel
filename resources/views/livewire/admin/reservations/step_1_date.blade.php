@@ -8,7 +8,7 @@
                 Fecha de inicio
             </label>
 
-            <input x-init="start_date='{{$this->start_date->format('Y-m-d')}}'" x-model="start_date"
+            <input date-default='{{$this->start_date->format('Y-m-d')}}'" x-model="start_date"
                 class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="step_1_start_date"
                 type="text" :disabled="isLoading" >
             <span x-text="errors.start_date" class="pl-1 text-red-500 text-sm block"></span>
@@ -21,7 +21,7 @@
                 Fecha de salida
             </label>
 
-            <input x-init="end_date='{{$this->end_date->format('Y-m-d')}}'" x-model="end_date"
+            <input date-default='{{$this->end_date->format('Y-m-d')}}'" x-model="end_date"
                 class="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none" id="step_1_end_date"
                 type="text" :disabled="isLoading">
             <span x-text="errors.end_date" class="pl-1 text-red-500 text-sm block"></span>

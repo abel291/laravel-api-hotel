@@ -7,7 +7,7 @@
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                     clip-rule="evenodd"></path>
             </svg>
-            <div class="text-green-700">
+            <div >
                 <span class="font-semibold block text-green-700">Orden completada</span>
                 <span class="text-green-600"> Todo los datos han sido enviados a tu correo</span>
             </div>
@@ -96,5 +96,11 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center mt-4 flex justify-between items-center">
+        
+        <x-jet-button x-on:click="init">Volver al inicio</x-jet-button>
+        
+        <a class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray"  id='report_pdf_button' target="_blank" href="{{route('reservation.report_pdf')}}"> Ver Comprobante </a>
     </div>
 </div>

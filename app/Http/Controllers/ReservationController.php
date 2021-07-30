@@ -10,6 +10,12 @@ use App\Helpers\ReservationSystem;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Requests\Step1CheckData;
+use App\Http\Requests\Step3Confirmation;
+use App\Http\Requests\Step4Filanize;
+//use App\Http\Requests\Step1CheckData;
+//use App\Http\Requests\Step1CheckData;
+//use App\Http\Requests\Step1CheckData;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Client;
 use App\Models\Complement;
@@ -33,6 +39,7 @@ class ReservationController extends Controller
     public function index(Request $request)
     {
 
+        
         $start_date = $request->start_date ? $request->start_date : Carbon::now()->format('Y-m-d');
         $end_date = $request->end_date ? $request->end_date : Carbon::now()->addDay()->format('Y-m-d');
         $adults = $request->adults ? $request->adults : 1;
@@ -50,20 +57,15 @@ class ReservationController extends Controller
         return view('front.reservation.reservation', compact('client', 'start_date', 'end_date', 'adults', 'page'));
     }
 
-    public function step_1_check_date(Request $request)
-    {
-        Validator::make($request->all(), [
-            'start_date' => 'required|date_format:Y-m-d|before:reservation.end_date',
-            'end_date' => 'required|date_format:Y-m-d|after:reservation.start_date',
-            'adults' => 'required|min:1',
-            'kids' => 'required',
-        ])->validate();
 
+    public function step_1_check_date(Step1CheckData $request)
+    {        
+        
         $start_date = Carbon::createFromFormat('Y-m-d', $request->start_date);
         $end_date = Carbon::createFromFormat('Y-m-d', $request->end_date);
         $night = $start_date->diffInDays($end_date);
 
-        $rooms = $this->reservation_system->check_availability(
+        $rooms = ReservationSystem::check_availability(
             $request->start_date,
             $request->end_date,
             $request->adults,
@@ -84,11 +86,12 @@ class ReservationController extends Controller
         return  compact('rooms', 'night');
     }
 
-    public function step_3_confirmation(Request $request)
+    public function step_3_confirmation(Step3Confirmation $request)
     {
-
-        //habitacion seleccionada
-        $room = $this->reservation_system->check_availability(
+        
+        $this->validate_session();
+        
+        $room = ReservationSystem::check_availability(
             $request->session()->get('start_date'),
             $request->session()->get('end_date'),
             $request->session()->get('adults'),
@@ -102,7 +105,8 @@ class ReservationController extends Controller
             $total_price,
             $complements_cheked,
             $price_per_reservation
-        ) = $this->reservation_system->price_calculation(
+
+        ) = ReservationSystem::price_calculation(
             $room,
             $request->room_quantity,
             $request->ids_complements_cheked,
@@ -120,19 +124,12 @@ class ReservationController extends Controller
 
         return  compact('complements_cheked', 'price_per_reservation', 'total_price',);
     }
-    public function step_4_finalize(Request $request)
+    public function step_4_finalize(Step4Filanize $request)
     {
-        Validator::make($request->all(), [
-            'client_name' => 'required|string|max:255',
-            'client_phone' => 'required|string|max:255',
-            'client_country' => 'required|string|max:255',
-            'client_city' => 'required|string|max:255',
-            'client_email' => 'required|email|max:255|confirmed',
-            'client_check_in' => 'nullable|string|max:255',
-            'client_special_request' => 'nullable|string|max:1000',
-        ])->validate();
-
-        $room = $this->reservation_system->check_availability(
+        
+        $this->validate_session();
+        
+        $room = ReservationSystem::check_availability(
             $request->session()->get('start_date'),
             $request->session()->get('end_date'),
             $request->session()->get('adults'),
@@ -140,53 +137,56 @@ class ReservationController extends Controller
             $request->session()->get('night'),
             $request->session()->get('room_id'),
         );
-        
+
         DB::beginTransaction();
-        
-        $client = new Client();
-        $client->name = $request->client_name;
-        $client->email = $request->client_email;
-        $client->phone = $request->client_phone;
-        $client->country = $request->client_country;
-        $client->city = $request->client_city;
+
+        //$client = new Client();
+        $client = (new Client())->fill($request->client);
         $client->save();
-        
+
         $reservation = new Reservation();
         $reservation->start_date = $request->session()->get('start_date');
         $reservation->end_date = $request->session()->get('end_date');
         $reservation->night = $request->session()->get('night');
         $reservation->adults = $request->session()->get('adults');
         $reservation->kids = $request->session()->get('kids');
-        $reservation->check_in = $request->client_check_in;
-        $reservation->special_request = $request->client_special_request;
+        $reservation->check_in = $request->client['check_in'];
+        $reservation->special_request = $request->client['special_request'];
         $reservation->room_quantity = $request->session()->get('room_quantity');
         $reservation->sub_total_price = $request->session()->get('sub_total_price');
         $reservation->total_price = $request->session()->get('total_price');
 
         try {
 
-            
             $room->complements_cheked = $room->complements->whereIn('id', session()->get('ids_complements_cheked'));
-            if ($room->complements_cheked) {
-                $room->complements_cheked->transform(function ($item, $key) {
-                    return $item->only(['name', 'price', 'type_price', 'total_price', 'price_per_total_night']);
-                });
-            }
             
+            if ($room->complements_cheked) {
+                $room->complements_cheked->transform(function ($item, $key) use($reservation) {
+
+                    $item->total_price=$item->price_per_total_night * $reservation->room_quantity;
+                    
+                    return $item->only(['name', 'price', 'type_price', 'total_price', 'price_per_total_night']);
+                    
+                })->values();
+            }
+            //dd($room->complements_cheked);
             $reservation->client()->associate($client->id);
             $reservation->room()->associate($room->id);
             $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price', 'complements_cheked']);
 
             if (session()->has('discoun_id')) {
-                $reservation->discount_amount = $request->session()->get('discount_amount');
-                $reservation->discount()->associate(session()->get('discoun_id'));
+                $discount=Discount::find(session()->get('discoun_id'));
+                $discount->amount=session()->get('discount_amount');
+                $discount->discount_reservation =$discount->only('code','percent','amount');
+                //$reservation->'discount_amount' = $request->session()->get('discount_amount');
+                //$reservation->discount()->associate(session()->get('discoun_id'));
             }
 
             $reservation->order = rand(1, 9) . $reservation->start_date->format('md') . $client->id;
             $reservation->save();
 
             $description_stripe = $client->name . " - " . $room->name . " - " . $reservation->night . ' noche(s)';
-            
+
             $payment = $client->charge($reservation->total_price * 100, $request->methodpayment, [
                 'description' => $description_stripe
             ]);
@@ -210,15 +210,13 @@ class ReservationController extends Controller
             'end_date',
             'adults',
             'kids',
-            'night' ,
-            
+            'night',
             'room_id',
             'room_quantity',
             'ids_complements_cheked',
             'price_per_reservation',
             'sub_total_price',
             'total_price',
-
             'discount_id',
             'discount_amount',
         ]);
@@ -227,11 +225,16 @@ class ReservationController extends Controller
             'order' => $reservation->order,
             'create_date' => $reservation->created_at->format('Y-m-d')
         ]);
+    }
+    public function report_pdf(Request $request){
+
+        dd($request->all());
 
     }
     public function dicount_code(Request $request)
     {
-
+        $this->validate_session();
+        
         session()->forget(['discount_id', 'discount_amount']);
 
         $sub_total_price = session()->get('sub_total_price');
@@ -267,10 +270,20 @@ class ReservationController extends Controller
         session([
             'discount_id' => $discount->id,
             'discount_amount' => $discount_amount,
-            //'discount_code' => $discount->code,
+            'discount_code' => $discount->code,
             'total_price' => $total_price
         ]);
 
         return compact('total_price', 'discount_amount', 'discount_percent');
+    }
+    public function validate_session()
+    {
+        if( !session()->has('start_date') ){
+
+            $error = 'Al parecer hubo un error!';
+            return response()->json(['error' => $error ], 404);
+
+        }
+        
     }
 }

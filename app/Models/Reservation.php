@@ -15,7 +15,6 @@ class Reservation extends Model
         'start_date',
         'end_date',
         'night',
-        'discount_amount',
         'room_quantity',
         'total_price',        
         'check_in',
@@ -24,12 +23,14 @@ class Reservation extends Model
         'canceled_date',
         'order',
         'room_reservation',        
+        'discount_reservation',        
     ];
     protected $casts = [
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'canceled_date' => 'datetime:Y-m-d',
         'room_reservation' => 'object',     
+        'discount_reservation' => 'object',     
         'total_price' => 'float',   
         'sub_total_price' => 'float',   
     ];
