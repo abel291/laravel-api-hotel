@@ -21,7 +21,7 @@
 
             <!--laoding -->
             <div  class="absolute inset-0 blur items-center justify-center flex" x-transition
-                id="loading-state-modal" wire:loading wire:loading.class='flex' wire:target="
+                id="loading-state-modal"  wire:loading.flex wire:target="
             edit,
             save,
             create,

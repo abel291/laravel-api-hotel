@@ -37,7 +37,7 @@
                     </div>
 
                     <!--laoding -->
-                    <div x-show="isLoading" x-transition:enter
+                    <div x-show="isLoading" x-transition.opacity
                         class="absolute inset-0 blur flex items-center justify-center">
                         <div
                             class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-600 ">

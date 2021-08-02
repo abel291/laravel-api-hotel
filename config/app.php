@@ -177,8 +177,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
-
+        Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -233,6 +233,7 @@ return [
         'ImageManager' => Intervention\Image\Facades\Image::class,
         'ReservationSystem' => App\Helpers\ReservationSystem::class,
         'Helpers' => App\Helpers\Helpers::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

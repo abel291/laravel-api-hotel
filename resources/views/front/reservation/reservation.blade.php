@@ -45,7 +45,7 @@
 
     </div>
 
-    <div x-show="isLoading" x-transition:enter class="flex absolute inset-0 blur items-center justify-center" wire:loading.flex >
+    <div x-show="isLoading" x-transition.opacity class="flex absolute inset-0 blur items-center justify-center" wire:loading.flex >
         <div
             class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-400 ">
             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"

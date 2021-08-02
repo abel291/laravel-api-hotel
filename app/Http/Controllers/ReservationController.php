@@ -27,6 +27,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationOrder;
 use App\Models\Discount;
 use App\Models\Page;
+use Barryvdh\DomPDF\Facade as PDF;
+
+
 
 class ReservationController extends Controller
 {
@@ -171,7 +174,8 @@ class ReservationController extends Controller
             //dd($room->complements_cheked);
             $reservation->client()->associate($client->id);
             $reservation->room()->associate($room->id);
-            $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price', 'complements_cheked']);
+            $room->price_per_reservation=session()->get('price_per_reservation');
+            $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price','price_per_total_night','price_per_reservation', 'complements_cheked']);
 
             if (session()->has('discount_id')) {
                 $discount=Discount::find(session()->get('discount_id'));
@@ -226,9 +230,22 @@ class ReservationController extends Controller
         ]);
     }
     public function report_pdf(Request $request){
+        
+        $reservation=Reservation::where('order',$request->code)
+        ->with(['client' => function ($query) use ($request)  {
 
-        dd($request->all());
+            $query->where('email',$request->email)->firstOrFail();
 
+        }])->firstOrFail();
+
+        $client=$reservation->client;
+
+       
+        
+        return PDF::loadView('pdf.report', compact('reservation','client'))->stream();
+        return view('pdf.report',compact('reservation','client'));
+        dd($reservation);
+        
     }
     public function dicount_code(Request $request)
     {
