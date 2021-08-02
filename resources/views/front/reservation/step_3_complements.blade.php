@@ -8,7 +8,7 @@
             <div class="flex item-start border border-gray-200 p-4 rounded-lg space-x-3">
                 <div>
                     <input x-on:click="complement_selected(complement.id,$event.target.checked)" type="checkbox"
-                        class="h-5 w-5" :value="complement.id">
+                        class="h-5 w-5 form-checkbox text-orange-500" :value="complement.id">
                 </div>
                 <div class="flex flex-col text-gray-700 ">
                     <span class="font-bold " x-text="complement.name"></span>
@@ -28,12 +28,12 @@
         </template>
     </div>
 
-    <div class="mt-5">
+    {{-- <div class="mt-5">
         <div class="flex space-x-3 justify-end">
 
             <div class="">
                 <button x-on:click="step=2"
-                    class="font-bold w-full py-3 px-14 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-300 focus:outline-none ">Volver</button>
+                    class="btn_back_step_reservation ">Volver</button>
             </div>
 
             <div class="">
@@ -65,6 +65,17 @@
                 </button>
             </div>
         </div>
+    </div> --}}
+    <div class="flex space-x-3 justify-end">
+        <button x-on:click="step=2;scroll_top()"
+            class="btn_back_step_reservation">
+            Volver
+        </button>
+
+        <button
+            class="btn_next_step_reservation"
+            x-show="step==3" x-on:click="step_3_confirmation"> Seguir
+        </button>
     </div>
 
 </div>

@@ -1,5 +1,5 @@
-<div>
-    <div x-data="{show : false}">
+<div x-data="{show : false}">
+    <div x-data="reservation_step">
         <x-modal>
             <x-slot name="button">
                 <x-jet-button x-on:click="show = true ;">Crear Reservation</x-jet-button>
@@ -8,9 +8,7 @@
                 {{-- <h2 class="font-bold text-gray-700">Crear Reservation</h2> --}}
             </x-slot>
             <x-slot name="content">
-
-
-                <div id="container-main" class="px-4 text-gray-700" x-data="reservation_step">
+                <div id="container-main" class="px-4 text-gray-700">
 
                     @include('livewire.admin.reservations.errors-notification')
 
@@ -63,15 +61,41 @@
 
             </x-slot>
             <x-slot name="footer">
+                <div class="space-x-3">
+                    <!-- button back -->
+                    <x-jet-secondary-button x-show="1<step && step<5" x-on:click="step-=1;scroll_top()">volver
+                    </x-jet-secondary-button>
+
+                    <!-- buttons next step -->
+                    <x-jet-button class="right" x-show="step==1" x-on:click="step_1_check_date">Chekear disponibilidad
+                    </x-jet-button>
+
+                    <x-jet-button class="right" x-show="step==3" x-on:click="step_3_confirmation"> Seguir
+                    </x-jet-button>
+
+                    <x-jet-button class="right" x-show="step==4" id="button_stripe"> Finalizar reserva
+                    </x-jet-button>                    
+                   
+                    <x-jet-secondary-button x-show="step==5" x-on:click="init">Volver al inicio</x-jet-secondary-button>
+                    <a x-show="step==5" id='report_pdf_button' target="_blank" href="{{route('reservation.report_pdf')}}">
+                        <x-jet-button>Ver comprobante</x-jet-button>
+                    </a>
+                    
+                    
+                        
+
+
+                </div>
 
             </x-slot>
         </x-modal>
-        
+
     </div>
 
     <!-- Details reservaion-->
-    @include('livewire.admin.reservations.details-reservations')
+    {{-- @include('livewire.admin.reservations.details-reservations') --}}
 
-
+    <!-- delete reservaion-->
+    {{-- @include('livewire.admin.reservations.delete-reservations') --}}
 
 </div>

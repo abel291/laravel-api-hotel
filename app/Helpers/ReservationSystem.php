@@ -14,7 +14,7 @@ class ReservationSystem
     public static function check_availability (string $start_date,string $end_date, int $adults,int $kids,int $night,int $room_id=0)
     {     
         $rooms = Room::where('active', 1)
-        ->select('rooms.id', 'name', 'slug', 'quantity', 'price', 'beds', 'adults', 'thumbnail')
+        ->select('rooms.id', 'name', 'slug', 'quantity', 'price', 'beds', 'adults','kids','thumbnail')
         ->where('adults', '>=', $adults)
         ->where('kids', '>=', $kids)
         ->with(['reservations' => function ($query)  use ($start_date, $end_date) {

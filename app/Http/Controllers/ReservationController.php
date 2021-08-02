@@ -73,7 +73,6 @@ class ReservationController extends Controller
             $night
         );
 
-
         //guardo en session para otros step        
         session([
             'start_date' => $request->start_date,
@@ -174,17 +173,16 @@ class ReservationController extends Controller
             $reservation->room()->associate($room->id);
             $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price', 'complements_cheked']);
 
-            if (session()->has('discoun_id')) {
-                $discount=Discount::find(session()->get('discoun_id'));
+            if (session()->has('discount_id')) {
+                $discount=Discount::find(session()->get('discount_id'));
                 $discount->amount=session()->get('discount_amount');
-                $discount->discount_reservation =$discount->only('code','percent','amount');
+                $reservation->discount_reservation =$discount->only('code','percent','amount');
                 //$reservation->'discount_amount' = $request->session()->get('discount_amount');
-                //$reservation->discount()->associate(session()->get('discoun_id'));
+                //$reservation->discount()->associate(session()->get('discount_id'));
             }
-
+            //dd($reservation);
             $reservation->order = rand(1, 9) . $reservation->start_date->format('md') . $client->id;
             $reservation->save();
-
             $description_stripe = $client->name . " - " . $room->name . " - " . $reservation->night . ' noche(s)';
 
             $payment = $client->charge($reservation->total_price * 100, $request->methodpayment, [
@@ -219,6 +217,7 @@ class ReservationController extends Controller
             'total_price',
             'discount_id',
             'discount_amount',
+            'discount_percent',
         ]);
 
         return response()->json([
@@ -235,7 +234,7 @@ class ReservationController extends Controller
     {
         $this->validate_session();
         
-        session()->forget(['discount_id', 'discount_amount']);
+        session()->forget(['discount_id', 'discount_amount','discount_code']);
 
         $sub_total_price = session()->get('sub_total_price');
 
@@ -266,7 +265,7 @@ class ReservationController extends Controller
         $total_price = $sub_total_price - $discount_amount;
 
         $discount_percent = $discount->percent;
-
+        
         session([
             'discount_id' => $discount->id,
             'discount_amount' => $discount_amount,

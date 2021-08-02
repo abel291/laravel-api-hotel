@@ -27,14 +27,14 @@
         </template>
     </div>
 
-    <div class="flex space-x-3 justify-between">
+    {{-- <div class="flex space-x-3 justify-between">
         @include('livewire.admin.reservations.button_step',[
         'button_back_step'=>2,
         'step_alpine_fuction'=>'step_3_confirmation',
         'text'=>'Seguir',
         'text_loading'=>'Chekeando...'
         ])
-    </div>
+    </div> --}}
 
 
 </div>

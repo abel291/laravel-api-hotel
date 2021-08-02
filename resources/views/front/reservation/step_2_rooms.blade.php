@@ -57,11 +57,11 @@
 
     </div>
 
-    <div class="flex space-x-3">
-        <div>
-            <button x-on:click="step=1"
-                class="font-bold w-full py-3 px-14 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-300 focus:outline-none ">Volver</button>
-        </div>
+    <div class="space-x-3">
+        <button x-on:click="step=1;scroll_top()"
+            class="btn_back_step_reservation">
+            Volver
+        </button>
     </div>
 
 

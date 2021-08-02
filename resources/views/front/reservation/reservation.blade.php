@@ -1,10 +1,10 @@
 @extends('front.layouts.app',[
-    
-    'nav_type'   =>'white',
-    'banner_type'   =>false,
-    'page_title'         =>$page->title,
-    'page_sub_title'     =>$page->sub_title,
-    'page_img'           =>$page->img,
+
+'nav_type' =>'white',
+'banner_type' =>false,
+'page_title' =>$page->title,
+'page_sub_title' =>$page->sub_title,
+'page_img' =>$page->img,
 ])
 
 @section('seo_title', 'Reservation')
@@ -16,33 +16,13 @@
 @section('content')
 
 
-<div id="container-main" class="container mx-auto max-w-screen-xl section-p-y relative min-h-screen flex items-center justify-center">
+<div x-data="reservation_step" id="container-main"
+    class="container mx-auto max-w-screen-xl realtive section-p-y relative min-h-screen">
 
-    
-    <div x-data="reservation_step" class="w-full">
-        <div x-show="errors.length" class="max-w-xl mx-auto w-full bg-red-100 rounded-md p-4 flex" x-transition.duration.500ms>
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                  </svg>
-            </div>
-            <div  class="px-4 flex-grow">
-                <span class="text-red-700 font-semibold">Tienes Errores por revisar </span>
-                <ul class="list-disc text-red-600">
-                <template x-for="error in errors">
-                    <li x-text="error"></li>    
-                </template>
-            </ul>
-            </div>
-            <div>
-            <button x-on:click="errors=[]" class="outline-none focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-            </button>
-            </div>
-        </div>
-        
+
+    <div class="w-full">
+        @include('front.reservation.errors-notification')
+
         <div x-show="step==1" x-transition:enter.duration.400ms>
             @include('front.reservation.step_1_date')
         </div>
@@ -63,7 +43,45 @@
             @include('front.reservation.step_5_order_details')
         </div>
 
-
     </div>
+
+    <div x-show="isLoading" x-transition:enter class="flex absolute inset-0 blur items-center justify-center" wire:loading.flex >
+        <div
+            class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-400 ">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                </circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
+            <span>Processing</span>
+        </div>
+    </div>
+
+    {{-- <div class="space-x-3 text-right mt-4 max-w-5xl mx-auto">
+        <div>
+            <button x-show="1<step && step<5" x-on:click="step-=1;scroll_top()"
+                class="btn_back_step_reservation ">Volver</button>
+        </div>
+
+        <!-- buttons next step -->
+        <button class="btn_next_step_reservation" x-show="step==1" x-on:click="step_1_check_date">Chekear disponibilidad
+        </button>
+
+        <button class="btn_next_step_reservation" x-show="step==3" x-on:click="step_3_confirmation"> Seguir
+        </button>
+
+        <button class="btn_next_step_reservation" x-show="step==4" id="button_stripe"> Finalizar reserva
+        </button>
+
+        <button
+            class="btn_back_step_reservation"
+            x-show="step==5" x-on:click="init">Volver al inicio</button>
+        <a x-show="step==5" id='report_pdf_button' target="_blank" href="{{route('reservation.report_pdf')}}" class="btn_next_step_reservation inline-block">
+            Ver comprobante
+        </a>
+    </div> --}}
 </div>
 @endsection

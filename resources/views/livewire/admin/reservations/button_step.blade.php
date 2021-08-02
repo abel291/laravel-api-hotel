@@ -8,7 +8,7 @@
 
 @if ($step_alpine_fuction)
     <div>
-        <button x-on:click="{{$step_alpine_fuction}}"
+        <button x-on:click="{{$step_alpine_fuction}}" id="{{$step_alpine_fuction}}"
             class=" w-56 flex items-center justify-center py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:shadow-outline-gray"
             :class="{ 'bg-gray-500 cursor-default' : isLoading , 'bg-gray-800 hover:bg-gray-600' : ! isLoading }" :disabled="isLoading">
 

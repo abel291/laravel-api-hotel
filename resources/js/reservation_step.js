@@ -90,8 +90,8 @@ export default () => ({
             this.scroll_top()
         }
     },
-    async step_4_finalize(payment_id) {
-
+    async step_4_finalize(payment_id) {        
+        
         try {
             const response = await
 
@@ -106,7 +106,9 @@ export default () => ({
             this.step = 5
 
             let button_report = document.getElementById('report_pdf_button')
-            button_report.href += `?code=${this.order}&email=${this.client_email}`;
+            button_report.href += `?code=${this.order}&email=${this.client.email}`;
+            
+            Livewire.emit('resetListReservations')
 
 
 
@@ -155,7 +157,7 @@ export default () => ({
         n = n ? n : 0;// number NaN = 0
         return '$ ' + this.currencyFormat.format(parseFloat(n))
     },
-    init() {
+    init() {        
         this.init_state()
         this.$nextTick(() => {
             
@@ -263,7 +265,10 @@ export default () => ({
         let button_stripe = document.getElementById('button_stripe');
 
         button_stripe.addEventListener('click', async (e) => {
-            console.log(this.stripe.name)
+            
+            // this.step_4_finalize('test')
+            // return true;
+            
             this.stripe.error_name = "";
             this.stripe.error_card = "";
             
@@ -275,13 +280,13 @@ export default () => ({
             }
 
             this.isLoading = true;
-            this.errors = [];
-            const { paymentMethod, error } = await stripe.createPaymentMethod(
-                'card', cardElement, {
-                billing_details: {
-                    name: this.stripe.name
+                this.errors = [];
+                const { paymentMethod, error } = await stripe.createPaymentMethod(
+                    'card', cardElement, {
+                    billing_details: {
+                        name: this.stripe.name
+                    }
                 }
-            }
             );
 
             if (error) {
@@ -290,7 +295,6 @@ export default () => ({
                 this.scroll_top()
             }
             else {
-                console.log(paymentMethod.id)
                 this.step_4_finalize(paymentMethod.id)
             }
 

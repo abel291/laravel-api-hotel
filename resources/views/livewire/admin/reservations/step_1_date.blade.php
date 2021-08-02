@@ -68,12 +68,5 @@
             <span x-text="errors.kids" class="pl-1 text-red-500 text-sm block"></span>
         </div>
     </div>
-    <div class="flex space-x-3 justify-between">
-        @include('livewire.admin.reservations.button_step',[
-            'button_back_step'=>'',
-            'step_alpine_fuction'=>'step_1_check_date',
-            'text'=>'Chekear disponibilidad',
-            'text_loading'=>'Chekeando...'
-        ])
-    </div>
+  
 </div>

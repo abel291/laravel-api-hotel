@@ -53,7 +53,7 @@ class ListReservations extends Component
        
         $data = Reservation::where('start_date','like','%'.$this->search.'%')
             ->orderBy($this->sortBy,$this->sortDirection)
-            ->with('client','room')
+            ->with('client','room','discount')
             ->paginate(20);
 
             //dd(json_encode($data->getCollection()->first()->room_reservation));

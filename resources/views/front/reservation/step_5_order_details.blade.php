@@ -45,7 +45,7 @@
                     </tr>
 
                     <tr>
-                        <td class="py-5 font-bold">
+                        <td class="py-3 font-bold">
                             <span x-show="room_quantity > 1" x-text="room_selected.name"></span>
                             <span x-show="room_quantity==1" x-text="room_selected.name + ' × ' + room_quantity "></span>
                         </td>
@@ -55,7 +55,7 @@
                     </tr>
                     <template x-for="com in complements_cheked">
                         <tr>
-                            <td class="py-5 font-bold">
+                            <td class="py-3 font-bold pl-5">
                                 <span x-show="room_quantity > 1" x-text="com.name"></span>
                                 <span x-show="room_quantity == 1" x-text="com.name+ ' × ' + room_quantity "></span>
                             </td>
@@ -65,31 +65,50 @@
                         </tr>
                     </template>
                     <tr>
-                        <td class="py-5">
-                            <span class="font-bold">SUB-TOTAL</span>
+                        <td class="py-3 ">
+                            <span class="">METODO DE PAGO</span>
                         </td>
                         <td>
-                            <span class="font-bold" x-text=formatNumber(total_price)></span>
+                            <span class=""> Targeta de credito </span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="py-5">
-                            <span class="font-bold">METODO DE PAGO</span>
+                        <td class="py-3 ">
+                            <span class="">SUB-TOTAL</span>
                         </td>
-                        <td>
-                            <span class="font-bold"> Targeta de credito </span>
+                        <td class="font-bold">
+                            <span class="" x-text=formatNumber(sub_total_price)></span>
                         </td>
                     </tr>
+                    
+                    <tr x-show="discount.amount">
+                        <td class="py-3">
+                            <span>CUPON DE DESCUENTO</span> 
+                        </td >
+                        <td class="text-green-500 font-bold">
+                            <span x-text="formatNumber(-discount.amount)"></span>
+                        </td>    
+                    </tr>
                     <tr>
-                        <td class="py-5">
-                            <span class="font-bold">TOTAL</span>
+                        <td class="py-3 ">
+                            <span class="">TOTAL</span>
                         </td>
-                        <td>
-                            <span class="font-bold" x-text=formatNumber(total_price)></span>
+                        <td class="font-bold">
+                            <span class="" x-text=formatNumber(total_price)></span>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="flex justify-end space-x-3">
+            <button
+                class="btn_back_step_reservation"
+                x-show="step==5" x-on:click="init;scroll_top()">Volver al inicio</button>
+            
+                <a x-show="step==5" id='report_pdf_button' target="_blank" href="{{route('reservation.report_pdf')}}"
+                class="btn_next_step_reservation">
+                Ver comprobante
+            </a>
         </div>
     </div>
 </div>

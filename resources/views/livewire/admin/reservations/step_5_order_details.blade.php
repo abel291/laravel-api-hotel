@@ -97,10 +97,5 @@
             </tbody>
         </table>
     </div>
-    <div class="text-center mt-4 flex justify-between items-center">
-        
-        <x-jet-button x-on:click="init">Volver al inicio</x-jet-button>
-        
-        <a class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray"  id='report_pdf_button' target="_blank" href="{{route('reservation.report_pdf')}}"> Ver Comprobante </a>
-    </div>
+    
 </div>

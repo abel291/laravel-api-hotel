@@ -58,20 +58,20 @@
                     {{ $item->client->name }}
 
                 </td>
-                
+
                 <td>
-                    <div >
+                    <div>
                         {{ $item->start_date->isoFormat('MMM DD') }} -
                         {{ $item->end_date->isoFormat('MMM DD') }}
                     </div>
                 </td>
                 <td>
-                    <div >
+                    <div>
                         {{ $item->night }}
                     </div>
                 </td>
                 <td>
-                    <div >
+                    <div>
                         {{ Helpers::format_price($item->total_price) }}
                     </div>
                 </td>
@@ -114,23 +114,13 @@
                     @endif
 
                 </td>
-                <td class="text-sm font-medium ">
-                    <a x-data x-on:click='$dispatch("open-modal-details",{
-                            
-                            reservation:{{ json_encode($item->only("start_date","end_date","night","adults","kids","total_price","sub_total_price","check_in","special_request","state","canceled_date","order","room_quantity")) }},
-                            room:{{ json_encode($item->room_reservation) }},
-                            discount:{{ json_encode($item->discount_reservation) }},
-                            client:{{ json_encode($item->client->only("name","email","phone","country","city")) }}
-                           
-                        })' class="text-gray-600 hover:text-gray-900 cursor-pointer mr-2">
+                <td  class="text-sm font-medium" x-data='' key="{{ $item->id }}">
+                    <a x-on:click='$dispatch("open-modal-details",{{ $item->id }})' class="text-gray-600 hover:text-gray-900 cursor-pointer mr-2">
                         Ver
                     </a>
-                    @if ($item->state == ' successful')
-                    <a x-data x-on:click="$dispatch('open-modal-confirmation',{{$item->toJson()}})"
-                        class="text-red-600 hover:text-red-900 cursor-pointer">
-
+                    @if ($item->state == 'successful')
+                    <a x-data x-on:click="$dispatch('open-modal-confirmation',{{ $item->id }})" class="text-red-600 hover:text-red-900 cursor-pointer">
                         Cancelar
-
                     </a>
                     @endif
                 </td>
@@ -138,6 +128,8 @@
             @endforeach
         </x-slot>
     </x-list-data>
+    @livewire('admin.reservations.details-reservations')
+    @livewire('admin.reservations.delete-reservations')
 
 
 </div>

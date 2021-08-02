@@ -20,8 +20,8 @@
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 
             <!--laoding -->
-            <div class="hidden absolute inset-0 blur items-center justify-center" 
-                id="loading-state-modal" wire:loading.class.remove="hidden" wire:loading.class='flex' wire:target="
+            <div  class="absolute inset-0 blur items-center justify-center flex" x-transition
+                id="loading-state-modal" wire:loading wire:loading.class='flex' wire:target="
             edit,
             save,
             create,
@@ -33,10 +33,9 @@
             check_4_user,
             check_5_confirmation,       
             cancel_reservation,
+            show,
             ">
-
-                
-                
+         
                     <div
                         class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-600 ">
                         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"

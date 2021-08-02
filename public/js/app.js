@@ -26124,30 +26124,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this4.create_date = response.data.create_date;
                 _this4.step = 5;
                 button_report = document.getElementById('report_pdf_button');
-                button_report.href += "?code=".concat(_this4.order, "&email=").concat(_this4.client_email);
-                _context3.next = 14;
+                button_report.href += "?code=".concat(_this4.order, "&email=").concat(_this4.client.email);
+                Livewire.emit('resetListReservations');
+                _context3.next = 15;
                 break;
 
-              case 11:
-                _context3.prev = 11;
+              case 12:
+                _context3.prev = 12;
                 _context3.t0 = _context3["catch"](0);
 
                 _this4.validator_errors(_context3.t0);
 
-              case 14:
-                _context3.prev = 14;
+              case 15:
+                _context3.prev = 15;
                 _this4.isLoading = false;
 
                 _this4.scroll_top();
 
-                return _context3.finish(14);
+                return _context3.finish(15);
 
-              case 18:
+              case 19:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 11, 14, 18]]);
+        }, _callee3, null, [[0, 12, 15, 19]]);
       }))();
     },
     applyCodeDiscount: function applyCodeDiscount() {
@@ -26322,12 +26323,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             while (1) {
               switch (_context5.prev = _context5.next) {
                 case 0:
-                  console.log(_this7.stripe.name);
+                  // this.step_4_finalize('test')
+                  // return true;
                   _this7.stripe.error_name = "";
                   _this7.stripe.error_card = "";
 
                   if (_this7.stripe.name) {
-                    _context5.next = 8;
+                    _context5.next = 7;
                     break;
                   }
 
@@ -26339,17 +26341,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this7.isLoading = false;
                   return _context5.abrupt("return", true);
 
-                case 8:
+                case 7:
                   _this7.isLoading = true;
                   _this7.errors = [];
-                  _context5.next = 12;
+                  _context5.next = 11;
                   return stripe.createPaymentMethod('card', cardElement, {
                     billing_details: {
                       name: _this7.stripe.name
                     }
                   });
 
-                case 12:
+                case 11:
                   _yield$stripe$createP = _context5.sent;
                   paymentMethod = _yield$stripe$createP.paymentMethod;
                   error = _yield$stripe$createP.error;
@@ -26360,12 +26362,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                     _this7.scroll_top();
                   } else {
-                    console.log(paymentMethod.id);
-
                     _this7.step_4_finalize(paymentMethod.id);
                   }
 
-                case 16:
+                case 15:
                 case "end":
                   return _context5.stop();
               }

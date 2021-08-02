@@ -23,23 +23,34 @@ class Reservation extends Model
         'canceled_date',
         'order',
         'room_reservation',        
-        'discount_reservation',        
+        'discount_reservation', 
+        'refund_reservation',
     ];
+
     protected $casts = [
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'canceled_date' => 'datetime:Y-m-d',
-        'room_reservation' => 'object',     
+        'room_reservation' => 'object',
+        'refund_reservation' => 'object',    
         'discount_reservation' => 'object',     
         'total_price' => 'float',   
         'sub_total_price' => 'float',   
     ];
+
     protected $attributes = [
         'check_in' => '02:30 PM',
         'total_price' => 0  ,      
-        'sub_total_price' => 0        
+        'sub_total_price' => 0 ,
+        'room_reservation'=>'{
+            "name":0,
+            "price":0,
+            "complements_cheked":0
+
+        }'
         
-    ];   
+    ];
+
     public function room()
     {
         return $this->belongsTo(Room::class);

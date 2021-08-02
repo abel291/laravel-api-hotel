@@ -135,7 +135,7 @@
             </tr>
             <tr x-show="discount.amount" class="border-b border-gray-200 text-sm font-semibold">
                 <td colspan="3" class="py-2  pr-4 text-right ">
-                    <span>CUPON DE DESCUENTO</span> 
+                    <span>CUPON DE DESCUENTO</span>
                 </td>
                 <td class="text-green-500 ">
                     <span x-text="formatNumber(-discount.amount)"></span>
@@ -159,8 +159,7 @@
 
                 <x-jet-button
                     x-bind:class="{ 'bg-gray-500 cursor-default' : isLoading , 'bg-gray-800 hover:bg-gray-600' : ! isLoading }"
-                    x-bind:disabled="isLoading" 
-                    x-on:click="applyCodeDiscount">
+                    x-bind:disabled="isLoading" x-on:click="applyCodeDiscount">
 
                     <span class="" x-show="!isLoading">Aplicar Cupon</span>
 
@@ -199,8 +198,8 @@
                     Nombre del titular
                 </label>
 
-                <x-jet-input type="text" placeholder="como aparece en la targeta" x-model='stripe.name' class="uppercase"
-                    x-init="stripe.name='{{$client->name}}'"></x-jet-input>
+                <x-jet-input type="text" placeholder="como aparece en la targeta" x-model='stripe.name'
+                    class="uppercase" x-init="stripe.name='{{$client->name}}'"></x-jet-input>
 
                 <span x-text='stripe.error_name' class="pl-1 text-red-600 text-sm block"></span>
             </div>
@@ -218,15 +217,8 @@
             </div>
         </div>
     </div>
-    <x-jet-button id="button_stripe">enviar</x-jet-butto >
+    {{--  --}}
+
+
     
-    
-        <div class="flex space-x-3 justify-between">
-        @include('livewire.admin.reservations.button_step',[
-        'button_back_step'=>2,
-        'step_alpine_fuction'=>'step_4_finalize',
-        'text'=>'Reservar Habitacion',
-        'text_loading'=>'Chekeando...'
-        ])
-    </div>
 </div>

@@ -27,8 +27,8 @@ class ClientFactory extends Factory
             //'lastname' => $this->faker->lastName,
             'email' => $this->faker->safeEmail,
             'phone' => $this->faker->phoneNumber,
-            'country' => $this->faker->country,
-            'city' => $this->faker->city,
+            'country' => str_replace(["'",'"'],'',$this->faker->country) ,
+            'city' => str_replace(["'",'"'],'',$this->faker->city) ,
         ];
     }
 }
