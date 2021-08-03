@@ -90,7 +90,7 @@ export default () => ({
             this.scroll_top()
         }
     },
-    async step_4_finalize(payment_id) {        
+    async step_4_finalize(payment_id) {
         
         try {
             const response = await
@@ -106,7 +106,7 @@ export default () => ({
             this.step = 5
 
             let button_report = document.getElementById('report_pdf_button')
-            button_report.href += `?code=${this.order}&email=${this.client.email}`;
+            button_report.href += `?order=${this.order}&email=${this.client.email}`;
             
             Livewire.emit('resetListReservations')
 

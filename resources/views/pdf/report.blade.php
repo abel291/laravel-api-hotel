@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -65,7 +65,6 @@
 
 
             <tr class="border-b border-gray-200 text-sm">
-
                 <td class="py-2 pr-2 capitalize">
                     {{$reservation->room_reservation->name}}
                 </td>
@@ -82,7 +81,7 @@
                     {{Helpers::format_price($reservation->room_reservation->price_per_reservation)}}
                 </td>
             </tr>
-            @if ($reservation->room_reservation->complements_cheked)
+            @if (isset($reservation->room_reservation->complements_cheked))
             @foreach ($reservation->room_reservation->complements_cheked as $complement)
             <tr class="">
                 <td class="py-2 pr-2 pl-4">

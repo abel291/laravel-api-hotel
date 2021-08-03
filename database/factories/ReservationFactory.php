@@ -33,7 +33,9 @@ class ReservationFactory extends Factory
         $end_date = $reservation_date->modify('+'.$night.' day')->format('Y-m-d');
         
         $room = Room::get()->random();
-
+        $room->price_per_reservation=0;
+        $room->price_per_total_night=0;
+        
         $discount = Discount::get()->random();
 
         $discount->amount=$room->price*($discount->percent/100);
@@ -65,7 +67,7 @@ class ReservationFactory extends Factory
 
             "order" => rand(10000,99999),
 
-            "room_reservation" => $room->only('name','beds','adults','price'),//model casts object
+            "room_reservation" => $room->only('name','beds','adults','price','price_per_reservation','price_per_total_night'),//model casts object
 
             "discount_reservation" => $discount->only('code','percent','amount'), //model casts object
 

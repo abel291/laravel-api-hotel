@@ -6,7 +6,8 @@
             <x-slot name="button"></x-slot>
             <x-slot name="title">
                 <h2 class="text-lg mb-4 text-gray-600 font-semibold">Detalles de reserva
-                    <b>#{{$reservation->order}}</b></span>
+                    <span class="font-bold">#{{$reservation->order}}</span>
+
                 </h2>
             </x-slot>
 
@@ -52,6 +53,14 @@
                         <div class="col-span-2 "> N° orden: </div>
                         <div class="col-span-2 font-bold">
                             <span>#{{$reservation->order}}</span>
+                            <a 
+                            class="text-xs text-blue-500 font-normal ml-2" 
+                            target="_blank"
+                            href="{{route('reservation.report_pdf',[
+                        'order'=>$reservation->order,
+                        'email'=>$client->email,
+                        
+                        ]) }}">Comprobante</a>
                         </div>
 
                         <div class="col-span-2 "> Entrada: </div>
@@ -135,18 +144,18 @@
                             <td class="py-2 pr-2  font-semibold">{{$reservation->room_reservation->name}}</td>
                             <td>{{Helpers::format_price($reservation->room_reservation->price)}}</td>
                         </tr>
-                        @if ($reservation->room_reservation->complements_cheked)
-                            @foreach ($reservation->room_reservation->complements_cheked as $complement)
-                                <tr class="border-b border-gray-200">
+                        @if (isset($reservation->room_reservation->complements_cheked))
+                        @foreach ($reservation->room_reservation->complements_cheked as $complement)
+                        <tr class="border-b border-gray-200">
 
-                                <td class="py-2 pl-4 font-medium">{{$complement->name}}</td>
+                            <td class="py-2 pl-4 font-medium">{{$complement->name}}</td>
 
-                                <td>
-                                    {{Helpers::format_price($complement->total_price)}}
-                                </td>
+                            <td>
+                                {{Helpers::format_price($complement->total_price)}}
+                            </td>
 
-                            </tr>
-                            @endforeach                        
+                        </tr>
+                        @endforeach
                         @endif
                         <tr class="border-b border-gray-200">
                             <td class="py-2 pr-2 font-bold">SUB-TOTAL</td>
@@ -155,9 +164,10 @@
                         @if ($reservation->discount_reservation)
                         <tr class="border-b border-gray-200 ">
                             <td class="py-2 pr-2 font-bold up">CUPON DESCUENTO</td>
-                            <td class="text-green-500">{{Helpers::format_price(-$reservation->discount_reservation->amount)}}</td>
+                            <td class="text-green-500">
+                                {{Helpers::format_price(-$reservation->discount_reservation->amount)}}</td>
                         </tr>
-                        @endif                        
+                        @endif
 
                         <tr class="border-b border-gray-200">
                             <td class="py-2 pr-2 font-bold">TOTAL</td>

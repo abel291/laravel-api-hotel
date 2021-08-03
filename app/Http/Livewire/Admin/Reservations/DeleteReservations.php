@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Reservations;
 
+use App\Mail\ReservationCanceled;
 use Livewire\Component;
 use App\Models\Client;
 use App\Models\Reservation;
@@ -79,7 +80,7 @@ class DeleteReservations extends Component
         }
 
         $reservation->save();
-        Mail::to($reservation->client->email)->queue(new ReservationOrder($reservation, 'canceled'));
+        Mail::to($reservation->client->email)->queue(new ReservationCanceled($reservation));
         
         DB::commit();
 

@@ -6,7 +6,7 @@ Reserva: #{{$reservation->order}}
 
 Guest name: {{$reservation->client->name}}
 
-Number of nights: {{$reservation->days}}
+Number of nights: {{$reservation->night}}
 
 Fecha de llegada: {{$reservation->start_date->format('Y-m-d') }}
 

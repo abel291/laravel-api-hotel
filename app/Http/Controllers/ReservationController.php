@@ -28,8 +28,7 @@ use App\Mail\ReservationOrder;
 use App\Models\Discount;
 use App\Models\Page;
 use Barryvdh\DomPDF\Facade as PDF;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class ReservationController extends Controller
 {
@@ -42,7 +41,7 @@ class ReservationController extends Controller
     public function index(Request $request)
     {
 
-        
+
         $start_date = $request->start_date ? $request->start_date : Carbon::now()->format('Y-m-d');
         $end_date = $request->end_date ? $request->end_date : Carbon::now()->addDay()->format('Y-m-d');
         $adults = $request->adults ? $request->adults : 1;
@@ -62,8 +61,8 @@ class ReservationController extends Controller
 
 
     public function step_1_check_date(Step1CheckData $request)
-    {        
-        
+    {
+
         $start_date = Carbon::createFromFormat('Y-m-d', $request->start_date);
         $end_date = Carbon::createFromFormat('Y-m-d', $request->end_date);
         $night = $start_date->diffInDays($end_date);
@@ -90,9 +89,9 @@ class ReservationController extends Controller
 
     public function step_3_confirmation(Step3Confirmation $request)
     {
-        
+
         $this->validate_session();
-        
+
         $room = ReservationSystem::check_availability(
             $request->session()->get('start_date'),
             $request->session()->get('end_date'),
@@ -128,9 +127,9 @@ class ReservationController extends Controller
     }
     public function step_4_finalize(Step4Filanize $request)
     {
-        
+
         $this->validate_session();
-        
+
         $room = ReservationSystem::check_availability(
             $request->session()->get('start_date'),
             $request->session()->get('end_date'),
@@ -161,26 +160,25 @@ class ReservationController extends Controller
         try {
 
             $room->complements_cheked = $room->complements->whereIn('id', session()->get('ids_complements_cheked'));
-            
-            if ($room->complements_cheked) {
-                $room->complements_cheked->transform(function ($item, $key) use($reservation) {
 
-                    $item->total_price=$item->price_per_total_night * $reservation->room_quantity;
-                    
+            if ($room->complements_cheked) {
+                $room->complements_cheked->transform(function ($item, $key) use ($reservation) {
+
+                    $item->total_price = $item->price_per_total_night * $reservation->room_quantity;
+
                     return $item->only(['name', 'price', 'type_price', 'total_price', 'price_per_total_night']);
-                    
                 })->values();
             }
             //dd($room->complements_cheked);
             $reservation->client()->associate($client->id);
             $reservation->room()->associate($room->id);
-            $room->price_per_reservation=session()->get('price_per_reservation');
-            $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price','price_per_total_night','price_per_reservation', 'complements_cheked']);
+            $room->price_per_reservation = session()->get('price_per_reservation');
+            $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price', 'price_per_total_night', 'price_per_reservation', 'complements_cheked']);
 
             if (session()->has('discount_id')) {
-                $discount=Discount::find(session()->get('discount_id'));
-                $discount->amount=session()->get('discount_amount');
-                $reservation->discount_reservation =$discount->only('code','percent','amount');
+                $discount = Discount::find(session()->get('discount_id'));
+                $discount->amount = session()->get('discount_amount');
+                $reservation->discount_reservation = $discount->only('code', 'percent', 'amount');
                 //$reservation->'discount_amount' = $request->session()->get('discount_amount');
                 //$reservation->discount()->associate(session()->get('discount_id'));
             }
@@ -204,8 +202,10 @@ class ReservationController extends Controller
             $error = 'Al parecer hubo un error! El pago a través de su targeta no se pudo realizar.';
             return response()->json(['error' => $error], 500);
         }
-
-        Mail::to($client->email)->queue(new ReservationOrder($reservation, 'order'));
+        
+        $pdf_path = $this->pdf_storage($reservation);//storage
+        
+        Mail::to($client->email)->queue(new ReservationOrder($reservation,$pdf_path));
 
         session()->forget([
             'start_date',
@@ -229,29 +229,27 @@ class ReservationController extends Controller
             'create_date' => $reservation->created_at->format('Y-m-d')
         ]);
     }
-    public function report_pdf(Request $request){
+    public function report_pdf(Request $request)
+    {
+        $reservation = Reservation::where('order', $request->order)
+            ->with(['client' => function ($query) use ($request) {
+
+                $query->where('email', $request->email)->firstOrFail();
+
+            }])->firstOrFail();
+
+        $pdf_path = $this->pdf_storage($reservation);//storage        
         
-        $reservation=Reservation::where('order',$request->code)
-        ->with(['client' => function ($query) use ($request)  {
-
-            $query->where('email',$request->email)->firstOrFail();
-
-        }])->firstOrFail();
-
-        $client=$reservation->client;
-
-       
+        return response()->file('storage/'.$pdf_path);
         
-        return PDF::loadView('pdf.report', compact('reservation','client'))->stream();
-        return view('pdf.report',compact('reservation','client'));
-        dd($reservation);
+        return view('pdf.report', compact('reservation', 'client'));
         
     }
     public function dicount_code(Request $request)
     {
         $this->validate_session();
-        
-        session()->forget(['discount_id', 'discount_amount','discount_code']);
+
+        session()->forget(['discount_id', 'discount_amount', 'discount_code']);
 
         $sub_total_price = session()->get('sub_total_price');
 
@@ -282,7 +280,7 @@ class ReservationController extends Controller
         $total_price = $sub_total_price - $discount_amount;
 
         $discount_percent = $discount->percent;
-        
+
         session([
             'discount_id' => $discount->id,
             'discount_amount' => $discount_amount,
@@ -294,12 +292,28 @@ class ReservationController extends Controller
     }
     public function validate_session()
     {
-        if( !session()->has('start_date') ){
+        if (!session()->has('start_date')) {
 
             $error = 'Al parecer hubo un error!';
-            return response()->json(['error' => $error ], 404);
-
+            return response()->json(['error' => $error], 404);
         }
+    }
+
+    public function pdf_storage($reservation){
         
+        $folder_date=$reservation->start_date->format('y-m');
+        
+        $pdf_path="pdf/$folder_date/$reservation->order.pdf"; 
+        
+        if (Storage::missing($pdf_path)) { //missing -> no esta el pdf
+
+            $client=$reservation->client; 
+            $pdf = PDF::loadView('pdf.report', compact('reservation', 'client'));        
+            Storage::put($pdf_path, $pdf->output());
+
+        }   
+
+        return $pdf_path;
+
     }
 }

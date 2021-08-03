@@ -16,8 +16,8 @@ class ReservationOrder extends Mailable
      *
      * @var \App\Models\Reservation
      */
-    public $reservation;
-    public $type;
+    public $reservation;    
+    public $pdf_path;
 
     /**
      * Create a new message instance.
@@ -25,10 +25,10 @@ class ReservationOrder extends Mailable
      * @param  \App\Models\Reservation  $reservation
      * @return void
      */
-    public function __construct(Reservation $reservation,$type)
+    public function __construct(Reservation $reservation,$pdf_path)
     {
-        $this->reservation = $reservation;
-        $this->type = $type;        
+        $this->reservation = $reservation;            
+        $this->pdf_path = $pdf_path;        
     }
 
     /**
@@ -37,17 +37,10 @@ class ReservationOrder extends Mailable
      * @return $this
      */
     public function build()
-    {   
-        if ($this->type=='order') {
-            $view='reservation_order';
-            $this->subject('Reservacion Orden #'.$this->reservation->order);
-        }
-        elseif($this->type=='canceled'){
-            $view='reservation_canceled';
-            $this->subject('Reserva cancelada Orden #'.$this->reservation->order);
-        }
-
-        
-        return $this->text('emails.'.$view);
+    {          
+            
+        $this->subject('Reservacion Orden #'.$this->reservation->order);      
+        return $this->text('emails.reservation_order')
+                ->attach('storage/'.$this->pdf_path);
     }             //->view('emails.reservation_order')
 }

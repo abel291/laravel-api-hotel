@@ -80,11 +80,6 @@
                     <a x-show="step==5" id='report_pdf_button' target="_blank" href="{{route('reservation.report_pdf')}}">
                         <x-jet-button>Ver comprobante</x-jet-button>
                     </a>
-                    
-                    
-                        
-
-
                 </div>
 
             </x-slot>

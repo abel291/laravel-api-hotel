@@ -26124,7 +26124,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this4.create_date = response.data.create_date;
                 _this4.step = 5;
                 button_report = document.getElementById('report_pdf_button');
-                button_report.href += "?code=".concat(_this4.order, "&email=").concat(_this4.client.email);
+                button_report.href += "?order=".concat(_this4.order, "&email=").concat(_this4.client.email);
                 Livewire.emit('resetListReservations');
                 _context3.next = 15;
                 break;

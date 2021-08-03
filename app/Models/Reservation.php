@@ -45,7 +45,9 @@ class Reservation extends Model
         'room_reservation'=>'{
             "name":0,
             "price":0,
-            "complements_cheked":0
+            "complements_cheked":{},
+            "price_per_total_night":0,
+            "price_per_reservation":0
 
         }'
         
