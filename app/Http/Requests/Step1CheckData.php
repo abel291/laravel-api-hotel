@@ -34,8 +34,8 @@ class Step1CheckData extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => 'required|date_format:Y-m-d|before:reservation.end_date',
-            'end_date' => 'required|date_format:Y-m-d|after:reservation.start_date',
+            'start_date' => 'required|date_format:Y-m-d|before:end_date',
+            'end_date' => 'required|date_format:Y-m-d|after:start_date',
             'adults' => 'required|min:1',
             'kids' => 'required|min:1',
         ];

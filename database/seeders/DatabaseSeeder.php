@@ -46,9 +46,9 @@ class DatabaseSeeder extends Seeder
 
         Discount::factory(20)->create();
 
-        Client::factory()->count(30)         
+        Client::factory()->count(3)         
         ->has(Reservation::factory()->count(1))        
-        ->create();        
+        ->create();
         
         Gallery::factory(5)->hasImages(12)->create();       
 
@@ -71,7 +71,9 @@ class DatabaseSeeder extends Seeder
             'blog',
             'privacy_policy',
             'cancellation_policies',
+            'cookies_policy',
             'terms_conditions',
+            'cancellation_reservation',            
             'reservation',            
         ];
         $faker = Faker\Factory::create();

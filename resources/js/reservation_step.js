@@ -79,7 +79,7 @@ export default () => ({
             this.complements_cheked = response.data.complements_cheked;
             this.price_per_reservation = response.data.price_per_reservation;
             this.sub_total_price = response.data.total_price;
-            this.total_price = this.sub_total_price;
+            this.total_price = this.total_price;
             this.step = 4;
 
         } catch (errors) {

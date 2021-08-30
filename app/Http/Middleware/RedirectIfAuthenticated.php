@@ -23,6 +23,12 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                
+                //si ya esta autenticado devuelve el  user
+                if ($request->wantsJson()) {
+                    return response()->json(['user'=>$request->user()]);
+                }
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }

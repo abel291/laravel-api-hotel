@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PageController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,12 +17,30 @@ use App\Http\Controllers\ReservationController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::prefix('reservation')->name('reservation.')->group(function () {
+Route::post('/auth/register', [AuthController::class, 'register']);
 
-        Route::post('/step_1_check_date', [ReservationController::class, 'step_1_check_date'])->name('step_1_check_date');
+Route::post('/auth/login', [AuthController::class, 'login']);
 
-        Route::post('/step_4_confirmation', [ReservationController::class, 'step_4_confirmation'])->name('step_4_confirmation');
+Route::get('/init', [PageController::class, 'init']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    
+    Route::get('/me', function (Request $request) {
+        //sleep(4);
+        return response()->json(['user'=>auth()->user()]);
+    });
+
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    
+    Route::prefix('reservation')->name('reservation.')->group(function () {
+
+        Route::post('/step_1_check_date', [ReservationController::class, 'step_1_check_date']);
+    
+        Route::post('/step_3_confirmation', [ReservationController::class, 'step_3_confirmation']);
+    
+        Route::post('/step_4_finalize', [ReservationController::class, 'step_4_finalize']);
+    
+        Route::post('/dicount_code', [ReservationController::class, 'dicount_code']);
+    });
+    
 });

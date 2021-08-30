@@ -20,13 +20,13 @@ class Step4Filanize extends FormRequest
     {
         return [
             'room_id' => 'Habitacion',
-            'name' => 'Nombre',
-            'phone' => 'Telefono',
-            'country' => 'Pais',
-            'city' => 'Ciudad',
-            'email' => 'Correo',
-            'check_in' => 'Hora de llegada',
-            'special_request' => 'Peticion especial',
+            'client.name' => 'Nombre',
+            'client.phone' => 'Telefono',
+            'client.country' => 'Pais',
+            'client.city' => 'Ciudad',
+            'client.email' => 'Correo',
+            'client.check_in' => 'Hora de llegada',
+            'client.special_request' => 'Peticion especial',
         ];
     }
     /**

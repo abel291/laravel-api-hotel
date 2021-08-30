@@ -2,9 +2,9 @@
     
     'nav_type'   =>'img',
     'banner_type'   =>'img',
-    'page_title'         =>$page->title,
-    'page_sub_title'     =>$page->sub_title,
-    'page_img'           =>$page->img,
+    'page_title'         =>$room->name,
+    'page_sub_title'     =>$room->sub_title,
+    'page_img'           =>'/storage/rooms/thumbnail/'.$room->thumbnail
 ])
 
 @section('seo_title', $room->name)
@@ -16,11 +16,7 @@
 
 @section('content')    
 
-    @include('front.pieces.banner_title', [
-    'title' => $room->name,
-    'sub_title' => $room->sub_title,
-    'img' =>"/storage/rooms/$room->thumbnail"
-    ])
+    
     <div class="container mx-auto max-w-screen-xl bg-white rounded-t-2xl -mt-5  md:rounded-none md:mt-0 ">
 
         <div class="flex flex-wrap  section-p-y space-y-8 lg:space-y-0 ">

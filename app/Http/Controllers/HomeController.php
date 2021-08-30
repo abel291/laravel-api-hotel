@@ -93,14 +93,13 @@ class HomeController extends Controller
         
         return view('front.home.privacy-policy',compact('page'));
     }
-    // public function cancellation_reservation(){
-    //     $page = Page::where('type','privacy_policy')->first();
-        
-    //     return view('front.home.cancellation-reservation',compact('page'));
-    // }
+    public function cancellation_reservation(){
+        $page = Page::where('type','cancellation_reservation')->first();
+        return view('front.home.cancellation-reservation',compact('page'));
+    }
     public function cookies_policy(){
         
-        
+        $page = Page::where('type','cookies_policy')->first();
         return view('front.home.cookies-policy',compact('page'));
     }
     public function reservation(Request $request){

@@ -36,4 +36,8 @@ class Complement extends Model
     {
         return $this->belongsToMany(Room::class);
     }
+    public function getIconPathAttribute()
+    {   
+        return '/storage/complements/'.$this->icon;
+    }
 }

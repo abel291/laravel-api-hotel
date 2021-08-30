@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Step1CheckData;
 use App\Http\Requests\Step3Confirmation;
 use App\Http\Requests\Step4Filanize;
-//use App\Http\Requests\Step1CheckData;
+use App\Http\Requests\CodeDiscount;
 //use App\Http\Requests\Step1CheckData;
 //use App\Http\Requests\Step1CheckData;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,69 +75,59 @@ class ReservationController extends Controller
             $night
         );
 
-        //guardo en session para otros step        
-        session([
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'adults' => $request->adults,
-            'kids' => $request->kids,
-            'night' => $night,
-        ]);
+        $client = new Client;
+        $faker = Faker\Factory::create();
+        $client->name = $faker->name;
+        $client->phone = $faker->phoneNumber;
+        $client->email = $faker->safeEmail;
+        $client->email_confirmation = $client->email;
+        $client->country = $faker->country;
+        $client->city = $faker->city;
+        $client->check_in = '02:00 PM';
+        $client->special_request = $faker->text($maxNbChars = 200);
 
-        return  compact('rooms', 'night');
+        $discount_code_exmaple=Discount::get()->random(5)->pluck('code')->values();
+        return  compact('rooms', 'night', 'client','discount_code_exmaple');
     }
 
     public function step_3_confirmation(Step3Confirmation $request)
     {
-
-        $this->validate_session();
-
-        $room = ReservationSystem::check_availability(
-            $request->session()->get('start_date'),
-            $request->session()->get('end_date'),
-            $request->session()->get('adults'),
-            $request->session()->get('kids'),
-            $request->session()->get('night'),
-            $request->room_id //parametro opcional para devolder solo la habitacion seleccionada
-        );
-
-        //calculo de precios
-        list(
+        
+        //$this->validate_session();
+        list(            
+            $room,
+            $sub_total_price,
             $total_price,
             $complements_cheked,
-            $price_per_reservation
+            $price_per_reservation,
+            $discount
+        ) = $this->room_with_price($request);
 
-        ) = ReservationSystem::price_calculation(
-            $room,
-            $request->room_quantity,
-            $request->ids_complements_cheked,
-        );
-
-        //guardo en session para otros step
-        session([
-            'room_id' => $request->room_id,
-            'room_quantity' => $request->room_quantity,
-            'ids_complements_cheked' => $request->ids_complements_cheked,
-            'price_per_reservation' => $price_per_reservation,
-            'sub_total_price' => $total_price,
-            'total_price' => $total_price,
-        ]);
-
-        return  compact('complements_cheked', 'price_per_reservation', 'total_price',);
+        return  compact('sub_total_price','total_price','complements_cheked','price_per_reservation','discount');
+        
     }
-    public function step_4_finalize(Step4Filanize $request)
+        public function step_4_finalize(Step4Filanize $request)
     {
 
-        $this->validate_session();
+        // $this->validate_session();
 
-        $room = ReservationSystem::check_availability(
-            $request->session()->get('start_date'),
-            $request->session()->get('end_date'),
-            $request->session()->get('adults'),
-            $request->session()->get('kids'),
-            $request->session()->get('night'),
-            $request->session()->get('room_id'),
-        );
+        // $room = ReservationSystem::check_availability(
+        //     $request->session()->get('start_date'),
+        //     $request->session()->get('end_date'),
+        //     $request->session()->get('adults'),
+        //     $request->session()->get('kids'),
+        //     $request->session()->get('night'),
+        //     $request->session()->get('room_id'),
+        // );
+
+        list(            
+            $room,
+            $sub_total_price,
+            $total_price,
+            $complements_cheked,
+            $price_per_reservation,
+            $discount
+        ) = $this->room_with_price($request);
 
         DB::beginTransaction();
 
@@ -146,42 +136,34 @@ class ReservationController extends Controller
         $client->save();
 
         $reservation = new Reservation();
-        $reservation->start_date = $request->session()->get('start_date');
-        $reservation->end_date = $request->session()->get('end_date');
-        $reservation->night = $request->session()->get('night');
-        $reservation->adults = $request->session()->get('adults');
-        $reservation->kids = $request->session()->get('kids');
+        $reservation->start_date = $request->start_date;
+        $reservation->end_date = $request->end_date;
+        $reservation->night = $request->night;
+        $reservation->adults = $request->adults;
+        $reservation->kids = $request->kids;
         $reservation->check_in = $request->client['check_in'];
         $reservation->special_request = $request->client['special_request'];
-        $reservation->room_quantity = $request->session()->get('room_quantity');
-        $reservation->sub_total_price = $request->session()->get('sub_total_price');
-        $reservation->total_price = $request->session()->get('total_price');
+        $reservation->room_quantity = $request->room_quantity;
+        $reservation->sub_total_price = $sub_total_price;
+        $reservation->total_price = $total_price;
 
         try {
 
-            $room->complements_cheked = $room->complements->whereIn('id', session()->get('ids_complements_cheked'));
-
+            $room->complements_cheked = $complements_cheked;
             if ($room->complements_cheked) {
-                $room->complements_cheked->transform(function ($item, $key) use ($reservation) {
-
-                    $item->total_price = $item->price_per_total_night * $reservation->room_quantity;
-
+                $room->complements_cheked->transform(function ($item) {
                     return $item->only(['name', 'price', 'type_price', 'total_price', 'price_per_total_night']);
                 })->values();
             }
-            //dd($room->complements_cheked);
+
             $reservation->client()->associate($client->id);
             $reservation->room()->associate($room->id);
-            $room->price_per_reservation = session()->get('price_per_reservation');
-            $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price', 'price_per_total_night', 'price_per_reservation', 'complements_cheked']);
 
-            if (session()->has('discount_id')) {
-                $discount = Discount::find(session()->get('discount_id'));
-                $discount->amount = session()->get('discount_amount');
-                $reservation->discount_reservation = $discount->only('code', 'percent', 'amount');
-                //$reservation->'discount_amount' = $request->session()->get('discount_amount');
-                //$reservation->discount()->associate(session()->get('discount_id'));
-            }
+            $room->price_per_reservation = $price_per_reservation;
+            $reservation->room_reservation = $room->only(['name', 'beds', 'adults', 'price', 'price_per_total_night', 'price_per_reservation', 'complements_cheked']);
+            
+            $reservation->discount_reservation = $discount;
+            
             //dd($reservation);
             $reservation->order = rand(1, 9) . $reservation->start_date->format('md') . $client->id;
             $reservation->save();
@@ -202,27 +184,10 @@ class ReservationController extends Controller
             $error = 'Al parecer hubo un error! El pago a través de su targeta no se pudo realizar.';
             return response()->json(['error' => $error], 500);
         }
-        
-        $pdf_path = $this->pdf_storage($reservation);//storage
-        
-        Mail::to($client->email)->queue(new ReservationOrder($reservation,$pdf_path));
 
-        session()->forget([
-            'start_date',
-            'end_date',
-            'adults',
-            'kids',
-            'night',
-            'room_id',
-            'room_quantity',
-            'ids_complements_cheked',
-            'price_per_reservation',
-            'sub_total_price',
-            'total_price',
-            'discount_id',
-            'discount_amount',
-            'discount_percent',
-        ]);
+        $pdf_path = $this->pdf_storage($reservation); //storage
+
+        Mail::to($client->email)->queue(new ReservationOrder($reservation, $pdf_path));
 
         return response()->json([
             'order' => $reservation->order,
@@ -235,58 +200,35 @@ class ReservationController extends Controller
             ->with(['client' => function ($query) use ($request) {
 
                 $query->where('email', $request->email)->firstOrFail();
-
             }])->firstOrFail();
 
-        $pdf_path = $this->pdf_storage($reservation);//storage        
-        
-        return response()->file('storage/'.$pdf_path);
-        
+        $pdf_path = $this->pdf_storage($reservation); //storage        
+
+        return response()->file('storage/' . $pdf_path);
+
         return view('pdf.report', compact('reservation', 'client'));
-        
     }
-    public function dicount_code(Request $request)
+
+    public function dicount_code(CodeDiscount $request)
     {
-        $this->validate_session();
 
-        session()->forget(['discount_id', 'discount_amount', 'discount_code']);
 
-        $sub_total_price = session()->get('sub_total_price');
 
-        session([
-            'total_price' => $sub_total_price
-        ]);
+        list(
+            $room,
+            $total_price,
+            $complements_cheked,
+            $price_per_reservation
+        ) = $this->room_with_price($request);
 
-        Validator::make($request->all(), [
-            'code' => 'required|exists:discounts,code',
-        ])->validate();
 
-        if (!session()->has('room_id')) {
 
-            $error = "No se puede usar este codigo de descuento";
-            return response()->json(['error' => $error], 500);
-        }
-
-        $discount = Discount::where('code', $request->code)->where('active', 1)
-            ->withCount('reservations')->firstOrFail();
-
-        if ($discount->quantity <= $discount->reservations_count) {
-            $error = "Este codigo de descuento ya no esta disponible";
-            return response()->json(['error' => $error], 500);
-        }
-
-        $discount_amount = round($sub_total_price * ($discount->percent / 100), 2);
-
-        $total_price = $sub_total_price - $discount_amount;
-
-        $discount_percent = $discount->percent;
-
-        session([
-            'discount_id' => $discount->id,
-            'discount_amount' => $discount_amount,
-            'discount_code' => $discount->code,
-            'total_price' => $total_price
-        ]);
+        // session([
+        //     'discount_id' => $discount->id,
+        //     'discount_amount' => $discount_amount,
+        //     'discount_code' => $discount->code,
+        //     'total_price' => $total_price
+        // ]);
 
         return compact('total_price', 'discount_amount', 'discount_percent');
     }
@@ -299,21 +241,61 @@ class ReservationController extends Controller
         }
     }
 
-    public function pdf_storage($reservation){
-        
-        $folder_date=$reservation->start_date->format('y-m');
-        
-        $pdf_path="pdf/$folder_date/$reservation->order.pdf"; 
-        
+    public function pdf_storage($reservation)
+    {
+
+        $folder_date = $reservation->start_date->format('y-m');
+
+        $pdf_path = "pdf/$folder_date/$reservation->order.pdf";
+
         if (Storage::missing($pdf_path)) { //missing -> no esta el pdf
 
-            $client=$reservation->client; 
-            $pdf = PDF::loadView('pdf.report', compact('reservation', 'client'));        
+            $client = $reservation->client;
+            $pdf = PDF::loadView('pdf.report', compact('reservation', 'client'));
             Storage::put($pdf_path, $pdf->output());
-
-        }   
+        }
 
         return $pdf_path;
+    }
 
+    public function room_with_price($request)
+    {
+        $room = ReservationSystem::check_availability(
+            $request->start_date,
+            $request->end_date,
+            $request->adults,
+            $request->kids,
+            $request->night,
+            $request->room_id //parametro opcional para devolder solo la habitacion seleccionada
+        );
+
+        //calculo de precios
+        list(
+            $sub_total_price,
+            $total_price,
+            $complements_cheked,
+            $price_per_reservation,
+            $discount
+
+        ) = ReservationSystem::price_calculation(
+            $room,
+            $request->room_quantity,
+            $request->ids_complements_cheked,
+            $request->code,
+        );
+
+        if ($complements_cheked) {
+            $complements_cheked = $complements_cheked->values(); //->values() = error js {} -> []
+        }
+
+
+        return [
+            $room,
+            $sub_total_price,
+            $total_price,
+            $complements_cheked,
+            $price_per_reservation,
+            $discount
+        ];
     }
 }

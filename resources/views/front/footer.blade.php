@@ -18,7 +18,7 @@
             <a href="{{route('terms-conditions')}}">Termino y condiciones</a>
             <a href="{{route('privacy-policy')}}">Politicas de Privacidad</a>
             <a href="{{route('cancellation-policies')}}">Politicas de cancelacion</a>
-            {{-- <a href="{{route('cancellation-reservation')}}">Cancelacion de reserva</a> --}}
+            <a href="{{route('cancellation-reservation')}}">Cancelacion de reserva</a>
             <a href="{{route('cookies-policy')}}">Política de Cookies</a>
             {{-- <a href="">Sitemap</a> --}}
         </div>

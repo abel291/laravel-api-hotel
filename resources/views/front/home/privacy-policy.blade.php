@@ -4,7 +4,7 @@
     'banner_type'   =>false,
     'page_title'         =>$page->title,
     'page_sub_title'     =>$page->sub_title,
-    'page_img'           =>$page->img,
+    'page_img'           =>'/storage/pages/'.$page->img,
 ])
 
 @section('seo_title', $page->seo_title)

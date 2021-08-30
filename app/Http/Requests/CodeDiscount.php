@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class Step3Confirmation extends FormRequest
+class CodeDiscount extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +28,7 @@ class Step3Confirmation extends FormRequest
             'room_id' => 'Habitacion',
             'room_quantity' => 'Cantidad de habitaciones',
             'code' => 'Codigo de descuento',
-
+            
         ];
     }
 
@@ -46,19 +45,12 @@ class Step3Confirmation extends FormRequest
             // 'end_date' => 'required|date_format:Y-m-d|after:start_date',
             // 'adults' => 'required|min:1',
             // 'kids' => 'required|min:1',
-
+            
             //step3
-            'room_id' => 'required|exists:rooms,id',
-            'room_quantity' => 'required|numeric',
-            'code' =>
-            [
-                'sometimes',
-                'required',
-                Rule::exists('discounts', 'code')->where(function ($query) {
-                    $query->where('active', 1);
-                }),
-            ],
+            //'room_id' => 'required|exists:rooms,id',
+            //'room_quantity' => 'required|numeric',
 
+            'code' => 'required|exists:discounts,code',
         ];
     }
 }
