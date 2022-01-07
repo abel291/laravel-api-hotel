@@ -22,6 +22,7 @@ return [
         'logout',
         'register',
         
+        
     ],
 
     'allowed_methods' => ['*'],

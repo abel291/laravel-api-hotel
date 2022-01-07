@@ -27,6 +27,7 @@ class Step4Filanize extends FormRequest
             'client.email' => 'Correo',
             'client.check_in' => 'Hora de llegada',
             'client.special_request' => 'Peticion especial',
+            'code' => 'Codigo de descuento',
         ];
     }
     /**
@@ -45,6 +46,7 @@ class Step4Filanize extends FormRequest
             'client.email' => 'required|email|max:255|confirmed',
             'client.check_in' => 'nullable|string|max:255',
             'client.special_request' => 'nullable|string|max:1000',
+            'code' => 'sometimes|required|exists:discounts,code',
         ];
     }
     // public function withValidator($validator)

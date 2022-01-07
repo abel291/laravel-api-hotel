@@ -5,17 +5,18 @@ namespace App\Helpers;
 use App\Mail\ReservationOrder;
 use App\Models\Discount;
 use App\Models\Room;
-use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ReservationSystem
 {
-    public static function check_availability(string $start_date, string $end_date, int $adults, int $kids, int $night, int $room_id = null)
+    public static function check_availability(string $start_date, string $end_date, int $adults, int $kids)
     {
+        $start_date = Carbon::createFromFormat('Y-m-d', $start_date);
+        $end_date = Carbon::createFromFormat('Y-m-d', $end_date);
+        $night = $start_date->diffInDays($end_date);
         $rooms = Room::where('active', 1)
-            ->select('rooms.id', 'name', 'slug', 'quantity', 'price', 'beds', 'adults', 'kids', 'thumbnail')
             ->where('adults', '>=', $adults)
             ->where('kids', '>=', $kids)
             ->with(['reservations' => function ($query)  use ($start_date, $end_date) {
@@ -36,7 +37,6 @@ class ReservationSystem
             ->with(['complements' => function ($query) {
                 $query->where('active', 1);
                 $query->where('type_price', '!=', 'free');
-                $query->select('complements.id', 'name', 'type_price', 'icon', 'price', 'description_min');
             }])->get()
             ->filter(function ($value, $key) {
 
@@ -44,18 +44,17 @@ class ReservationSystem
             })
             ->transform(function ($item, $key) use ($night) {
 
-                $item->quantity_availables = $item->quantity - $item->reservations->sum('room_quantity');
-
                 $item->price_per_total_night = $item->price * $night;
 
-                $price_per_quantity_room_selected = [];
+                $room_quantity_availables = $item->quantity - $item->reservations->sum('room_quantity');
 
-                for ($i = 0; $i < $item->quantity_availables; $i++) {
-                    array_push($price_per_quantity_room_selected, $item->price_per_total_night * ($i + 1));
-                    //$price_per_quantity_room_selected[$i + 1] = $item->price_per_total_night * ($i + 1);
+                $room_quantity_availables_with_price = [];
+
+                for ($i = 0; $i < $room_quantity_availables; $i++) {
+                    array_push($room_quantity_availables_with_price, $item->price_per_total_night * ($i + 1));
                 }
 
-                $item->price_per_quantity_room_selected = $price_per_quantity_room_selected;
+                $item->quantity_availables = $room_quantity_availables_with_price;
 
                 $item->complements->transform(function ($complement, $key) use ($night) {
 
@@ -76,33 +75,26 @@ class ReservationSystem
             abort(404, 'no hay disponibildad para esas fechas');
         }
 
-        if ($room_id) {
-
-            $room = $rooms->firstWhere('id', $room_id);
-
-            if (!$room) {
-                abort(404, 'Habitacion seleccionada no disponible');
-            }
-
-            return $room;
-        } else {
-            return $rooms->values();
-        }
+        return [
+            $rooms->values(),
+            $night
+        ];
     }
-    public static function price_calculation($room, int $room_quantity, array $ids_complements_cheked = [], $code_dicount = 0)
+    public static function price_calculation(object $room, int $room_quantity, $ids_complements_cheked = [], $code_dicount = '0')
     {
-        
+
         $total_price = 0;
         $price_per_reservation = 0;
         $price_per_complements = 0;
-        $complements_cheked = [];        
+        $complements_cheked = [];
 
         //valido si la cantidad selecionada es mayor a la disponible
-        if ($room_quantity > count($room->price_per_quantity_room_selected)) {
-            abort(404, "$room_quantity count($room->price_per_quantity_room_selected)");
+        if ($room_quantity > count($room->quantity_availables)) {
+            abort(404, "Canctidad selecionada no disponibles");
+            // abort(404, "$room_quantity count($room->quantity_availables)");
         }
 
-        $price_per_reservation = $room->price_per_quantity_room_selected[$room_quantity - 1]; //
+        $price_per_reservation = $room->quantity_availables[$room_quantity - 1]; //
 
         if ($ids_complements_cheked) {
 
@@ -120,9 +112,9 @@ class ReservationSystem
 
         $total_price = $sub_total_price;
 
-        //chekeo si hay codigo de descuento
 
-        $discount=[];
+        //chekeo si hay codigo de descuento
+        $discount = null;
         if ($code_dicount) {
 
             $discount = Discount::where('code', $code_dicount)->withCount('reservations')->first();
@@ -131,13 +123,16 @@ class ReservationSystem
                 abort(404, 'Este codigo de descuento ya no esta disponible.');
                 // return response()->json(['error' => $error], 500);
             }
+            if(!$discount){
+                abort(404, 'Este codigo de descuento ya no esta disponible.');
+            }
 
             $discount->amount = round($sub_total_price * ($discount->percent / 100), 2);
 
             $total_price = round($sub_total_price - $discount->amount, 2);
 
             $discount = $discount->only('code', 'amount', 'percent');
-        } 
+        }
 
         return [
             $sub_total_price,

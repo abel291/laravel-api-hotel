@@ -69,4 +69,4 @@
             @endforeach
         </x-slot>
         </x-list-data>
-</div>
+</div> 
