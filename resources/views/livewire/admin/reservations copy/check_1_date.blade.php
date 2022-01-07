@@ -20,18 +20,14 @@
             minDate: 'today',
             defaultDate: '{{ $this->reservation->start_date->format('Y-m-d') }}' ,
 
-            onClose: function(selectedDates, dateStr, instance){
-                
+            onClose: function(selectedDates, dateStr, instance){                
                 addDays=selectedDates[0].fp_incr(1)
-                if(selectedDates[0] >= calendar_end_date.selectedDates[0]){
-                    
+                if(selectedDates[0] >= calendar_end_date.selectedDates[0]){                    
                     calendar_end_date.setDate(addDays)                    
-                    
-                }                                        
+                }
                 calendar_end_date.config.minDate = addDays //add +1 days
-                $refs.end_date.dispatchEvent(new Event('input'));
-                   
-            }                                
+                $refs.end_date.dispatchEvent(new Event('input'));                   
+            }
         });
         
     ">
@@ -43,7 +39,7 @@
                 @enderror
             </x-jet-label>
 
-            <x-jet-input x-ref="start_date" class="mb-3  " type="text" wire:model.defer="reservation.start_date">
+            <x-jet-input x-ref="start_date" class="mb-3" type="text" wire:model.defer="reservation.start_date">
             </x-jet-input>
         </div>
 

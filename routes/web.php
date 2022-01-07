@@ -82,6 +82,5 @@ use App\Http\Livewire\Admin\Discount\ListDiscount;
 
 //     Route::get('/report_pdf', [ReservationController::class, 'report_pdf'])->name('report_pdf')->whereNumber('order');
 
-
-
-// });
+//  });
+Route::get('/reservation/report_pdf', [ReservationController::class, 'report_pdf'])->name('report_pdf')->whereNumber('order');

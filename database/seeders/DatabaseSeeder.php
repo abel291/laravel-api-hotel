@@ -27,13 +27,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {   
-        User::create([
+        User::factory([
             'name'=>'123123',
             'email'=>'ad@ad.com',
             'phone'=>'123123123',
-            'password'=> Hash::make('123123')  
-                      
-        ]);
+            'password'=> Hash::make('123123')                        
+        ])->create();
        // User::factory(1)->create();
        
         $complements = Complement::factory()->count(5);        
@@ -54,7 +53,7 @@ class DatabaseSeeder extends Seeder
 
         $tags = Tag::factory()->count(4);
         
-        Blog::factory(13)
+        Blog::factory(40)
         ->hasAttached($tags)
         ->create(); 
         

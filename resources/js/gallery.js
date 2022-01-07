@@ -20,7 +20,7 @@ imagesLoaded(gallery, function () {
       }
       let filter_data = e.target.getAttribute('data-filter')
       iso.arrange({ filter: filter_data });
-      refreshFsLightbox();
+      //refreshFsLightbox();
     })
   }
 });

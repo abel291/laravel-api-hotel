@@ -22,7 +22,7 @@
             <td class="pr-4">
                 <div class="mt-4">
                     <div class="font-bold">Invitado: </div>
-                    <span>{{$client->name}}</span>
+                    <span>{{$reservation->client->name}}</span>
                 </div>
                 <div class="mt-4">
                     <div class="font-bold">Fehcha de entrada</div>

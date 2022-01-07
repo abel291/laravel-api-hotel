@@ -9,9 +9,8 @@ class Image extends Model
 {
     use HasFactory;
     protected $fillable = ['image','thumbnail','order'];
-    /**
-     * Get the parent imageable model (user or post).
-     */
+    
+    
     public function imageable()
     {
         return $this->morphTo();

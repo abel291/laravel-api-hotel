@@ -17,30 +17,40 @@ use App\Http\Controllers\Api\PageController;
 |
 */
 
-Route::post('/auth/register', [AuthController::class, 'register']);
+// Route::post('/auth/register', [AuthController::class, 'register']);
 
-Route::post('/auth/login', [AuthController::class, 'login']);
+// Route::post('/auth/login', [AuthController::class, 'login']);
 
-Route::get('/init', [PageController::class, 'init']);
+// Route::get('/init', [PageController::class, 'init']);
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    
-    Route::get('/me', function (Request $request) {
-        //sleep(4);
-        return response()->json(['user'=>auth()->user()]);
-    });
+// Route::get('/galleries', [PageController::class, 'galleries']);
 
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
-    
-    Route::prefix('reservation')->name('reservation.')->group(function () {
+// Route::get('/blog', [PageController::class, 'blog']);
 
-        Route::post('/step_1_check_date', [ReservationController::class, 'step_1_check_date']);
-    
-        Route::post('/step_3_confirmation', [ReservationController::class, 'step_3_confirmation']);
-    
-        Route::post('/step_4_finalize', [ReservationController::class, 'step_4_finalize']);
-    
-        Route::post('/dicount_code', [ReservationController::class, 'dicount_code']);
-    });
-    
+// Route::get('/post/{slug}', [PageController::class, 'post']);
+
+Route::prefix('reservation')->name('reservation.')->group(function () {
+
+    Route::get('/step_1_date', [ReservationController::class, 'step_1_date']);
+
+    Route::get('/step_3_confirmation', [ReservationController::class, 'step_3_confirmation']);
+
+    Route::post('/step_4_finalize', [ReservationController::class, 'step_4_finalize']);
+
+    Route::get('/dicount_code', [ReservationController::class, 'dicount_code']);
 });
+
+Route::prefix('page')->name('page.')->group(function () {
+    Route::get('home', [PageController::class, 'home'])->name('home');
+    Route::get('rooms', [PageController::class, 'rooms'])->name('rooms');
+    Route::get('about-us', [PageController::class, 'about_us'])->name('about_us');
+    Route::get('contact', [PageController::class, 'contact'])->name('contact');
+    Route::get('blog', [PageController::class, 'blog'])->name('blog');
+    Route::get('posts', [PageController::class, 'posts'])->name('posts');
+    Route::get('gallery', [PageController::class, 'gallery'])->name('gallery');
+    Route::get('terms_conditions', [PageController::class, 'terms_conditions'])->name('terms_conditions');
+    Route::get('privacy_policy', [PageController::class, 'privacy_policy'])->name('privacy_policy');
+    Route::get('cookies_policy', [PageController::class, 'cookies_policy'])->name('cookies_policy');
+    Route::get('cancellation_policies', [PageController::class, 'cancellation_policies'])->name('cancellation_policies');
+});
+Route::get('room/{slug}', [PageController::class, 'room'])->name('room');
