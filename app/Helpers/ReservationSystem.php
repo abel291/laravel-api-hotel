@@ -13,6 +13,8 @@ class ReservationSystem
 {
     public static function check_availability(string $start_date, string $end_date, int $adults, int $kids)
     {
+
+
         $start_date = Carbon::createFromFormat('Y-m-d', $start_date);
         $end_date = Carbon::createFromFormat('Y-m-d', $end_date);
         $night = $start_date->diffInDays($end_date);
@@ -72,7 +74,7 @@ class ReservationSystem
             });
 
         if ($rooms->isEmpty()) {
-            abort(404, 'no hay disponibildad para esas fechas');
+            abort(422, 'no hay disponibildad para esas fechas');
         }
 
         return [
@@ -90,8 +92,7 @@ class ReservationSystem
 
         //valido si la cantidad selecionada es mayor a la disponible
         if ($room_quantity > count($room->quantity_availables)) {
-            abort(404, "Canctidad selecionada no disponibles");
-            // abort(404, "$room_quantity count($room->quantity_availables)");
+            abort(422, "Canctidad selecionada no disponibles");
         }
 
         $price_per_reservation = $room->quantity_availables[$room_quantity - 1]; //
@@ -120,11 +121,10 @@ class ReservationSystem
             $discount = Discount::where('code', $code_dicount)->withCount('reservations')->first();
 
             if ($discount->quantity <= $discount->reservations_count) {
-                abort(404, 'Este codigo de descuento ya no esta disponible.');
-                // return response()->json(['error' => $error], 500);
+                abort(422, 'Este codigo de descuento ya no esta disponible.');
             }
-            if(!$discount){
-                abort(404, 'Este codigo de descuento ya no esta disponible.');
+            if (!$discount) {
+                abort(422, 'Este codigo de descuento ya no esta disponible.');
             }
 
             $discount->amount = round($sub_total_price * ($discount->percent / 100), 2);

@@ -49,7 +49,8 @@ class PageController extends Controller
         ];
     }
     public function rooms()
-    {
+    {   
+        
         $page = Page::where('type', 'rooms')->firstOrFail();
         $rooms =  Room::where('active', true)->get();
         return [

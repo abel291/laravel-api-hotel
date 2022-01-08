@@ -197,7 +197,7 @@ class ReservationController extends Controller
         return $pdf_path;
     }
     public function reservation_step(int $step, $request)
-    {
+    {   
         [$rooms, $night] = ReservationSystem::check_availability(
             $request->start_date,
             $request->end_date,
@@ -212,7 +212,7 @@ class ReservationController extends Controller
         $room = $rooms->firstWhere('id', $request->room_id);
 
         if (!$room) {
-            abort(404, 'Habitacion seleccionada no disponible');
+            abort(422, 'Habitacion seleccionada no disponible');
         }
         //calculo de precios
         [
@@ -254,7 +254,7 @@ class ReservationController extends Controller
         $room = $rooms->firstWhere('id', $request->room_id);
 
         if (!$room) {
-            abort(404, 'Habitacion seleccionada no disponible');
+            abort(422, 'Habitacion seleccionada no disponible');
         }
 
         //calculo de precios
