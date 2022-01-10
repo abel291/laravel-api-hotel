@@ -11,6 +11,7 @@ use App\Http\Requests\CodeDiscount;
 use App\Http\Resources\ReservationRoomResource;
 use App\Models\Client;
 use App\Models\Reservation;
+
 use Faker as Faker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -125,7 +126,7 @@ class ReservationController extends Controller
                 'description' => $description_stripe
             ]);
 
-            $client->stripe_id = 123123;//$payment->id;
+            $client->stripe_id = 123123; //$payment->id;
             $client->save();
 
             DB::commit();
@@ -179,7 +180,7 @@ class ReservationController extends Controller
         // ]);
 
         return compact('total_price', 'discount_amount', 'discount_percent');
-    }    
+    }
 
     public function pdf_storage($reservation)
     {
@@ -197,7 +198,7 @@ class ReservationController extends Controller
         return $pdf_path;
     }
     public function reservation_step(int $step, $request)
-    {   
+    {
         [$rooms, $night] = ReservationSystem::check_availability(
             $request->start_date,
             $request->end_date,
