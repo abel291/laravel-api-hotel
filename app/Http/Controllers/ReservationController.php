@@ -138,7 +138,7 @@ class ReservationController extends Controller
             return response()->json(['error' => $error], 500);
         }
 
-        $pdf_path = $this->pdf_storage($reservation); //storage
+        //$pdf_path = $this->pdf_storage($reservation); //storage
 
         //Mail::to($client->email)->queue(new ReservationOrder($reservation, $pdf_path));
 
@@ -154,12 +154,13 @@ class ReservationController extends Controller
 
                 $query->where('email', $request->email)->firstOrFail();
             }])->firstOrFail();
+        
+        $pdf = PDF::loadView('pdf.report',['reservation'=>$reservation]);
+        
+        return $pdf->stream('invoice.pdf');
+        //return response()->file('storage/' . $pdf_path);
 
-        $pdf_path = $this->pdf_storage($reservation); //storage        
-
-        return response()->file('storage/' . $pdf_path);
-
-        return view('pdf.report', compact('reservation'));
+        //return view('pdf.report', compact('reservation'));
     }
     public function dicount_code(CodeDiscount $request)
     {
