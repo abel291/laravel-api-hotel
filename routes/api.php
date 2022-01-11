@@ -47,6 +47,7 @@ Route::prefix('page')->name('page.')->group(function () {
     Route::get('contact', [PageController::class, 'contact'])->name('contact');
     Route::get('blog', [PageController::class, 'blog'])->name('blog');
     Route::get('posts', [PageController::class, 'posts'])->name('posts');
+    
     Route::get('gallery', [PageController::class, 'gallery'])->name('gallery');
     Route::get('terms_conditions', [PageController::class, 'terms_conditions'])->name('terms_conditions');
     Route::get('privacy_policy', [PageController::class, 'privacy_policy'])->name('privacy_policy');
@@ -54,3 +55,4 @@ Route::prefix('page')->name('page.')->group(function () {
     Route::get('cancellation_policies', [PageController::class, 'cancellation_policies'])->name('cancellation_policies');
 });
 Route::get('room/{slug}', [PageController::class, 'room'])->name('room');
+Route::get('post/{slug}', [PageController::class, 'post'])->name('post');

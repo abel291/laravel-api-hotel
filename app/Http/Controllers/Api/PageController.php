@@ -62,7 +62,6 @@ class PageController extends Controller
     public function room($slug)
     {
         $room = Room::where('slug', $slug)->where('active', 1)->with('complements','images')->first();
-
         return [
             'room' => new RoomResource($room),
         ];
@@ -103,8 +102,9 @@ class PageController extends Controller
     {
 
         $post = Blog::where('active', 1)->where('slug', $slug)->with('tags')->firstOrFail();
+        setlocale(LC_ALL, 'es');
         return response()->json([
-            'post' => $post,
+            'post' => new BlogResource($post),
         ]);
     }
 

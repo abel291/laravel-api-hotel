@@ -14,7 +14,9 @@ class BlogResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
-    {
+    {   
+        
+        
         return [
             'title'=>$this->title,
             'description_min'=>$this->description_min,
@@ -25,6 +27,7 @@ class BlogResource extends JsonResource
             'seo_title'=>$this->seo_title,
             'seo_desc'=>$this->seo_desc,
             'seo_keys'=>$this->seo_keys,
+            'updated_at'=>$this->updated_at->formatLocalized('%B %d , %Y')
         ];
     }
 }
