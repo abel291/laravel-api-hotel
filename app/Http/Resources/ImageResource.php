@@ -19,6 +19,7 @@ class ImageResource extends JsonResource
             'image' => '/storage/images/' . $this->image,
             'thumbnail' => '/storage/images/thumbnail/' . $this->image,
             'order' => $this->order,
+            'imageable' => $this->imageable,
         ];
     }
 }

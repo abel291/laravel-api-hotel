@@ -113,7 +113,7 @@ class PageController extends Controller
 
         $page = Page::where('type', 'gallery')->first();
 
-        $galleries = Gallery::where('active', true)->get();
+        $galleries = Gallery::where('active', true)->with('images')->get();
 
         $images = Image::whereHasMorph(
             'imageable',
@@ -121,7 +121,7 @@ class PageController extends Controller
             function (Builder $query) {
                 $query->where('active', true);
             }
-        )->with('imageable')->get()->shuffle();
+        )->with('imageable:id,slug')->get()->shuffle();        
 
         return response()->json([
             'galleries' => GalleryResource::collection($galleries),
